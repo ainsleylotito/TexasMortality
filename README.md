@@ -1,0 +1,40 @@
+README
+================
+
+## Overview
+
+This repository contains code and data for analyzing mortality by
+assault trends among Texas residents following the 2021 Texas Senate
+Bill 8 (banning abortion after 6 weeks of gestation).
+
+## Data
+
+Raw datafiles are in the `/RawData` directory.
+
+- `"MonthlyAssaultCounts.xls` contains Monthly Mortality data
+  (2018-2023) among reproductive aged (15-44 y/o) Texas Residents by
+  assault (ICD-10 Codes X85-Y09)
+
+### Data sources:
+
+**CDC National Center for Health Statistics**
+
+Monthly assault mortality data were obtained from the National Vital
+Statistics System’s [*Multiple Cause of Death
+Files*](https://wonder.cdc.gov/controller/datarequest/D176;jsessionid=00DFC3FA02078138B9B9D96AB5C6).
+These data include monthly counts of deaths stratified by demographic
+characteristics and cause of death and are publicly available through
+the CDC WONDER Online Database. Details about the dataset sources are
+available at [this
+link](https://wonder.cdc.gov/wonder/help/mcd-provisional.html#)
+
+## Methods
+
+Data are cleaned in the `Scripts/Cleaning.rmd` file. Cleaned datasets
+are in the `CleanData` Directory. Analyses were conducted in R using
+tidyverse and \[packages\] tools.
+
+## Reproducibility
+
+All analyses can be reproduced by running the scripts in the `/Scripts`
+directory.
