@@ -1,0 +1,25 @@
+---
+title: "Cleaning"
+output: html_document
+---
+
+```{r setup}
+# Load packages
+library(tidyverse)
+library(ggplot2) 
+library(readxl) 
+library(lubridate)
+
+# Global options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+``` 
+
+# Monthly Assault Counts 
+
+```{r import1}
+monthly <- read_excel("../RawData/MonthlyAssaultCounts.xlsx") 
+monthly <- monthly %>% 
+  select(-Notes,-Population,-"Crude Rate") 
+head(monthly)
+```
