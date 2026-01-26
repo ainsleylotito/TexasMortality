@@ -9,7 +9,8 @@ This repository contains code and data for analyzing mortality by assault trends
 ## Data 
 Raw datafiles are in the `/RawData` directory.
 
-- `"MonthlyAssaultCounts.xls"` contains Monthly Mortality data (2018-2023) among reproductive aged (15-44 y/o) Texas Residents by assault (ICD-10 Codes X85-Y09)
+- `"MonthlyAssaultCounts.xls"` contains Monthly Mortality data (2018-2023) among reproductive aged (15-44 y/o) Texas Residents where the primary cause of death is assault (ICD-10 Codes X85-Y09) 
+
 
 ### Data sources: 
 
