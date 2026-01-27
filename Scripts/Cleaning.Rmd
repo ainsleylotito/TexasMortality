@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 # Monthly Assault Counts 
 
 ```{r import1}
-rawdata <- read_excel("../RawData/MonthlyAssaultCounts.xlsx") 
+rawdata <- read_excel("../RawData/MonthlyAssaultCount.xlsx") 
 monthly <- rawdata %>% 
   mutate(month_year = my(Month)) %>% 
    select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
