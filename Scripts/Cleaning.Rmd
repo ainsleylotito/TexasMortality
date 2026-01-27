@@ -9,6 +9,8 @@ library(tidyverse)
 library(ggplot2) 
 library(readxl) 
 library(lubridate)
+library(broom)
+library(viridis)
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -22,5 +24,27 @@ rawdata <- read_excel("../RawData/MonthlyAssaultCounts.xlsx")
 monthly <- rawdata %>% 
   mutate(month_year = my(Month)) %>% 
    select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
-head(monthly)
-```
+head(monthly) 
+
+#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024 
+
+monthly <- monthly %>% 
+  filter(month_year < "2025-07-01")
+
+#creating a binary indicator variable to say whether the bill was in effect 
+ 
+monthly <- monthly %>% 
+  mutate(bill8 = month_year > "2021-07-01") 
+
+monthly %>% 
+  slice(35:55)
+               
+#making a time variable
+monthly <- monthly %>%
+  arrange(month_year) %>%
+  mutate(time = row_number())
+
+range(monthly$time)
+
+write_csv(monthly, "../CleanData/monthly.csv")
+``` 
