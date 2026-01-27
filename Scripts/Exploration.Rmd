@@ -3,6 +3,22 @@ title: "Exploration"
 output: html_document
 ---
 
+```{r setup}
+# Load packages
+library(tidyverse)
+library(ggplot2) 
+library(readxl) 
+library(lubridate)
+library(broom)
+library(viridis)
+library(tsModel)
+
+# Global options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+```
+
+
 This contains all code used to explore the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file. 
 
 ```{r import}
@@ -33,12 +49,13 @@ ggplot(monthly, aes(month_year, Deaths))+
 
 We want to investigate the death rate before and after the ban was implemented. To start, we are just going to use a simple poisson model.
 
-```{r}
+```{r poisson_ITS}
 mod1 <- glm(Deaths ~ time , 
                       data = monthly, 
                        family = poisson(link = "log"))
 summary(mod1) 
 
+#introducing bill8
 mod2 <- glm(
   Deaths ~ time + bill8,
   family = poisson(link = "log"),
@@ -97,4 +114,67 @@ ggplot(mod2_data, aes(x = time)) +
   
 ```
 
-Looking at that first poisson model, there is no significance between groups. We expected that, however, as the poisson isn't the most appropriate selection and our data has seasonality trends. We are now going to look into making this a nonlinear model.
+Looking at that first poisson model, there is no significance between groups. We expected that, however, as the poisson isn't the most appropriate selection and our data has seasonality trends. We are now going to look into making this a nonlinear model. 
+
+```{r seasonality}
+#making month_year a date var 
+monthly <- monthly %>%
+  mutate(
+    month_year = as.Date(month_year),
+    month = month(month_year)
+  ) 
+
+#post-intervention slope term
+intervention_time <- min(monthly$time[monthly$bill8])
+
+monthly <- monthly %>%
+  mutate(
+    time_after = if_else(bill8, time - intervention_time + 1, 0)
+  )
+
+monthly %>% 
+  group_by(time_after) %>% 
+  slice(1:3) 
+
+
+mod3 <- glm(
+  Deaths ~ bill8 + time + time_after +
+    harmonic(month, 2, 12),
+  data = monthly,
+  family = quasipoisson(link = "log")
+)
+
+#plotting with seasonality
+plot_data <- augment(mod3, type.predict = "response") %>%
+  mutate(
+    observed = Deaths,
+    fitted = .fitted
+  )
+
+ggplot(plot_data, aes(x = time)) +
+
+  geom_rect(
+    aes(
+      xmin = intervention_time,
+      xmax = max(time),
+      ymin = -Inf,
+      ymax = Inf
+    ),
+    fill = "cyan",
+    alpha = 0.2,
+    inherit.aes = FALSE
+  ) +
+
+  geom_line(aes(y = observed), alpha = 0.6) +
+  geom_line(aes(y = fitted), color = "red", linewidth = 1) +
+
+  labs(
+    x = "Time (months)",
+    y = "Monthly deaths",
+    title = "Interrupted Time Series with Seasonality Adjustment",
+    subtitle = "Quasi-Poisson model with harmonic terms"
+  ) +
+  theme_minimal()
+
+
+```
