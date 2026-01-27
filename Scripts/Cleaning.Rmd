@@ -26,10 +26,10 @@ monthly <- rawdata %>%
    select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
 head(monthly) 
 
-#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024 
+#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
 
 monthly <- monthly %>% 
-  filter(month_year < "2025-07-01")
+  filter(month_year < "2024-01-01")
 
 #creating a binary indicator variable to say whether the bill was in effect 
  
