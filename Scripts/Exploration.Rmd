@@ -22,7 +22,10 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 This contains all code used to explore the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file. 
 
 ```{r import}
-monthly <- read.csv("../CleanData/monthly.csv")
+monthly <- read.csv("../CleanData/monthly.csv") 
+
+monthly <- monthly %>% 
+  mutate(month_year = ymd(month_year))
 
 #looking at when the bill was implemented
 monthly %>% 
@@ -33,8 +36,11 @@ monthly %>%
 
 Next we are going to plot the forcing value (time) and the outcome (death count)
 ```{r}
+#looking at range of dates 
+range(monthly$time)
+
 ggplot()+
-  geom_polygon(aes(c(42,90,90,42),
+  geom_polygon(aes(c(42,70,70,42),
                    c(Inf, Inf, -Inf, -Inf)),
                fill = "cyan", alpha = 0.2)+
   geom_line(data = monthly, aes(time, Deaths))+
@@ -174,6 +180,13 @@ ggplot(plot_data, aes(x = time)) +
 
 
 ``` 
+
+
+This provides us some interesting trends, but what we are really interested is utilizing an interrupted-ARIMA model to identify the significance of our outliers. There are several studies that use this methodology, but we are primarily going to replicate the methods described in [Singh et al., 2025](https://link.springer.com/article/10.1007/s00127-025-02902-7), a study which analyzes suicide deaths among reproductive-aged women post-*Dobbs*. 
+
+This study also uses data from the Multiple Cause of Death database, and stratifies data by men and women by two age groups: 15-25 and 25-49. The outcomes are the monthly count of suicides nationally for reproductive-aged women overall and for the two age subgroups. The series of monthly suicides among men (per age group) were used as a control variable. The exposure was the timing of the *Dobbs* decision in June 2022. 
+
+To extend this methodology to our study, we can also use male deaths as a control. Since we are using just texas data, it is unlikely that we will have enough counts to populate data if we further stratify by age 15-24 and 25-49. However, we will also do a sensitivity analysis that compares our trends to those nationally. 
 
 
 We want to explore all ages for females as a sensitivity analysis. 
