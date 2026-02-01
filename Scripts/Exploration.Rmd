@@ -32,6 +32,20 @@ monthly %>%
   group_by(bill8) %>% 
   slice(1:3) #month 42
 
+#which months are pre-Bill 8 
+monthly %>% 
+  filter(bill8 == FALSE) %>% 
+  arrange(month_year) %>%
+  slice(c(1, n()))
+#which months are post-Bill 8
+monthly %>% 
+  filter(bill8 == TRUE) %>% 
+   arrange(month_year) %>%
+  slice(c(1, n())) 
+#how many post-Bill 8 
+monthly %>%
+  filter(bill8 == TRUE) %>%
+  nrow()
 ``` 
 
 Next we are going to plot the forcing value (time) and the outcome (death count)
@@ -182,19 +196,6 @@ ggplot(plot_data, aes(x = time)) +
 ``` 
 
 
-This provides us some interesting trends, but what we are really interested is utilizing an interrupted-ARIMA model to identify the significance of our outliers. There are several studies that use this methodology, but we are primarily going to replicate the methods described in [Singh et al., 2025](https://link.springer.com/article/10.1007/s00127-025-02902-7), a study which analyzes suicide deaths among reproductive-aged women post-*Dobbs*. 
-
-This study also uses data from the Multiple Cause of Death database, and stratifies data by men and women by two age groups: 15-25 and 25-49. The outcomes are the monthly count of suicides nationally for reproductive-aged women overall and for the two age subgroups. The series of monthly suicides among men (per age group) were used as a control variable. The exposure was the timing of the *Dobbs* decision in June 2022. 
-
-To extend this methodology to our study, we can also use male deaths as a control. Since we are using just texas data, it is unlikely that we will have enough counts to populate data if we further stratify by age 15-24 and 25-49. However, we will also do a sensitivity analysis that compares our trends to those nationally. 
-
-*Note: the following description is directly adapted from Singh et al. (2025). Future methods manuscripting will need to cite this source as well as adapt the phrasing.*
-
-The ARIMA's autoregressive (AR) component should allow us to capture the relationship between current assault mortality counts and past observations. The moving average (MA) will model the residuals from previous time points (accounting for irregular fluctuations). The seasonality/trends that change over time will be addressed through differencing ("integrated"), which will remove secular trends and stabilize the mean. 
-
-We may use the methods from Singh et al. (2025) in the following steps: 
-
-1. Use the Box-Jenkins iterative pattern recognition routines to identify the ARIMA signature of the outcome in the pre-Bill 8 period (January, 2018 - July, 2021), controlling for the concomitant series of assault mortality among men of the same age group (15-44). 
-
+This provides us some interesting trends, but what we are really interested is utilizing an interrupted-ARIMA model to identify the significance of our outliers. We are going to proceed with this analysis in the rmd document called `/Scripts/Analysis`. 
 
 We want to explore all ages for females as a sensitivity analysis. 
