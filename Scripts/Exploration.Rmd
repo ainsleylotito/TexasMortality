@@ -188,5 +188,13 @@ This study also uses data from the Multiple Cause of Death database, and stratif
 
 To extend this methodology to our study, we can also use male deaths as a control. Since we are using just texas data, it is unlikely that we will have enough counts to populate data if we further stratify by age 15-24 and 25-49. However, we will also do a sensitivity analysis that compares our trends to those nationally. 
 
+*Note: the following description is directly adapted from Singh et al. (2025). Future methods manuscripting will need to cite this source as well as adapt the phrasing.*
+
+The ARIMA's autoregressive (AR) component should allow us to capture the relationship between current assault mortality counts and past observations. The moving average (MA) will model the residuals from previous time points (accounting for irregular fluctuations). The seasonality/trends that change over time will be addressed through differencing ("integrated"), which will remove secular trends and stabilize the mean. 
+
+We may use the methods from Singh et al. (2025) in the following steps: 
+
+1. Use the Box-Jenkins iterative pattern recognition routines to identify the ARIMA signature of the outcome in the pre-Bill 8 period (January, 2018 - July, 2021), controlling for the concomitant series of assault mortality among men of the same age group (15-44). 
+
 
 We want to explore all ages for females as a sensitivity analysis. 

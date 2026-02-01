@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ``` 
 
-# Monthly Assault Counts 
+# Female Monthly Assault Counts 
 
 ```{r import1}
 rawdata <- read_excel("../RawData/MonthlyAssaults.xlsx") 
@@ -48,3 +48,5 @@ range(monthly$time)
 
 write_csv(monthly, "../CleanData/monthly.csv")
 ``` 
+
+We need to apply the same cleaning methodology, this time for Texas resident males in the same age group (15-44). 
