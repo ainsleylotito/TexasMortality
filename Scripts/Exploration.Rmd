@@ -30,7 +30,7 @@ monthly <- monthly %>%
 #looking at when the bill was implemented
 monthly %>% 
   group_by(bill8) %>% 
-  slice(1:3) #month 42
+  slice(1:3) #month 43
 
 #which months are pre-Bill 8 
 monthly %>% 
@@ -54,7 +54,7 @@ Next we are going to plot the forcing value (time) and the outcome (death count)
 range(monthly$time)
 
 ggplot()+
-  geom_polygon(aes(c(42,70,70,42),
+  geom_polygon(aes(c(43,70,70,43),
                    c(Inf, Inf, -Inf, -Inf)),
                fill = "cyan", alpha = 0.2)+
   geom_line(data = monthly, aes(time, Deaths))+

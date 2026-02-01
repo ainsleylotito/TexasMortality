@@ -4,7 +4,7 @@ output: github_document
 ---
 
 ## Overview
-This repository contains code and data for analyzing mortality by assault trends among Texas residents following the 2021 Texas Senate Bill 8 (banning abortion after 6 weeks of gestation).
+This repository contains code and data for analyzing mortality by assault trends among Texas residents following the 2021 Texas Senate Bill 8 in September of 2021 (banning abortion after 6 weeks of gestation).
 
 ## Data 
 Raw datafiles are in the `/RawData` directory.

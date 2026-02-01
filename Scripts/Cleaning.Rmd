@@ -34,7 +34,7 @@ monthly <- monthly %>%
 #creating a binary indicator variable to say whether the bill was in effect 
  
 monthly <- monthly %>% 
-  mutate(bill8 = month_year > "2021-07-01") 
+  mutate(bill8 = month_year > "2021-08-01") #all months after August
 
 monthly %>% 
   slice(35:55)

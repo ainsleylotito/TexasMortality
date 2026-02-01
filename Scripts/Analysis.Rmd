@@ -15,8 +15,12 @@ The ARIMA's autoregressive (AR) component should allow us to capture the relatio
 
 We may use the methods from Singh et al. (2025) in the following steps: 
 
-1. Use the Box-Jenkins iterative pattern recognition routines to identify the ARIMA signature of the outcome in the pre-Bill 8 period (January, 2018 - July, 2021), controlling for the concomitant series of assault mortality among men of the same age group (15-44).  
+1. Use the Box-Jenkins iterative pattern recognition routines to identify the ARIMA signature of the outcome in the pre-Bill 8 period (January, 2018 - August, 2021), controlling for the concomitant series of assault mortality among men of the same age group (15-44).  
 
-2. Use the pre-Bill 8 ARIMA signature identified in step 1 to forecast (predict) values of the outcome for the 29-month period (August 2021 - December 2023)
+2. Use the pre-Bill 8 ARIMA signature identified in step 1 to forecast (predict) values of the outcome for the 28-month period post-Bill 8 (i.e. September 2021 - December 2023). These predicted/fitted values will serve as counterfactuals and reflect the expected monthly count of female suicides if Bill 8 had not been passed. 
+
+3. Use the ARIMA signature identified in step 1 and expected values from step 2 to obtain residual values (observed less fitted) of our outcome series. 
+
+4. Use the pre-Bill 8 standard error of residuals to develop pre-Bill 8 95% confidence intervals (CI; prediction interval of monthly series of assault mortalities among Texas resident reproductive-aged women overall from January 2018 - August 2021). Extend the pre-Bill 8 prediction interval to the full residual series (January 2018 - December 2023). Next, note whether any residuals deviated from this prediction interval post-Bill 8 (i.e., September 2021 onward.)
 
 
