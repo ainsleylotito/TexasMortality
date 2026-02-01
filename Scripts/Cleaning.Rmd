@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 # Female Monthly Assault Counts 
 
-```{r import1}
+```{r import_female}
 rawdata_female <- read_excel("../RawData/MonthlyAssaults.xlsx") 
 monthly_f <- rawdata_female %>% 
   mutate(month_year = my(Month)) %>% 
@@ -53,32 +53,32 @@ We need to apply the same cleaning methodology, this time for Texas resident mal
 
 # Male Monthly Assault Counts 
 
-```{r import1}
+```{r import_male}
 rawdata_male <- read_excel("../RawData/MaleMonthlyAssaults.xlsx") 
-monthly <- rawdata %>% 
+monthly_m <- rawdata_male %>% 
   mutate(month_year = my(Month)) %>% 
    select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
-head(monthly) 
+head(monthly_m) 
 
 #excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
 
-monthly <- monthly %>% 
+monthly_m <- monthly_m %>% 
   filter(month_year < "2024-01-01")
 
 #creating a binary indicator variable to say whether the bill was in effect 
  
-monthly <- monthly %>% 
+monthly_m <- monthly_m %>% 
   mutate(bill8 = month_year > "2021-08-01") #all months after August
 
-monthly %>% 
+monthly_m %>% 
   slice(35:55)
                
 #making a time variable
-monthly <- monthly %>%
+monthly_m <- monthly_m %>%
   arrange(month_year) %>%
   mutate(time = row_number())
 
-range(monthly$time)
+range(monthly_m$time)
 
-write_csv(monthly, "../CleanData/monthly.csv")
+write_csv(monthly_m, "../CleanData/monthly_m.csv")
 ``` 
