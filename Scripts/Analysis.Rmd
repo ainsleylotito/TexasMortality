@@ -23,4 +23,14 @@ We may use the methods from Singh et al. (2025) in the following steps:
 
 4. Use the pre-Bill 8 standard error of residuals to develop pre-Bill 8 95% confidence intervals (CI; prediction interval of monthly series of assault mortalities among Texas resident reproductive-aged women overall from January 2018 - August 2021). Extend the pre-Bill 8 prediction interval to the full residual series (January 2018 - December 2023). Next, note whether any residuals deviated from this prediction interval post-Bill 8 (i.e., September 2021 onward.)
 
+5. If the outcome series exhibited outliers in the post-Bill 8 period following step 4, create a binary indicator of the month-specified timing of any identified outliers in residuals of assault mortalities among reproductive-aged women post-Bill 8 (1 for months with outliers, 0 otherwise) to quantify the average change in assault mortalities post-Bill 8. This will also help avoid multiple testing that could increase chances of a Type I error (false rejection of the null). 
+
+6. Apply the binary-indicator of month-specific outliers (from step 5) to the ARIMA-derived residuals of outcomes to determine the magnitude of outcome deviation from expected levels in the months with residual outliers. 
+
+2-tailed tests with significance level of p < 0.05 will be used. 
+
+#Descriptive Statistics 
+
+How many assault mortalities occured between the study period? Compare women and men. 
+
 

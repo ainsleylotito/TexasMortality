@@ -22,28 +22,28 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 This contains all code used to explore the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file. 
 
 ```{r import}
-monthly <- read.csv("../CleanData/monthly.csv") 
+monthly_f <- read.csv("../CleanData/monthly_f.csv") 
 
-monthly <- monthly %>% 
+monthly_f <- monthly_f %>% 
   mutate(month_year = ymd(month_year))
 
 #looking at when the bill was implemented
-monthly %>% 
+monthly_f %>% 
   group_by(bill8) %>% 
   slice(1:3) #month 43
 
 #which months are pre-Bill 8 
-monthly %>% 
+monthly_f %>% 
   filter(bill8 == FALSE) %>% 
   arrange(month_year) %>%
   slice(c(1, n()))
 #which months are post-Bill 8
-monthly %>% 
+monthly_f %>% 
   filter(bill8 == TRUE) %>% 
    arrange(month_year) %>%
   slice(c(1, n())) 
 #how many post-Bill 8 
-monthly %>%
+monthly_f %>%
   filter(bill8 == TRUE) %>%
   nrow()
 ``` 
@@ -51,13 +51,13 @@ monthly %>%
 Next we are going to plot the forcing value (time) and the outcome (death count)
 ```{r}
 #looking at range of dates 
-range(monthly$time)
+range(monthly_f$time)
 
 ggplot()+
   geom_polygon(aes(c(43,70,70,43),
                    c(Inf, Inf, -Inf, -Inf)),
                fill = "cyan", alpha = 0.2)+
-  geom_line(data = monthly, aes(time, Deaths))+
+  geom_line(data = monthly_f, aes(time, Deaths))+
   labs(x = "Month in study",
        y = "Number of deaths by assault")
 
@@ -67,7 +67,7 @@ We want to investigate the death rate before and after the ban was implemented. 
 
 ```{r poisson_ITS}
 mod1 <- glm(Deaths ~ time , 
-                      data = monthly, 
+                      data = monthly_f, 
                        family = poisson(link = "log"))
 summary(mod1) 
 
@@ -75,7 +75,7 @@ summary(mod1)
 mod2 <- glm(
   Deaths ~ time + bill8,
   family = poisson(link = "log"),
-  data = monthly
+  data = monthly_f
 )
 
 summary(mod2) 
@@ -99,7 +99,7 @@ mod2_data <- augment(mod2, type.predict = "response") %>%
     observed = Deaths,
     fitted   = .fitted
   ) 
-intervention_time <- min(monthly$time[monthly$bill8])
+intervention_time <- min(monthly_f$time[monthly$bill8])
 
 #ggplotting
 ggplot(mod2_data, aes(x = time)) + 
@@ -134,21 +134,21 @@ Looking at that first poisson model, there is no significance between groups. We
 
 ```{r seasonality}
 #making month_year a date var 
-monthly <- monthly %>%
+monthly_f <- monthly_f %>%
   mutate(
     month_year = as.Date(month_year),
     month = month(month_year)
   ) 
 
 #post-intervention slope term
-intervention_time <- min(monthly$time[monthly$bill8])
+intervention_time <- min(monthly_f$time[monthly$bill8])
 
-monthly <- monthly %>%
+monthly_f <- monthly_f %>%
   mutate(
     time_after = if_else(bill8, time - intervention_time + 1, 0)
   )
 
-monthly %>% 
+monthly_f %>% 
   group_by(time_after) %>% 
   slice(1:3) 
 
@@ -156,7 +156,7 @@ monthly %>%
 mod3 <- glm(
   Deaths ~ bill8 + time + time_after +
     harmonic(month, 2, 12),
-  data = monthly,
+  data = monthly_f,
   family = quasipoisson(link = "log")
 )
 

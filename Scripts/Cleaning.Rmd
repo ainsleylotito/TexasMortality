@@ -20,7 +20,41 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 # Female Monthly Assault Counts 
 
 ```{r import1}
-rawdata <- read_excel("../RawData/MonthlyAssaults.xlsx") 
+rawdata_female <- read_excel("../RawData/MonthlyAssaults.xlsx") 
+monthly_f <- rawdata_female %>% 
+  mutate(month_year = my(Month)) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+head(monthly_f) 
+
+#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
+
+monthly_f <- monthly_f %>% 
+  filter(month_year < "2024-01-01")
+
+#creating a binary indicator variable to say whether the bill was in effect 
+ 
+monthly_f <- monthly_f %>% 
+  mutate(bill8 = month_year > "2021-08-01") #all months after August
+
+monthly_f %>% 
+  slice(35:55)
+               
+#making a time variable
+monthly_f <- monthly_f %>%
+  arrange(month_year) %>%
+  mutate(time = row_number())
+
+range(monthly_f$time)
+
+write_csv(monthly_f, "../CleanData/monthly_f.csv")
+``` 
+
+We need to apply the same cleaning methodology, this time for Texas resident males in the same age group (15-44). 
+
+# Male Monthly Assault Counts 
+
+```{r import1}
+rawdata_male <- read_excel("../RawData/MaleMonthlyAssaults.xlsx") 
 monthly <- rawdata %>% 
   mutate(month_year = my(Month)) %>% 
    select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
@@ -48,5 +82,3 @@ range(monthly$time)
 
 write_csv(monthly, "../CleanData/monthly.csv")
 ``` 
-
-We need to apply the same cleaning methodology, this time for Texas resident males in the same age group (15-44). 
