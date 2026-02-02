@@ -46,7 +46,6 @@ monthly_f <- monthly_f %>%
 
 range(monthly_f$time)
 
-write_csv(monthly_f, "../CleanData/monthly_f.csv")
 ``` 
 
 We need to apply the same cleaning methodology, this time for Texas resident males in the same age group (15-44). 
@@ -80,5 +79,69 @@ monthly_m <- monthly_m %>%
 
 range(monthly_m$time)
 
-write_csv(monthly_m, "../CleanData/monthly_m.csv")
 ``` 
+It should be noted we are missing death data for females for May 2019 (2019-05-01) and September 2019 (2019-09-01). We need to fill in this hole, so we will investigate filling this gap in the data by querying both genders and subtracting the deaths for males to reveal how many were among females.
+
+```{r filling_in_data}
+rawdata_both_genders <- read_excel("../RawData/2019_monthly_both_sexes.xlsx") 
+both_genders_2019 <- rawdata_both_genders %>% 
+  mutate(month_year = my(Month)) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+head(both_genders_2019)  
+
+#selecting the dates we need 
+
+both_genders_2019 %>% 
+  filter(month_year %in% c("2019-05-01", "2019-09-01")) 
+
+#107 in may, 96 in sept 
+
+monthly_m %>% 
+  filter(month_year %in% c("2019-05-01", "2019-09-01"))  
+#98 in may, 89 in sept 
+
+#may: 107-98 = 9
+#sept: 96-89 = 7
+
+#dropping the problematic rows for females
+monthly_f <- monthly_f %>%
+  filter(
+    !(month_year %in% as.Date(c("2019-05-01", "2019-09-01")))
+  )
+
+monthly_f <- monthly_f %>%
+  bind_rows(
+    tibble(
+      month_year = as.Date(c("2019-05-01", "2019-09-01")),
+      Deaths     = c(11, 7),
+      sex        = "Female",
+      bill8      = FALSE,
+      time       = c(17, 21)
+    )
+  )
+
+```
+
+Next we are going to merge the datasets to create an all sex version.
+
+```{r merge}
+
+monthly_all <- bind_rows( #combining datasets
+  monthly_f %>% mutate(sex = "Female"),
+  monthly_m %>% mutate(sex = "Male")
+)
+
+monthly_m %>% #checking which months are missing in the female df
+  anti_join(monthly_f, by = "month_year") %>%
+  select(month_year)
+
+#looks correct! Saving the datasets
+
+write_csv(monthly_all, "../CleanData/monthly_all.csv")
+write_csv(monthly_m, "../CleanData/monthly_m.csv")
+write_csv(monthly_f, "../CleanData/monthly_f.csv")
+```
+
+
+
+

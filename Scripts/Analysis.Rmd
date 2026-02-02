@@ -54,63 +54,7 @@ We are going to start by exploring how many assault mortalities among Texas resi
 ```{r import}
 monthly_f <- read.csv("../CleanData/monthly_f.csv") 
 monthly_m <- read.csv("../CleanData/monthly_m.csv")
-
-monthly_f <- monthly_f %>% 
-  mutate(month_year = ymd(month_year))
-
-monthly_m <- monthly_m %>% 
-  mutate(month_year = ymd(month_year))
-
-monthly_all <- bind_rows( #combining datasets
-  monthly_f %>% mutate(sex = "Female"),
-  monthly_m %>% mutate(sex = "Male")
-)
-
-monthly_m %>% #checking which months are missing in the female df
-  anti_join(monthly_f, by = "month_year") %>%
-  select(month_year)
-```
-We have combined the datasets, but it should be noted we are missing death data for females for May 2019 (2019-05-01) and September 2019 (2019-09-01). We need to fill in this hole, so we will investigate filling this gap in the data by querying both genders and subtracting the deaths for males to reveal how many were among females. 
-
-```{r filling_in_data}
-rawdata_both_genders <- read_excel("../RawData/2019_monthly_both_sexes.xlsx") 
-both_genders_2019 <- rawdata_both_genders %>% 
-  mutate(month_year = my(Month)) %>% 
-   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
-head(both_genders_2019)  
-
-#selecting the dates we need 
-
-both_genders_2019 %>% 
-  filter(month_year %in% c("2019-05-01", "2019-09-01")) 
-
-#107 in may, 96 in sept 
-
-monthly_m %>% 
-  filter(month_year %in% c("2019-05-01", "2019-09-01"))  
-#98 in may, 89 in sept 
-
-#may: 107-98 = 9
-#sept: 96-89 = 7
-
-#dropping the problematic rows for females
-monthly_all <- monthly_all %>%
-  filter(
-    !(sex == "Female" &
-      month_year %in% as.Date(c("2019-05-01", "2019-09-01")))
-  )
-
-monthly_all <- monthly_all %>%
-  bind_rows(
-    tibble(
-      month_year = as.Date(c("2019-05-01", "2019-09-01")),
-      Deaths     = c(11, 7),
-      sex        = "Female",
-      bill8      = FALSE,
-      time       = c(17, 21)
-    )
-  )
-
+monthly_all <- read.csv("../CleanData/monthly_all.csv")
 
 ```
 
@@ -128,6 +72,9 @@ monthly_all %>%
 monthly_all %>%
   filter(month_year == "2021-09-01") %>%
   pull(time)
+monthly_all %>%
+  filter(month_year == as.Date("2021-09-01")) %>%
+  select(sex, month_year, time)
 
 ```
 
