@@ -13,6 +13,7 @@ library(viridis)
 library(tsModel)
 library(scales)
 library(grid) 
+library(tseries)
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -158,3 +159,69 @@ Next we will identify the ARIMA signature of the monthly series of assault death
 [This is copying table 2 in the manuscript]
 
 
+I am going to replicate the methodology from the [RPubs report on Box-Jenkins](https://rpubs.com/asmuierahim/boxjenkins). 
+
+First, we need to define the variable as a time series object using the ts() function. We need to specify the start =, end =, and frequency. I am going to start by just incorporating female data.
+
+```{r ts_function}
+monthly_f_ts <- ts(
+  monthly_f$Deaths,
+  start = c(2018, 1),
+  frequency = 12
+)
+```
+
+Next, we plot the original series. 
+```{r ts_plot}
+plot(monthly_f_ts, col = "blue", ylab = "Monthly Assault Deaths", 
+      main = "Female Monthly Assault Deaths", xlab = "Month in Study", type ="o", pch = 20,
+      panel.first = grid (),  xaxt = "n")
+axis(1, at = seq (from = 1, to = 72, by = 2)) # additional graph customization
+```
+Next, we plot the Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) for the original series. 
+
+The ACF shows the correlation between the current observation and its past observations at various lag points. 
+
+The PACF shows the correlation between the current observation and its past observations, removing the effects of intermediate observations. We will be using a lag max at 24 months to identify short-term dependence, a seasonal signal at lag 12, and whether effects persist past 1 year.
+
+```{r acf_pacf_female}
+par(mfrow = c(2,1)) #2 graphs in a single device
+acf(monthly_f_ts,
+    24, 
+    main = "ACF for CPI",
+    panel.first = grid ())
+
+pacf(monthly_f_ts,
+     24, 
+     main = "PACF for CPI",
+     panel.first = grid ())
+
+```
+
+I now want to pivot, to apply the same methodology, this time controlling for male deaths. Here is how we are going to do it: 
+
+GO BACK IN AND READ PAPERS TO DOUBLE CHECK THIS IS DONE CORRECTLY
+
+1. regress female deaths on male deaths 
+2. extract residuals (the controlled series, aka female deaths unexplained by male deaths)
+3. acf/pacf of the residuals
+
+code: 
+1. female_on_male <- lm(monthly_f_ts ~ monthly_m_ts)
+2. female_resid_ts <- ts(
+  residuals(female_on_male),
+  start = c(2018, 1),
+  frequency = 12
+)
+
+3. par(mfrow = c(2,1))
+
+acf(female_resid_ts,
+    lag.max = 24,
+    main = "ACF of Female Deaths (Adjusted for Male Deaths)",
+    panel.first = grid())
+
+pacf(female_resid_ts,
+     lag.max = 24,
+     main = "PACF of Female Deaths (Adjusted for Male Deaths)",
+     panel.first = grid())
