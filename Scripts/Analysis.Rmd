@@ -151,4 +151,10 @@ ggplot() +
 [insert same statistics, this time for national trends]
 
 
+# Box-Jenkins routines 
+
+Next we will identify the ARIMA signature of the monthly series of assault deaths among reproductive-aged women, controlling for the concomitant series of male assault deaths. 
+
+[This is copying table 2 in the manuscript]
+
 
