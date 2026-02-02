@@ -39,12 +39,6 @@ monthly_f <- monthly_f %>%
 monthly_f %>% 
   slice(35:55)
                
-#making a time variable
-monthly_f <- monthly_f %>%
-  arrange(month_year) %>%
-  mutate(time = row_number())
-
-range(monthly_f$time)
 
 ``` 
 
@@ -72,12 +66,6 @@ monthly_m <- monthly_m %>%
 monthly_m %>% 
   slice(35:55)
                
-#making a time variable
-monthly_m <- monthly_m %>%
-  arrange(month_year) %>%
-  mutate(time = row_number())
-
-range(monthly_m$time)
 
 ``` 
 It should be noted we are missing death data for females for May 2019 (2019-05-01) and September 2019 (2019-09-01). We need to fill in this hole, so we will investigate filling this gap in the data by querying both genders and subtracting the deaths for males to reveal how many were among females.
@@ -115,8 +103,7 @@ monthly_f <- monthly_f %>%
       month_year = as.Date(c("2019-05-01", "2019-09-01")),
       Deaths     = c(11, 7),
       sex        = "Female",
-      bill8      = FALSE,
-      time       = c(17, 21)
+      bill8      = FALSE
     )
   )
 
@@ -134,6 +121,23 @@ monthly_all <- bind_rows( #combining datasets
 monthly_m %>% #checking which months are missing in the female df
   anti_join(monthly_f, by = "month_year") %>%
   select(month_year)
+
+monthly_all <- monthly_all %>%
+  group_by(sex) %>% 
+  arrange(month_year) %>%
+  mutate(time = row_number())
+range(monthly_all$time)
+
+monthly_f <- monthly_f %>%
+  arrange(month_year) %>%
+  mutate(time = row_number())
+range(monthly_f$time)
+
+monthly_m <- monthly_m %>%
+  arrange(month_year) %>%
+  mutate(time = row_number())
+
+range(monthly_m$time)
 
 #looks correct! Saving the datasets
 

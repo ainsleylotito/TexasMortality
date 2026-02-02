@@ -56,6 +56,15 @@ monthly_f <- read.csv("../CleanData/monthly_f.csv")
 monthly_m <- read.csv("../CleanData/monthly_m.csv")
 monthly_all <- read.csv("../CleanData/monthly_all.csv")
 
+monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_all <- monthly_all %>% 
+  mutate(month_year = ymd(month_year))
+
 ```
 
 
