@@ -11,6 +11,8 @@ library(lubridate)
 library(broom)
 library(viridis)
 library(tsModel)
+library(scales)
+library(grid) 
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -84,6 +86,65 @@ monthly_all %>%
 monthly_all %>%
   filter(month_year == as.Date("2021-09-01")) %>%
   select(sex, month_year, time)
+
+```
+
+I am next going to replicate Figure 1 from the manuscript: 
+```{r figure_1 ,fig.width = 11, fig.height = 7}
+
+# Colors
+colors <- c("Female" = "#A50F15", "Male" = "#555555")  
+
+# Separate female & male
+female <- monthly_all %>% filter(sex == "Female")
+male   <- monthly_all %>% filter(sex == "Male")
+
+# Scale factor for secondary axis
+scale_factor <- max(female$Deaths, na.rm = TRUE) / max(male$Deaths, na.rm = TRUE)
+
+# Vertical line time
+vline_date <- as.Date("2021-09-01")
+
+ggplot() +
+  # Female line
+  geom_line(data = female, aes(x = month_year, y = Deaths, color = "Female"), size = 1) +
+  # Male line (scaled for secondary axis)
+  geom_line(data = male, aes(x = month_year, y = Deaths * scale_factor, color = "Male"), size = 1) +
+  
+  # Vertical dashed line with label
+  geom_vline(xintercept = vline_date, linetype = "dashed", color = "black") +
+  annotate("text",
+           x = vline_date,
+           y = max(female$Deaths, na.rm = TRUE) + 5, # slightly above top
+           label = "Sep, 2021",
+           angle = 90,
+           vjust = -0.5) +
+
+  # Scale axes
+  scale_y_continuous(
+    name = "Monthly count among women",
+    limits = c(0, max(female$Deaths, na.rm = TRUE) + 10),  # expand y-axis for better readability of date
+    sec.axis = sec_axis(~./scale_factor,
+                        name = "Monthly count among men")
+  ) +
+  
+  # X-axis formatting
+  scale_x_date(date_labels = "%Ym%m", date_breaks = "6 months") +
+  
+  # Line colors
+  scale_color_manual(values = colors) +
+  
+  # Theme tweaks for colored axis titles
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom",
+    legend.key.width = unit(2, "lines"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.y.left = element_text(color = colors["Female"], size = 12, face = "bold"),
+    axis.title.y.right = element_text(color = colors["Male"], size = 12, face = "bold")
+  ) +
+  labs(x = "Time (monthly)", color = NULL)
+
 
 ```
 
