@@ -127,7 +127,7 @@ The ACF shows the correlation between the current observation and its past obser
 
 The PACF shows the correlation between the current observation and its past observations, removing the effects of intermediate observations. We will be using a lag max at 24 months to identify short-term dependence, a seasonal signal at lag 12, and whether effects persist past 1 year.
 
-```{r acf_pacf_female}
+```{r acf_pacf_female, fig.width =11, fig.height =5}
 par(mfrow = c(2,1)) #2 graphs in a single device
 acf(monthly_f_ts,
     24, 

@@ -99,7 +99,7 @@ mod2_data <- augment(mod2, type.predict = "response") %>%
     observed = Deaths,
     fitted   = .fitted
   ) 
-intervention_time <- min(monthly_f$time[monthly$bill8])
+intervention_time <- min(monthly_f$time[monthly_f$bill8])
 
 #ggplotting
 ggplot(mod2_data, aes(x = time)) + 
@@ -141,7 +141,7 @@ monthly_f <- monthly_f %>%
   ) 
 
 #post-intervention slope term
-intervention_time <- min(monthly_f$time[monthly$bill8])
+intervention_time <- min(monthly_f$time[monthly_f$bill8])
 
 monthly_f <- monthly_f %>%
   mutate(
@@ -154,11 +154,12 @@ monthly_f %>%
 
 
 mod3 <- glm(
-  Deaths ~ bill8 + time + time_after +
+  Deaths ~ bill8 + time +
     harmonic(month, 2, 12),
   data = monthly_f,
   family = quasipoisson(link = "log")
 )
+
 
 #plotting with seasonality
 plot_data <- augment(mod3, type.predict = "response") %>%
