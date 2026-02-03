@@ -196,6 +196,103 @@ ggplot(plot_data, aes(x = time)) +
 ``` 
 
 
-This provides us some interesting trends, but what we are really interested is utilizing an interrupted-ARIMA model to identify the significance of our outliers. We are going to proceed with this analysis in the rmd document called `/Scripts/Analysis`. 
+This provides us some interesting trends, but what we are really interested is utilizing an interrupted-ARIMA model to identify the significance of our outliers. We are going to proceed with this analysis in the rmd document called `/Scripts/Analysis`.  
+
+# Exploring male vs. female deaths 
+
+```{r import}
+monthly_f <- read.csv("../CleanData/monthly_f.csv") 
+monthly_m <- read.csv("../CleanData/monthly_m.csv")
+monthly_all <- read.csv("../CleanData/monthly_all.csv")
+
+monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_all <- monthly_all %>% 
+  mutate(month_year = ymd(month_year))
+
+```
+
+
+```{r descriptive}
+monthly_all %>%
+  group_by(sex) %>%
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+monthly_all %>%
+  filter(month_year == "2021-09-01") %>%
+  pull(time)
+monthly_all %>%
+  filter(month_year == as.Date("2021-09-01")) %>%
+  select(sex, month_year, time)
+
+```
+
+I am next going to replicate Figure 1 from the manuscript: 
+```{r figure_1 ,fig.width = 11, fig.height = 7}
+
+# Colors
+colors <- c("Female" = "#A50F15", "Male" = "#555555")  
+
+# Separate female & male
+female <- monthly_all %>% filter(sex == "Female")
+male   <- monthly_all %>% filter(sex == "Male")
+
+# Scale factor for secondary axis
+scale_factor <- max(female$Deaths, na.rm = TRUE) / max(male$Deaths, na.rm = TRUE)
+
+# Vertical line time
+vline_date <- as.Date("2021-09-01")
+
+ggplot() +
+  # Female line
+  geom_line(data = female, aes(x = month_year, y = Deaths, color = "Female"), size = 1) +
+  # Male line (scaled for secondary axis)
+  geom_line(data = male, aes(x = month_year, y = Deaths * scale_factor, color = "Male"), size = 1) +
+  
+  # Vertical dashed line with label
+  geom_vline(xintercept = vline_date, linetype = "dashed", color = "black") +
+  annotate("text",
+           x = vline_date,
+           y = max(female$Deaths, na.rm = TRUE) + 5, # slightly above top
+           label = "Sep, 2021",
+           angle = 90,
+           vjust = -0.5) +
+
+  # Scale axes
+  scale_y_continuous(
+    name = "Monthly count among women",
+    limits = c(0, max(female$Deaths, na.rm = TRUE) + 10),  # expand y-axis for better readability of date
+    sec.axis = sec_axis(~./scale_factor,
+                        name = "Monthly count among men")
+  ) +
+  
+  # X-axis formatting
+  scale_x_date(date_labels = "%Ym%m", date_breaks = "6 months") +
+  
+  # Line colors
+  scale_color_manual(values = colors) +
+  
+  # Theme tweaks for colored axis titles
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom",
+    legend.key.width = unit(2, "lines"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.y.left = element_text(color = colors["Female"], size = 12, face = "bold"),
+    axis.title.y.right = element_text(color = colors["Male"], size = 12, face = "bold")
+  ) +
+  labs(x = "Time (monthly)", color = NULL)
+
+
+```
 
 We want to explore all ages for females as a sensitivity analysis. 
