@@ -13,7 +13,10 @@ library(viridis)
 library(tsModel)
 library(scales)
 library(grid) 
-library(tseries)
+library(tseries) 
+library(tsibble) 
+library(fable)
+library(feasts)
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -141,7 +144,109 @@ pacf(monthly_f_ts,
 
 ```
 
-I now want to pivot, to apply the same methodology, this time controlling for male deaths. Here is how we are going to do it: 
+# Using Rpubs Tidy version
+
+From this [RPubs article](https://rpubs.com/jcorbin/tidy_itt_arima)  
+
+Uploading data and converting to a tsibble object: 
+```{r}
+monthly <- read.csv("../CleanData/monthly_f.csv") 
+monthly.ts <- monthly %>% 
+  select(-sex) %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly.ts)
+```
+
+Looking at data, along with ACF and PACF plots: 
+
+```{r}
+monthly.ts |>
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+```
+ 
+ 
+ Looking at the PACF and ACF after differencing: 
+```{r}
+monthly.ts |>
+  gg_tsdisplay(y = difference(difference(Deaths,12)), plot_type = "partial")
+```
+
+Need to research when data is stationary vs. not... 
+
+Letting Fable's ARIMA algorithm choose the best fit... 
+
+# Intervention effects
+
+we are capturing the intervention effects next - step and ramp variable.
+The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
+
+
+```{r step_ramp}
+range(monthly.ts$time)
+# Create variable representing step and ramp changes
+intervention_month <- monthly.ts %>% 
+  filter(month_year == "2021-09-01") %>% 
+  pull(time)
+monthly.ts <- monthly.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly.ts %>% 
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-09-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Visualizing Step and Ramp Variables",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+
+```
+
+# ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r arima_specs}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+m_monthly.ts <- monthly.ts %>% 
+  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+
+#Plotting model residuals
+m_monthly.ts  %>% 
+  gg_tsresiduals()
+
+```
+
+
+
+
 
 GO BACK IN AND READ PAPERS TO DOUBLE CHECK THIS IS DONE CORRECTLY
 
