@@ -241,13 +241,62 @@ m_monthly.ts <- monthly.ts %>%
 #Plotting model residuals
 m_monthly.ts  %>% 
   gg_tsresiduals()
+``` 
+
+Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
+Null: residuals are independent (white noise)
+Alternative: residuals show remaining autocorrelation 
+```{r ljung-box}
+#Ljung-Box test
+augment(m_monthly.ts) %>%  
+  features(.resid, ljung_box)
 
 ```
 
+We got a p-val of .94, meaning we fail to reject the null (there is no evidence of remaining autocorrelation, the ARIMA has adequately captured the time dependence in the data). 
+
+We also want to check again, making sure we are testing enough lags: 
+```{r ljung-box-2}
+augment(m_monthly.ts) %>%  
+  features(.resid, ljung_box, lag = 24)
+
+```
+Our p-value is still large (0.68), meaning we can comfortably conclude that the model residuals show no evidence of autocorrelation. 
 
 
+With the model assumptions satisfied, we can take a look at the model estimates: 
+```{r fable_arima}
+report(m_monthly.ts)
+
+``` 
+The ARIMA estimated an immediate increase in 5 Deaths and  an estimated reduction of -0.07 deaths each month after Bill 8 was enacted. 
+
+Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
+
+**change this**
+
+```{r}
+#Modeling counterfactual
+m_quet_counterfactual.ts <- quet.ts |>
+  filter(month < make_yearmonth(2014, 1)) |>
+  model(arima_null = ARIMA(dispensings ~ pdq(2,1,0) + PDQ(0,1,1, period = 12)))
+
+#Forecasting counterfactual and plotting against actual data
+m_quet_counterfactual.ts |>
+  forecast(h = 12) |>
+  autoplot(quet.ts) +
+  geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2014,1))), 
+             linetype = "dashed",
+             color = "grey") +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0, 50000)) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
 
 
+```
+ 
 GO BACK IN AND READ PAPERS TO DOUBLE CHECK THIS IS DONE CORRECTLY
 
 1. regress female deaths on male deaths 
