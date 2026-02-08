@@ -277,23 +277,36 @@ Finally, we can run a counter-factual model in which we forecast deaths for 2021
 
 ```{r}
 #Modeling counterfactual
-m_quet_counterfactual.ts <- quet.ts |>
-  filter(month < make_yearmonth(2014, 1)) |>
-  model(arima_null = ARIMA(dispensings ~ pdq(2,1,0) + PDQ(0,1,1, period = 12)))
+m_counterfactual <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 9)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  )
 
-#Forecasting counterfactual and plotting against actual data
-m_quet_counterfactual.ts |>
-  forecast(h = 12) |>
-  autoplot(quet.ts) +
-  geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2014,1))), 
-             linetype = "dashed",
-             color = "grey") +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 50000)) +
+#forecast into post-intervention period 
+fc_counterfactual <- m_counterfactual %>%
+  forecast(h = 28) 
+
+ autoplot(fc_counterfactual, monthly.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 9))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
   theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank())
-
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
 
 ```
  
