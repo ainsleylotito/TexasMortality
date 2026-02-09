@@ -16,7 +16,8 @@ library(grid)
 library(tseries) 
 library(tsibble) 
 library(fable)
-library(feasts)
+library(feasts) 
+library(forecast)
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -273,7 +274,6 @@ The ARIMA estimated an immediate increase in 5 Deaths and  an estimated reductio
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 
-**change this**
 
 ```{r}
 #Modeling counterfactual
@@ -309,6 +309,7 @@ fc_counterfactual <- m_counterfactual %>%
   )
 
 ```
+
  
 GO BACK IN AND READ PAPERS TO DOUBLE CHECK THIS IS DONE CORRECTLY
 
