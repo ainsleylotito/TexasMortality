@@ -270,6 +270,12 @@ With the model assumptions satisfied, we can take a look at the model estimates:
 report(m_monthly.ts)
 
 ``` 
+It picked up our p=0, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
+
+d=0, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
+
+q=1: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
+
 The ARIMA estimated an immediate increase in 5 Deaths and  an estimated reduction of -0.07 deaths each month after Bill 8 was enacted. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
@@ -308,9 +314,90 @@ fc_counterfactual <- m_counterfactual %>%
     panel.grid.minor.x = element_blank()
   )
 
-```
+``` 
 
+Another attempt, trying to directly replicate provided code and try other things: 
+
+```{r}
+#Modeling counterfactual 
+#LM w/ ARIMA(0,0,1) errors 
+m_counterfactual <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 9)) %>%
+  model(arima_null = ARIMA(Deaths ~ pdq(0,0,1) #Specifies non-seasonal components of the model
+                           + PDQ(0,0,0, period = 12))) #specifies seasonal components of the model 
+
+#trying to make stepwise true: 
+m_counterfactual <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 9)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = TRUE
+    )
+  )
+
+fc_counterfactual <- m_counterfactual %>%
+  forecast(h = 28) 
+#Forecasting counterfactual and plotting against actual data
+m_counterfactual %>% 
+  forecast(h = 28)  %>% 
+  autoplot(monthly.ts) +
+  geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2021, 9))), 
+             linetype = "dashed",
+             color = "grey") +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+
+```
+We are also going to try usting auto.arima() to see whether the model parameters differ. We are going to apply to autoarima to just the months prior to sept 2021, then try again with the entire series of data.
+
+```{r}
+library(forecast)
+#just pre-bill 8
+auto_monthly.ts <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 9)) %>%
+  select(Deaths) %>% 
+  auto.arima()
+
+summary(auto_monthly.ts)
+
+#all data points 
+auto_monthly.ts2 <- monthly.ts %>%
+  select(Deaths) %>% 
+  auto.arima()
+
+summary(auto_monthly.ts2)
+
+```
+Both of these picked up ARIMA(0,1,1) instead of (0,0,1). Perhaps try to incorporate that into the non-seasonality??
+
+
+```{r}
+m_counterfactual <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 9)) %>%
+  model(arima_null = ARIMA(Deaths ~ pdq(0,1,1) #Specifies non-seasonal components of the model
+                           + PDQ(0,0,1, period = 12)))
+
+fc_counterfactual <- m_counterfactual %>%
+  forecast(h = 28) 
+#Forecasting counterfactual and plotting against actual data
+m_counterfactual %>% 
+  forecast(h = 28)  %>% 
+  autoplot(monthly.ts) +
+  geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2021, 9))), 
+             linetype = "dashed",
+             color = "grey") +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+
+```
  
+This looks pretty similar.
+
+
+
 GO BACK IN AND READ PAPERS TO DOUBLE CHECK THIS IS DONE CORRECTLY
 
 1. regress female deaths on male deaths 
