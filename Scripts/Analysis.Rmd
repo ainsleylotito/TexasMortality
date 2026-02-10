@@ -270,13 +270,14 @@ With the model assumptions satisfied, we can take a look at the model estimates:
 report(m_monthly.ts)
 
 ``` 
-It picked up our p=0, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
+It picked up 
+**p=0**, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
 
-d=0, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
+**d=0**, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
 
-q=1: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
+**q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
 
-The ARIMA estimated an immediate increase in 5 Deaths and  an estimated reduction of -0.07 deaths each month after Bill 8 was enacted. 
+The ARIMA estimated an immediate increase in **5 deaths** and  an estimated reduction of **-0.07 deaths** each month after Bill 8 was enacted. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 
@@ -290,7 +291,8 @@ m_counterfactual <- monthly.ts %>%
       Deaths,
       stepwise = FALSE
     )
-  )
+  ) 
+report(m_counterfactual)
 
 #forecast into post-intervention period 
 fc_counterfactual <- m_counterfactual %>%
@@ -316,7 +318,7 @@ fc_counterfactual <- m_counterfactual %>%
 
 ``` 
 
-Another attempt, trying to directly replicate provided code and try other things: 
+Another attempt, trying to directly replicate provided code and try other things (changing the seasonal components, period change, etc)
 
 ```{r}
 #Modeling counterfactual 
@@ -324,24 +326,16 @@ Another attempt, trying to directly replicate provided code and try other things
 m_counterfactual <- monthly.ts %>%
   filter(month < make_yearmonth(2021, 9)) %>%
   model(arima_null = ARIMA(Deaths ~ pdq(0,0,1) #Specifies non-seasonal components of the model
-                           + PDQ(0,0,0, period = 12))) #specifies seasonal components of the model 
+                           + PDQ(0,0,0, #specifies seasonal components of the model 
+                                 period = 12))) #period is number of observations in each seasonal period
 
-#trying to make stepwise true: 
-m_counterfactual <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
-  model(
-    arima_null = ARIMA(
-      Deaths,
-      stepwise = TRUE
-    )
-  )
 
 fc_counterfactual <- m_counterfactual %>%
   forecast(h = 28) 
 #Forecasting counterfactual and plotting against actual data
 m_counterfactual %>% 
   forecast(h = 28)  %>% 
-  autoplot(monthly.ts) +
+  autoplot(monthly.ts, level = 95) +
   geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2021, 9))), 
              linetype = "dashed",
              color = "grey") +
@@ -375,9 +369,11 @@ Both of these picked up ARIMA(0,1,1) instead of (0,0,1). Perhaps try to incorpor
 
 ```{r}
 m_counterfactual <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
-  model(arima_null = ARIMA(Deaths ~ pdq(0,1,1) #Specifies non-seasonal components of the model
-                           + PDQ(0,0,1, period = 12)))
+  filter(month <  make_yearmonth(2021, 9)) %>%
+  model(
+    arima_null = ARIMA(Deaths ~ pdq(4,1,0))
+  )
+#pre-specified
 
 fc_counterfactual <- m_counterfactual %>%
   forecast(h = 28) 
