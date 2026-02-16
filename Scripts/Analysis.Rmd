@@ -1,6 +1,11 @@
 ---
 title: "Analysis"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
 ---
 ```{r setup}
 # Load packages
@@ -26,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 This contains all code used to analyze the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file.
 
-#Introduction
+# Introduction
 
 There are several studies that use the interupted time series ARIMA, but we are primarily going to replicate the methods described in [Singh et al., 2025](https://link.springer.com/article/10.1007/s00127-025-02902-7), a study which analyzes suicide deaths among reproductive-aged women post-*Dobbs*. 
 
@@ -54,7 +59,7 @@ We may use the methods from Singh et al. (2025) in the following steps:
 
 2-tailed tests with significance level of p < 0.05 will be used. 
 
-#Descriptive Statistics 
+# Descriptive Statistics 
 
 We are going to start by exploring how many assault mortalities among Texas residents occured between the study period. 
 
@@ -99,7 +104,9 @@ monthly_all %>%
 [insert same statistics, this time for national trends]
 
 
-# Box-Jenkins routines 
+# Monthly Texan Female Deaths by Assault Analysis 
+
+## Box-Jenkins routines 
 
 Next we will identify the ARIMA signature of the monthly series of assault deaths among reproductive-aged women, controlling for the concomitant series of male assault deaths. 
 
@@ -145,7 +152,7 @@ pacf(monthly_f_ts,
 
 ```
 
-# Using Rpubs Tidy version
+## Using Rpubs Tidy version
 
 From this [RPubs article](https://rpubs.com/jcorbin/tidy_itt_arima)  
 
@@ -174,12 +181,11 @@ monthly.ts |>
 monthly.ts |>
   gg_tsdisplay(y = difference(difference(Deaths,12)), plot_type = "partial")
 ```
-
-Need to research when data is stationary vs. not... 
+ 
 
 Letting Fable's ARIMA algorithm choose the best fit... 
 
-# Intervention effects
+## Intervention effects
 
 we are capturing the intervention effects next - step and ramp variable.
 The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
@@ -228,7 +234,7 @@ monthly.ts %>%
 
 ```
 
-# ARIMA model 
+## ARIMA model 
 
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
@@ -318,36 +324,9 @@ fc_counterfactual <- m_counterfactual %>%
 
 ``` 
 
-Another attempt, trying to directly replicate provided code and try other things (changing the seasonal components, period change, etc)
-
-```{r}
-#Modeling counterfactual 
-#LM w/ ARIMA(0,0,1) errors 
-m_counterfactual <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
-  model(arima_null = ARIMA(Deaths ~ pdq(0,0,1) #Specifies non-seasonal components of the model
-                           + PDQ(0,0,0, #specifies seasonal components of the model 
-                                 period = 12))) #period is number of observations in each seasonal period
-
-
-fc_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
-#Forecasting counterfactual and plotting against actual data
-m_counterfactual %>% 
-  forecast(h = 28)  %>% 
-  autoplot(monthly.ts, level = 95) +
-  geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2021, 9))), 
-             linetype = "dashed",
-             color = "grey") +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank())
-
-```
 We are also going to try usting auto.arima() to see whether the model parameters differ. We are going to apply to autoarima to just the months prior to sept 2021, then try again with the entire series of data.
 
 ```{r}
-library(forecast)
 #just pre-bill 8
 auto_monthly.ts <- monthly.ts %>%
   filter(month < make_yearmonth(2021, 9)) %>%
@@ -364,34 +343,15 @@ auto_monthly.ts2 <- monthly.ts %>%
 summary(auto_monthly.ts2)
 
 ```
-Both of these picked up ARIMA(0,1,1) instead of (0,0,1). Perhaps try to incorporate that into the non-seasonality??
+Both of these picked up ARIMA(0,1,1). 
 
+# All Cause Mortality, Texan Female Residents
 
-```{r}
-m_counterfactual <- monthly.ts %>%
-  filter(month <  make_yearmonth(2021, 9)) %>%
-  model(
-    arima_null = ARIMA(Deaths ~ pdq(4,1,0))
-  )
-#pre-specified
-
-fc_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
-#Forecasting counterfactual and plotting against actual data
-m_counterfactual %>% 
-  forecast(h = 28)  %>% 
-  autoplot(monthly.ts) +
-  geom_vline(xintercept = as.numeric(as_date(make_yearmonth(2021, 9))), 
-             linetype = "dashed",
-             color = "grey") +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank())
-
-```
+We are also going to examine all-cause deaths rather than just assault. This will be important as deaths by assault are underreported and often misclassified. Besides the cause of death, everything is consistent with the other data (age 15-44 texan female residents)
  
-This looks pretty similar.
+# National Data 
 
+This time we are going to run an arima using national data for females aged 15-44 who died of assault. 
 
 
 GO BACK IN AND READ PAPERS TO DOUBLE CHECK THIS IS DONE CORRECTLY
