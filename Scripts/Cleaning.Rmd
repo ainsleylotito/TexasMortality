@@ -15,6 +15,8 @@ library(viridis)
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
+#importing functions
+source("functions.r")
 ``` 
 
 # Female Monthly Assault Counts 
@@ -144,8 +146,80 @@ range(monthly_m$time)
 write_csv(monthly_all, "../CleanData/monthly_all.csv")
 write_csv(monthly_m, "../CleanData/monthly_m.csv")
 write_csv(monthly_f, "../CleanData/monthly_f.csv")
+``` 
+
+# All Cause Female Reproductive age 
+
+Next we are going to clean this dataset so we may examine how all-cause deaths may differ from assault only. This will be important as deaths by assault are underreported and often misclassified. Let's start by importing the data and applying the cleaning function for .csv's.
+
+```{r all_cause_female_reproductive_import} 
+
+all_repro_f <- read.csv("../RawData/texas_allcause_female1544.csv")
+
+all_repro_f <- clean.csv(all_repro_f)
+
+head(all_repro_f) 
+
+``` 
+Let's check out the data: 
+```{r}
+ggplot(all_repro_f, aes(month_year, Deaths))+ 
+  geom_line()
+
+``` 
+
+Looks good! Let's save the all cause female data to our cleaned folder. 
+```{r}
+write_csv(all_repro_f, "../CleanData/all_cause_repro_f.csv")
+``` 
+
+# Assault all age female 
+
+Next we are going to clean the data for all ages female, cod by assault. 
+
+```{r}
+all_age_f_assault <- read_excel("../RawData/All_Ages_Female.xlsx")
+all_age_f_assault <- clean.xcel(all_age_f_assault) 
+head(all_age_f_assault)
+``` 
+Same as before, let's briefly check out what the data looks like: 
+```{r}
+ggplot(all_age_f_assault, aes(month_year, Deaths))+ 
+  geom_line()
+```  
+
+Let's write our csv: 
+```{r}
+write_csv(all_age_f_assault, "../CleanData/all_age_f_assault.csv")
+```
+
+# Age 15+ 
+
+Let's also check out the data for texas deaths by assault, this time just with ages 15+. 
+
+```{r}
+assault_15_plus <- read_excel("../RawData/assault_15_plus.xlsx") 
+assault_15_plus <- clean.xcel(assault_15_plus) 
+head(assault_15_plus) 
+
+ggplot(assault_15_plus, aes(month_year, Deaths))+ 
+  geom_line() 
+
+write_csv(assault_15_plus, "../CleanData/assault_15_plus")
 ```
 
 
+# National control set 
 
+This time we are going to pull ages 15-44 deaths by assault nationally. 
 
+```{r}
+nat_f_assault <- read_excel("../RawData/national_f_assault.xlsx") 
+nat_f_assault <- clean.xcel(nat_f_assault) 
+head(nat_f_assault) 
+
+ggplot(nat_f_assault, aes(month_year, Deaths))+ 
+  geom_line() 
+
+write_csv(nat_f_assault, "../CleanData/nat_f_assault")
+```
