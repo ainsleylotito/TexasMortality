@@ -1,5 +1,5 @@
 ---
-title: "Analysis"
+title: "May21Analysis"
 output:
   html_document:
     toc: true
@@ -33,121 +33,14 @@ This contains all code used to analyze the datasets found in the `/CleanData` di
 
 # Introduction
 
-There are several studies that use the interupted time series ARIMA, but we are primarily going to replicate the methods described in [Singh et al., 2025](https://link.springer.com/article/10.1007/s00127-025-02902-7), a study which analyzes suicide deaths among reproductive-aged women post-*Dobbs*. 
-
-This study also uses data from the Multiple Cause of Death database, and stratifies data by men and women by two age groups: 15-25 and 25-49. The outcomes are the monthly count of suicides nationally for reproductive-aged women overall and for the two age subgroups. The series of monthly suicides among men (per age group) were used as a control variable. The exposure was the timing of the *Dobbs* decision in June 2022. 
-
-To extend this methodology to our study, we can also use male deaths as a control. Since we are using just texas data, it is unlikely that we will have enough counts to populate data if we further stratify by age 15-24 and 25-49. However, we will also do a sensitivity analysis that compares our trends to those nationally. 
-
-*Note: the following description is directly adapted from Singh et al. (2025). Future methods manuscripting will need to cite this source as well as adapt the phrasing.*
-
-The ARIMA's autoregressive (AR) component should allow us to capture the relationship between current assault mortality counts and past observations. The moving average (MA) will model the residuals from previous time points (accounting for irregular fluctuations). The seasonality/trends that change over time will be addressed through differencing ("integrated"), which will remove secular trends and stabilize the mean. 
-
-We may use the methods from Singh et al. (2025) in the following steps: 
-
-1. Use the Box-Jenkins iterative pattern recognition routines to identify the ARIMA signature of the outcome in the pre-Bill 8 period (January, 2018 - August, 2021), controlling for the concomitant series of assault mortality among men of the same age group (15-44).  
-
-2. Use the pre-Bill 8 ARIMA signature identified in step 1 to forecast (predict) values of the outcome for the 28-month period post-Bill 8 (i.e. September 2021 - December 2023). These predicted/fitted values will serve as counterfactuals and reflect the expected monthly count of female suicides if Bill 8 had not been passed. 
-
-3. Use the ARIMA signature identified in step 1 and expected values from step 2 to obtain residual values (observed less fitted) of our outcome series. 
-
-4. Use the pre-Bill 8 standard error of residuals to develop pre-Bill 8 95% confidence intervals (CI; prediction interval of monthly series of assault mortalities among Texas resident reproductive-aged women overall from January 2018 - August 2021). Extend the pre-Bill 8 prediction interval to the full residual series (January 2018 - December 2023). Next, note whether any residuals deviated from this prediction interval post-Bill 8 (i.e., September 2021 onward.)
-
-5. If the outcome series exhibited outliers in the post-Bill 8 period following step 4, create a binary indicator of the month-specified timing of any identified outliers in residuals of assault mortalities among reproductive-aged women post-Bill 8 (1 for months with outliers, 0 otherwise) to quantify the average change in assault mortalities post-Bill 8. This will also help avoid multiple testing that could increase chances of a Type I error (false rejection of the null). 
-
-6. Apply the binary-indicator of month-specific outliers (from step 5) to the ARIMA-derived residuals of outcomes to determine the magnitude of outcome deviation from expected levels in the months with residual outliers. 
-
-2-tailed tests with significance level of p < 0.05 will be used. 
+This analysis will replicate the ARIMAs, this time changing the "interruption period" to be in May 2021, when Bill 8 was ruled rather than enacted. 
 
 # Descriptive Statistics 
 
 We are going to start by exploring how many assault mortalities among Texas residents occured between the study period. 
 
-```{r import}
-monthly_f <- read.csv("../CleanData/monthly_f.csv") 
-monthly_m <- read.csv("../CleanData/monthly_m.csv")
-monthly_all <- read.csv("../CleanData/monthly_all.csv")
-
-monthly_f <- monthly_f %>% 
-  mutate(month_year = ymd(month_year))
-
-monthly_m <- monthly_m %>% 
-  mutate(month_year = ymd(month_year))
-
-monthly_all <- monthly_all %>% 
-  mutate(month_year = ymd(month_year))
-
-```
-
-
-```{r descriptive}
-monthly_all %>%
-  group_by(sex) %>%
-  summarise(
-    n_months      = n(),
-    total_deaths  = sum(Deaths, na.rm = TRUE),
-    monthly_mean  = mean(Deaths, na.rm = TRUE),
-    monthly_sd    = sd(Deaths, na.rm = TRUE),
-    .groups = "drop"
-  )
-monthly_all %>%
-  filter(month_year == "2021-09-01") %>%
-  pull(time)
-monthly_all %>%
-  filter(month_year == as.Date("2021-09-01")) %>%
-  select(sex, month_year, time)
-
-```
-
-
 
 # 15-44 Texan Female Deaths by Assault
-
-## Box-Jenkins routines 
-
-Next we will identify the ARIMA signature of the monthly series of assault deaths among reproductive-aged women, controlling for the concomitant series of male assault deaths. 
-
-[This is copying table 2 in the manuscript]
-
-
-I am going to replicate the methodology from the [RPubs report on Box-Jenkins](https://rpubs.com/asmuierahim/boxjenkins). 
-
-First, we need to define the variable as a time series object using the ts() function. We need to specify the start =, end =, and frequency. I am going to start by just incorporating female data.
-
-```{r ts_function}
-monthly_f_ts <- ts(
-  monthly_f$Deaths,
-  start = c(2018, 1),
-  frequency = 12
-)
-```
-
-Next, we plot the original series. 
-```{r ts_plot}
-plot(monthly_f_ts, col = "blue", ylab = "Monthly Assault Deaths", 
-      main = "Female Monthly Assault Deaths", xlab = "Month in Study", type ="o", pch = 20,
-      panel.first = grid (),  xaxt = "n")
-axis(1, at = seq (from = 1, to = 72, by = 2)) # additional graph customization
-```
-Next, we plot the Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) for the original series. 
-
-The ACF shows the correlation between the current observation and its past observations at various lag points. 
-
-The PACF shows the correlation between the current observation and its past observations, removing the effects of intermediate observations. We will be using a lag max at 24 months to identify short-term dependence, a seasonal signal at lag 12, and whether effects persist past 1 year.
-
-```{r acf_pacf_female, fig.width =11, fig.height =9}
-par(mfrow = c(2,1)) #2 graphs in a single device
-acf(monthly_f_ts,
-    24, 
-    main = "ACF for CPI",
-    panel.first = grid ())
-
-pacf(monthly_f_ts,
-     24, 
-     main = "PACF for CPI",
-     panel.first = grid ())
-
-```
 
 ## Using Rpubs Tidy version
 
@@ -185,14 +78,14 @@ Letting Fable's ARIMA algorithm choose the best fit...
 ## Intervention effects
 
 we are capturing the intervention effects next - step and ramp variable.
-The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
+The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., **May, 2021** = 1; June = 2; etc…)
 
 
 ```{r step_ramp}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
-  filter(month_year == "2021-09-01") %>% 
+  filter(month_year == "2021-05-01") %>% 
   pull(time)
 monthly.ts <- monthly.ts %>%
   mutate(
@@ -211,7 +104,7 @@ monthly.ts %>%
   ggplot(aes(x = month_year, y = value, color = variables)) +
   geom_line(linewidth = 1) +
   geom_vline(
-    xintercept = as.Date("2021-09-01"),
+    xintercept = as.Date("2021-05-01"),
     linetype = "dashed",
     color = "black"
   ) +
@@ -257,30 +150,21 @@ augment(m_monthly.ts) %>%
 
 ```
 
-We got a p-val of .94, meaning we fail to reject the null (there is no evidence of remaining autocorrelation, the ARIMA has adequately captured the time dependence in the data). 
-
-We also want to check again, making sure we are testing enough lags: 
-```{r ljung-box-2}
-augment(m_monthly.ts) %>%  
-  features(.resid, ljung_box, lag = 24)
-
-```
-Our p-value is still large (0.68), meaning we can comfortably conclude that the model residuals show no evidence of autocorrelation. 
+We got a p-val of **.29**, meaning we fail to reject the null (there is no evidence of remaining autocorrelation, the ARIMA has adequately captured the time dependence in the data). 
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
 ```{r fable_arima}
 report(m_monthly.ts)
-
 ``` 
 It picked up 
 **p=0**, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
 
 **d=0**, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
 
-**q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
+**q=0**: there is no moving average term, aka the model uses the error from the previous tie step to predict the current value
 
-The ARIMA estimated an immediate increase in **5 deaths** and  an estimated reduction of **-0.07 deaths** each month after Bill 8 was enacted. 
+The ARIMA estimated an immediate increase in **4.3 deaths** and  an estimated reduction of **-0.03 deaths** each month after Bill 8 was enacted. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 
@@ -288,7 +172,7 @@ Finally, we can run a counter-factual model in which we forecast deaths for 2021
 ```{r}
 #Modeling counterfactual
 m_counterfactual <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
+  filter(month < make_yearmonth(2021, 5)) %>%
   model(
     arima_null = ARIMA(
       Deaths,
@@ -299,11 +183,11 @@ report(m_counterfactual)
 
 #forecast into post-intervention period 
 fc_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+4) #adding more months to forecast out to
 
  autoplot(fc_counterfactual, monthly.ts, level = 95) +
   geom_vline(
-    xintercept = as.numeric(as_date(make_yearmonth(2021, 9))),
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 5))),
     linetype = "dashed",
     color = "grey40"
   ) +
@@ -320,13 +204,15 @@ fc_counterfactual <- m_counterfactual %>%
   )
 
 ``` 
+This looks to me as though the month of sept (bill 8 enactment month) is popping, nothing else though. 
+
 
 We are also going to try usting auto.arima() to see whether the model parameters differ. We are going to apply to autoarima to just the months prior to sept 2021, then try again with the entire series of data.
 
 ```{r}
 #just pre-bill 8
 auto_monthly.ts <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
+  filter(month < make_yearmonth(2021, 5)) %>%
   select(Deaths) %>% 
   auto.arima()
 
@@ -340,7 +226,7 @@ auto_monthly.ts2 <- monthly.ts %>%
 summary(auto_monthly.ts2)
 
 ```
-Both of these picked up ARIMA(0,1,1). 
+**This one is different, it pulled an arima of (0,1,1). Interesting, not sure why it would differ??** 
 
 # All Cause Mortality, Texan Female Residents
 
@@ -378,14 +264,13 @@ Letting Fable's ARIMA algorithm choose the best fit...
 ## Intervention effects
 
 We are capturing the intervention effects next - step and ramp variable.
-The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
 
 
 ```{r step_ramp}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
-  filter(month_year == "2021-09-01") %>% 
+  filter(month_year == "2021-05-01") %>% 
   pull(time)
 monthly.ts <- monthly.ts %>%
   mutate(
@@ -404,7 +289,7 @@ monthly.ts %>%
   ggplot(aes(x = month_year, y = value, color = variables)) +
   geom_line(linewidth = 1) +
   geom_vline(
-    xintercept = as.Date("2021-09-01"),
+    xintercept = as.Date("2021-05-01"),
     linetype = "dashed",
     color = "black"
   ) +
@@ -441,7 +326,6 @@ There appears to be perhaps a bit of a skew to the data with at least one obviou
 **Need to go in and make sure we meet model assumptions for arima with this**
 
 
-
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
@@ -460,13 +344,13 @@ report(m_monthly.ts)
 ``` 
 
 It picked up 
-**p=1**, meaning there is an autoregressive terms (the current value *is* directly predicted by past raw data values).
+**p=0**, meaning there is no autoregressive terms.
 
 **d=0**, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
 
-**q=0**: there is no moving average term.
+**q=2**: there is are two  moving average terms.
 
-The ARIMA estimated an immediate increase in **95 deaths** and  an estimated reduction of **-2.85 deaths** each month after Bill 8 was enacted. 
+The ARIMA estimated an immediate increase in **153 deaths** and  an estimated reduction of **-3.88 deaths** each month after Bill 8 was ruled. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 
@@ -474,7 +358,7 @@ Finally, we can run a counter-factual model in which we forecast deaths for 2021
 ```{r}
 #Modeling counterfactual
 m_counterfactual <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
+  filter(month < make_yearmonth(2021, 5)) %>%
   model(
     arima_null = ARIMA(
       Deaths,
@@ -485,11 +369,11 @@ report(m_counterfactual)
 
 #forecast into post-intervention period 
 fc_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+4) 
 
  autoplot(fc_counterfactual, monthly.ts, level = 95) +
   geom_vline(
-    xintercept = as.numeric(as_date(make_yearmonth(2021, 9))),
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 5))),
     linetype = "dashed",
     color = "grey40"
   ) +
@@ -506,12 +390,12 @@ fc_counterfactual <- m_counterfactual %>%
   )
 
 ``` 
-This is pretty interesting, it appears as though the only points outside of the forecase are the decrease in deaths right at Jan 2022.
+Huge pop right at sept again.
 
 
 # National Data 
 
-This time we are going to run an arima using national data for females aged 15-44 who died of assault. 
+This time we are going to run an arima using **national** data for females aged 15-44 who died of assault. 
 Uploading data and converting to a tsibble object: 
 ```{r}
 monthly <- read.csv("../CleanData/nat_f_assault.csv") 
@@ -544,14 +428,13 @@ Letting Fable's ARIMA algorithm choose the best fit...
 ## Intervention effects
 
 We are capturing the intervention effects next - step and ramp variable.
-The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
 
 
 ```{r step_ramp}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
-  filter(month_year == "2021-09-01") %>% 
+  filter(month_year == "2021-05-01") %>% 
   pull(time)
 monthly.ts <- monthly.ts %>%
   mutate(
@@ -570,7 +453,7 @@ monthly.ts %>%
   ggplot(aes(x = month_year, y = value, color = variables)) +
   geom_line(linewidth = 1) +
   geom_vline(
-    xintercept = as.Date("2021-09-01"),
+    xintercept = as.Date("2021-05-01"),
     linetype = "dashed",
     color = "black"
   ) +
@@ -612,6 +495,7 @@ augment(m_monthly.ts) %>%
   features(.resid, ljung_box)
 
 ```
+Fail to reject the null. 
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
@@ -619,21 +503,19 @@ With the model assumptions satisfied, we can take a look at the model estimates:
 report(m_monthly.ts)
 
 ``` 
-This one gave us two different components! 
-(0,0,1)(1,0,0) 
+ 
 
-It picked up 
-**p=0**, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
+ 
+ It picked up 
+**p=1**, meaning there is one  autoregressive term
 
 **d=0**, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
 
-**q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
- 
- For seasonality, we got 
- 1 autoregressive term.
+**q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value 
 
+Seasonality: 1 autoregressive term. 
 
-The ARIMA estimated an immediate increase in **11.7 deaths** and  an estimated reduction of **-2.23 deaths** each month after Bill 8 was enacted. 
+The ARIMA estimated an immediate increase in **50.3 deaths** and  an estimated reduction of **-1.47 deaths** each month after Bill 8 was enacted. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 
@@ -641,7 +523,7 @@ Finally, we can run a counter-factual model in which we forecast deaths for 2021
 ```{r}
 #Modeling counterfactual
 m_counterfactual <- monthly.ts %>%
-  filter(month < make_yearmonth(2021, 9)) %>%
+  filter(month < make_yearmonth(2021, 5)) %>%
   model(
     arima_null = ARIMA(
       Deaths,
@@ -652,11 +534,11 @@ report(m_counterfactual)
 
 #forecast into post-intervention period 
 fc_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+4) 
 
  autoplot(fc_counterfactual, monthly.ts, level = 95) +
   geom_vline(
-    xintercept = as.numeric(as_date(make_yearmonth(2021, 9))),
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 5))),
     linetype = "dashed",
     color = "grey40"
   ) +
@@ -673,4 +555,4 @@ fc_counterfactual <- m_counterfactual %>%
   )
 
 ``` 
-No points popping out of forecast. 
+Looks like Sept is popping again.

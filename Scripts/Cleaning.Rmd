@@ -221,5 +221,5 @@ head(nat_f_assault)
 ggplot(nat_f_assault, aes(month_year, Deaths))+ 
   geom_line() 
 
-write_csv(nat_f_assault, "../CleanData/nat_f_assault")
+write_csv(nat_f_assault, "../CleanData/nat_f_assault.csv")
 ```
