@@ -81,7 +81,7 @@ we are capturing the intervention effects next - step and ramp variable.
 The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., **May, 2021** = 1; June = 2; etc…)
 
 
-```{r step_ramp}
+```{r}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
@@ -129,7 +129,7 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs}
+```{r}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
@@ -143,7 +143,7 @@ m_monthly.ts  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box}
+```{r }
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
@@ -154,7 +154,7 @@ We got a p-val of **.29**, meaning we fail to reject the null (there is no evide
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima}
+```{r }
 report(m_monthly.ts)
 ``` 
 It picked up 
@@ -266,7 +266,7 @@ Letting Fable's ARIMA algorithm choose the best fit...
 We are capturing the intervention effects next - step and ramp variable.
 
 
-```{r step_ramp}
+```{r}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
@@ -311,7 +311,7 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs}
+```{r}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
@@ -329,7 +329,7 @@ There appears to be perhaps a bit of a skew to the data with at least one obviou
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box}
+```{r}
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
@@ -339,7 +339,7 @@ augment(m_monthly.ts) %>%
 This indicates to me that we can safely fail to reject the null, the residuals appear to be independent.
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima}
+```{r}
 report(m_monthly.ts)
 ``` 
 
@@ -430,7 +430,7 @@ Letting Fable's ARIMA algorithm choose the best fit...
 We are capturing the intervention effects next - step and ramp variable.
 
 
-```{r step_ramp}
+```{r}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
@@ -475,7 +475,7 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs}
+```{r}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
@@ -489,7 +489,7 @@ m_monthly.ts  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box}
+```{r}
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
@@ -499,7 +499,7 @@ Fail to reject the null.
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima}
+```{r}
 report(m_monthly.ts)
 
 ``` 

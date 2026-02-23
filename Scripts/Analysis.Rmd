@@ -188,7 +188,7 @@ we are capturing the intervention effects next - step and ramp variable.
 The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
 
 
-```{r step_ramp}
+```{r}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
@@ -222,11 +222,7 @@ monthly.ts %>%
     color = ""
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  theme_minimal() +
-  theme(
-    panel.grid.major.x = element_blank(),
-    panel.grid.minor.x = element_blank()
-  )
+  theme_minimal() 
 
 
 ```
@@ -236,7 +232,7 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs}
+```{r arima_specs2}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
@@ -250,7 +246,7 @@ m_monthly.ts  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box}
+```{r ljung-box2}
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
@@ -260,7 +256,7 @@ augment(m_monthly.ts) %>%
 We got a p-val of .94, meaning we fail to reject the null (there is no evidence of remaining autocorrelation, the ARIMA has adequately captured the time dependence in the data). 
 
 We also want to check again, making sure we are testing enough lags: 
-```{r ljung-box-2}
+```{r ljung-box-22}
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box, lag = 24)
 
@@ -269,7 +265,7 @@ Our p-value is still large (0.68), meaning we can comfortably conclude that the 
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima}
+```{r fable_arima2}
 report(m_monthly.ts)
 
 ``` 
@@ -381,7 +377,7 @@ We are capturing the intervention effects next - step and ramp variable.
 The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
 
 
-```{r step_ramp}
+```{r}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
@@ -426,7 +422,7 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs}
+```{r arima_specs3}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
@@ -445,7 +441,7 @@ There appears to be perhaps a bit of a skew to the data with at least one obviou
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box}
+```{r ljung-box3}
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
@@ -455,7 +451,7 @@ augment(m_monthly.ts) %>%
 This indicates to me that we can safely fail to reject the null, the residuals appear to be independent.
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima}
+```{r fable_arima3}
 report(m_monthly.ts)
 ``` 
 
@@ -547,7 +543,7 @@ We are capturing the intervention effects next - step and ramp variable.
 The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
 
 
-```{r step_ramp}
+```{r}
 range(monthly.ts$time)
 # Create variable representing step and ramp changes
 intervention_month <- monthly.ts %>% 
@@ -592,7 +588,7 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs}
+```{r arima_specs4}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
@@ -606,7 +602,7 @@ m_monthly.ts  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box}
+```{r ljung-box4}
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
@@ -615,7 +611,7 @@ augment(m_monthly.ts) %>%
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima}
+```{r fable_arima4}
 report(m_monthly.ts)
 
 ``` 
