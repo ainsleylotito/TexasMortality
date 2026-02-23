@@ -318,7 +318,7 @@ report(m_monthly.ts)
 
 Seasonality: 1 autoregressive term. 
 
-The ARIMA estimated an immediate increase in **50.3 deaths** and  an estimated reduction of **-1.47 deaths** each month after Bill 8 was enacted. 
+The ARIMA estimated an immediate increase in **45.66 deaths** and  an estimated reduction of **-1.5 deaths** each month after Bill 8 was enacted. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 

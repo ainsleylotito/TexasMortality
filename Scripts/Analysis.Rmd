@@ -616,12 +616,12 @@ report(m_monthly.ts)
 
 ``` 
 This one gave us two different components! 
-(0,0,1)(1,0,0) 
+(0,1,1)(1,0,0) 
 
 It picked up 
 **p=0**, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
 
-**d=0**, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
+**d=1**, meaning there is differencing; the original, raw data possesses a trend. 
 
 **q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
  
@@ -629,7 +629,7 @@ It picked up
  1 autoregressive term.
 
 
-The ARIMA estimated an immediate increase in **11.7 deaths** and  an estimated reduction of **-2.23 deaths** each month after Bill 8 was enacted. 
+The ARIMA estimated an immediate increase in **6.95 deaths** and  an estimated reduction of **-2.3 deaths** each month after Bill 8 was enacted. 
 
 Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
 

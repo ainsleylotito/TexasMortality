@@ -1482,69 +1482,6 @@ border-radius: 0px;
 </div>
 
 
-<pre class="r"><code># Load packages
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.4     ✔ readr     2.1.5
-## ✔ forcats   1.0.1     ✔ stringr   1.6.0
-## ✔ ggplot2   4.0.0     ✔ tibble    3.3.0
-## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-## ✔ purrr     1.1.0     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>library(ggplot2) 
-library(readxl) 
-library(lubridate)
-library(broom)
-library(viridis)</code></pre>
-<pre><code>## Loading required package: viridisLite</code></pre>
-<pre class="r"><code>library(tsModel)</code></pre>
-<pre><code>## Time Series Modeling for Air Pollution and Health (0.6-2)</code></pre>
-<pre class="r"><code>library(scales)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;scales&#39;
-## 
-## The following object is masked from &#39;package:viridis&#39;:
-## 
-##     viridis_pal
-## 
-## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     discard
-## 
-## The following object is masked from &#39;package:readr&#39;:
-## 
-##     col_factor</code></pre>
-<pre class="r"><code>library(grid) 
-library(tseries) </code></pre>
-<pre><code>## Warning: package &#39;tseries&#39; was built under R version 4.5.2</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
-##   method            from
-##   as.zoo.data.frame zoo</code></pre>
-<pre class="r"><code>library(tsibble) </code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;tsibble&#39;:
-##   method               from 
-##   as_tibble.grouped_df dplyr
-## 
-## Attaching package: &#39;tsibble&#39;
-## 
-## The following object is masked from &#39;package:lubridate&#39;:
-## 
-##     interval
-## 
-## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, union</code></pre>
-<pre class="r"><code>library(fable)</code></pre>
-<pre><code>## Warning: package &#39;fable&#39; was built under R version 4.5.2</code></pre>
-<pre><code>## Loading required package: fabletools</code></pre>
-<pre class="r"><code>library(feasts) 
-library(forecast)
-
-# Global options
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)</code></pre>
 <div id="sept-2021-interruption" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Sept 2021
 interruption</h1>
