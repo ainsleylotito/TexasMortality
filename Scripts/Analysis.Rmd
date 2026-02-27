@@ -25,7 +25,8 @@ library(feasts)
 library(forecast)
 
 # Global options
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+source("functions.R")
 
 ``` 
 
@@ -669,4 +670,64 @@ fc_counterfactual <- m_counterfactual %>%
   )
 
 ``` 
-No points popping out of forecast. 
+No points popping out of forecast.  
+
+# Male 15-44 Texas 
+
+```{r, include = FALSE}
+rawdata_male <- read_excel("../RawData/MaleMonthlyAssaults.xlsx")   
+monthly_m <- rawdata_male %>% 
+   mutate(month_year = my(Month),
+     month_year = ymd(month_year),
+         month = yearmonth(month_year),
+      time = row_number ()) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") %>% 
+    filter(month_year < "2024-01-01") %>% 
+  as_tsibble(index = month)
+
+monthly_m |>
+  gg_tsdisplay(y = Deaths, plot_type = "partial") 
+
+#differencing 
+monthly_m |>
+  gg_tsdisplay(y = difference(difference(Deaths,12)), plot_type = "partial") 
+
+
+#Step and ramp variables 
+intervention_month <- monthly_m  %>% 
+  filter(month_year == "2021-09-01") %>% 
+  pull(time)
+monthly_m  <- monthly_m  %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly_m  %>% 
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-09-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Visualizing Step and Ramp Variables",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+```
