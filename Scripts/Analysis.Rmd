@@ -730,4 +730,59 @@ monthly_m  %>%
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank()
   )
+``` 
+
+```{r, include = FALSE}
+
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+m_monthly.ts <- monthly_m %>% 
+  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+
+#Plotting model residuals
+m_monthly.ts %>% 
+  gg_tsresiduals()  
+
+#Ljung-Box test
+augment(m_monthly.ts) %>%  
+  features(.resid, ljung_box) 
+
+``` 
+
+ARIMA Specs: 
+```{r} 
+report(m_monthly.ts) 
+
+#Modeling counterfactual
+m_counterfactual <- monthly_m  %>%
+  filter(month < make_yearmonth(2021, 5)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual)
+
+#forecast into post-intervention period 
+fc_counterfactual <- m_counterfactual %>%
+  forecast(h = 28+6) 
+
+ autoplot(fc_counterfactual, monthly_m, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 5))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
 ```
