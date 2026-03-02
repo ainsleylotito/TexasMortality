@@ -104,51 +104,6 @@ monthly_all %>%
 
 # 15-44 Texan Female Deaths by Assault
 
-## Box-Jenkins routines 
-
-Next we will identify the ARIMA signature of the monthly series of assault deaths among reproductive-aged women, controlling for the concomitant series of male assault deaths. 
-
-[This is copying table 2 in the manuscript]
-
-
-I am going to replicate the methodology from the [RPubs report on Box-Jenkins](https://rpubs.com/asmuierahim/boxjenkins). 
-
-First, we need to define the variable as a time series object using the ts() function. We need to specify the start =, end =, and frequency. I am going to start by just incorporating female data.
-
-```{r ts_function}
-monthly_f_ts <- ts(
-  monthly_f$Deaths,
-  start = c(2018, 1),
-  frequency = 12
-)
-```
-
-Next, we plot the original series. 
-```{r ts_plot}
-plot(monthly_f_ts, col = "blue", ylab = "Monthly Assault Deaths", 
-      main = "Female Monthly Assault Deaths", xlab = "Month in Study", type ="o", pch = 20,
-      panel.first = grid (),  xaxt = "n")
-axis(1, at = seq (from = 1, to = 72, by = 2)) # additional graph customization
-```
-Next, we plot the Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) for the original series. 
-
-The ACF shows the correlation between the current observation and its past observations at various lag points. 
-
-The PACF shows the correlation between the current observation and its past observations, removing the effects of intermediate observations. We will be using a lag max at 24 months to identify short-term dependence, a seasonal signal at lag 12, and whether effects persist past 1 year.
-
-```{r acf_pacf_female, fig.width =11, fig.height =9}
-par(mfrow = c(2,1)) #2 graphs in a single device
-acf(monthly_f_ts,
-    24, 
-    main = "ACF for CPI",
-    panel.first = grid ())
-
-pacf(monthly_f_ts,
-     24, 
-     main = "PACF for CPI",
-     panel.first = grid ())
-
-```
 
 ## Using Rpubs Tidy version
 
@@ -233,12 +188,18 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs2}
+```{r, results='hide', message = FALSE, warning = FALSE}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
-  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE))
+``` 
 
+*I am suppressing results because it is lengthy!!!* 
+
+```{r}
 #Plotting model residuals
 m_monthly.ts  %>% 
   gg_tsresiduals()
@@ -255,14 +216,6 @@ augment(m_monthly.ts) %>%
 ```
 
 We got a p-val of .94, meaning we fail to reject the null (there is no evidence of remaining autocorrelation, the ARIMA has adequately captured the time dependence in the data). 
-
-We also want to check again, making sure we are testing enough lags: 
-```{r ljung-box-22}
-augment(m_monthly.ts) %>%  
-  features(.resid, ljung_box, lag = 24)
-
-```
-Our p-value is still large (0.68), meaning we can comfortably conclude that the model residuals show no evidence of autocorrelation. 
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
@@ -337,7 +290,66 @@ auto_monthly.ts2 <- monthly.ts %>%
 summary(auto_monthly.ts2)
 
 ```
-Both of these picked up ARIMA(0,1,1). 
+Both of these picked up ARIMA(0,1,1).  
+
+### Sensitivity ARIMA fitting 
+
+We are going to check on determining the ARIMA structure using only the pre-intervention period, then refitting the model to all 6 years, forcing the ARIMA structure to stay the same.  We will then re-estimate the step and ramp coefficients using the full data. 
+
+**Step 1: Fit ARIMA using pre-intervention data only**  
+
+Subsetting pre-intervention data:  
+
+```{r}
+pre_data <- monthly.ts %>%
+  filter(month_year < as.Date("2021-09-01"))
+```
+
+Selecting ARIMA from pre-period data only: 
+
+```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
+m_pre <- pre_data %>%
+ model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE))
+``` 
+
+```{r}
+report(m_pre)
+```
+
+**Step 2: Refit to full data** 
+
+```{r}
+m_sensitivity <- monthly.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(4,1,0),
+      stepwise = FALSE
+    )
+  )
+
+```
+
+**Step 3: Comparing estimates** 
+```{r}
+report(m_monthly.ts)
+report(m_sensitivity)
+``` 
+
+Also comparing Ljung-Box: 
+
+```{r}
+augment(m_sensitivity) %>% 
+  features(.resid, ljung_box)
+
+augment(m_monthly.ts) %>% 
+  features(.resid, ljung_box)
+
+``` 
+Both p-values very high, so both models account for serial correlation. 
+
+Difference in step/ramps estimates due to differencing??
 
 # All Cause Mortality, Texan Female Residents
 
@@ -423,12 +435,16 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs3}
+```{r arima_specs3, results='hide', message = FALSE, warning = FALSE}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
-  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+ model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE))
+``` 
 
+```{r}
 #Plotting model residuals
 m_monthly.ts  %>% 
   gg_tsresiduals()
@@ -589,12 +605,14 @@ monthly.ts %>%
 The Fable algorithm will dictate the model parameters. 
 Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
 
-```{r arima_specs4}
+```{r, results='hide', message = FALSE, warning = FALSE}
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly.ts %>% 
   model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+``` 
 
+```{r}
 #Plotting model residuals
 m_monthly.ts  %>% 
   gg_tsresiduals()
@@ -607,14 +625,12 @@ Alternative: residuals show remaining autocorrelation
 #Ljung-Box test
 augment(m_monthly.ts) %>%  
   features(.resid, ljung_box)
-
 ```
 
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
 ```{r fable_arima4}
 report(m_monthly.ts)
-
 ``` 
 This one gave us two different components! 
 (0,1,1)(1,0,0) 
@@ -732,12 +748,14 @@ monthly_m  %>%
   )
 ``` 
 
-```{r, include = FALSE}
+```{r, include= FALSE}
 
 # Use automated algorithm to identify p/q parameters
 # Specify first difference = 1 and seasonal difference = 1
 m_monthly.ts <- monthly_m %>% 
-  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+ model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE))
 
 #Plotting model residuals
 m_monthly.ts %>% 
