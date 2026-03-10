@@ -182,7 +182,8 @@ glimpse(all_repro_m)
 all_repro_m <- all_repro_m %>% 
   mutate(month_year = my(Month)) %>% 
   select(-Month, -Month.Code, -Notes,-Population:-Crude.Rate.Upper.95..Confidence.Interval) %>% 
-  filter(month_year < "2024-01-01")
+  filter(month_year < "2024-01-01") %>% 
+  mutate( time = row_number ())
 
 
 ggplot(all_repro_m, aes(month_year, Deaths))+ 
