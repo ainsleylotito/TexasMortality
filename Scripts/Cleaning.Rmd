@@ -200,7 +200,18 @@ Next we are going to clean the data for all ages female, cod by assault.
 ```{r}
 all_age_f_assault <- read_excel("../RawData/All_Ages_Female.xlsx")
 all_age_f_assault <- clean.xcel(all_age_f_assault) 
-head(all_age_f_assault)
+head(all_age_f_assault) 
+
+all_age_m_assault <- read.csv("../RawData/all_age_assault_male.csv")
+all_age_m_assault <- all_age_m_assault %>% 
+   mutate(month_year = my(Month)) %>% 
+  select(-Month, -Month.Code, -Notes,-Population:-Crude.Rate.Upper.95..Confidence.Interval) %>% 
+  filter(month_year < "2024-01-01") %>% 
+  mutate( time = row_number ()) 
+
+write_csv(all_age_m_assault, "../CleanData/all_age_m_assault.csv")
+
+  
 ``` 
 Same as before, let's briefly check out what the data looks like: 
 ```{r}
