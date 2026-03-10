@@ -32,7 +32,7 @@ source("functions.R")
 ``` 
 
 # All-Cause
-```{r import, include = FALSE}
+```{r, include = FALSE}
 monthly_f <- read.csv("../CleanData/all_cause_repro_f.csv") 
 monthly_m <- read.csv("../CleanData/all_cause_repro_m.csv")
 
@@ -58,7 +58,7 @@ glimpse(monthly_m.ts)
 
 ``` 
 
-```{r ACF_PACF, include = FALSE}
+```{r, include = FALSE}
 monthly_f.ts  |> #female
   gg_tsdisplay(y = Deaths, plot_type = "partial")
 
@@ -169,7 +169,7 @@ m_arima  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box2}
+```{r}
 #Ljung-Box test
 augment(f_arima ) %>%  
   features(.resid, ljung_box) 
@@ -180,7 +180,7 @@ augment(m_arima ) %>%
 ```
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima2}
+```{r}
 report(m_arima)
 report(f_arima)
 
@@ -234,7 +234,7 @@ fc_m_counterfactual <- m_counterfactual %>%
  
  #forecast into post-intervention period male
 fc_f_counterfactual <- f_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+6) 
 
  autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
   geom_vline(
@@ -271,7 +271,7 @@ pre_data_m <- monthly_m.ts %>%
 
 Selecting ARIMA from pre-period data only: 
 
-```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
+```{r, results='hide', message = FALSE, warning = FALSE}
 m_pre <- pre_data_m %>%
   model(arima = ARIMA(Deaths, stepwise = FALSE))
 
@@ -318,7 +318,7 @@ report(f_sensitivity)
 
 # Assault COD 
 
-```{r import, include = FALSE}
+```{r, include = FALSE}
 monthly_f <- read.csv("../CleanData/monthly_f.csv") 
 monthly_m <- read.csv("../CleanData/monthly_m.csv")
 
@@ -345,7 +345,7 @@ glimpse(monthly_m.ts)
 ``` 
 
 
-```{r ACF_PACF, include = FALSE}
+```{r, include = FALSE}
 monthly_f.ts  |> #female
   gg_tsdisplay(y = Deaths, plot_type = "partial")
 
@@ -456,7 +456,7 @@ m_arima  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box2}
+```{r}
 #Ljung-Box test
 augment(f_arima ) %>%  
   features(.resid, ljung_box) 
@@ -499,7 +499,7 @@ report(f_counterfactual)
 
 #forecast into post-intervention period  male
 fc_m_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+6) 
 
  autoplot(fc_m_counterfactual, monthly_m.ts, level = 95) +
   geom_vline(
@@ -521,7 +521,7 @@ fc_m_counterfactual <- m_counterfactual %>%
  
  #forecast into post-intervention period male
 fc_f_counterfactual <- f_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+6) 
 
  autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
   geom_vline(
@@ -560,7 +560,7 @@ pre_data_m <- monthly_m.ts %>%
 
 Selecting ARIMA from pre-period data only: 
 
-```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
+```{r, results='hide', message = FALSE, warning = FALSE}
 m_pre <- pre_data_m %>%
   model(arima = ARIMA(Deaths, stepwise = FALSE))
 
@@ -606,7 +606,7 @@ report(f_sensitivity)
 ``` 
 # All ages 
 
-```{r import, include = FALSE}
+```{r, include = FALSE}
 monthly_f <- read.csv("../CleanData/all_age_f_assault.csv") 
 monthly_m <- read.csv("../CleanData/all_age_m_assault.csv")
 
@@ -632,7 +632,7 @@ glimpse(monthly_m.ts)
 
 ``` 
 
-```{r ACF_PACF, include = FALSE}
+```{r, include = FALSE}
 monthly_f.ts  |> #female
   gg_tsdisplay(y = Deaths, plot_type = "partial")
 
@@ -744,7 +744,7 @@ m_arima  %>%
 Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
 Null: residuals are independent (white noise)
 Alternative: residuals show remaining autocorrelation 
-```{r ljung-box2}
+```{r}
 #Ljung-Box test
 augment(f_arima ) %>%  
   features(.resid, ljung_box) 
@@ -755,7 +755,7 @@ augment(m_arima ) %>%
 ```
 
 With the model assumptions satisfied, we can take a look at the model estimates: 
-```{r fable_arima2}
+```{r}
 report(m_arima)
 report(f_arima)
 
@@ -786,7 +786,7 @@ report(f_counterfactual)
 
 #forecast into post-intervention period  male
 fc_m_counterfactual <- m_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+6) 
 
  autoplot(fc_m_counterfactual, monthly_m.ts, level = 95) +
   geom_vline(
@@ -808,7 +808,7 @@ fc_m_counterfactual <- m_counterfactual %>%
  
  #forecast into post-intervention period male
 fc_f_counterfactual <- f_counterfactual %>%
-  forecast(h = 28) 
+  forecast(h = 28+6) 
 
  autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
   geom_vline(
@@ -846,7 +846,7 @@ pre_data_m <- monthly_m.ts %>%
 
 Selecting ARIMA from pre-period data only: 
 
-```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
+```{r, results='hide', message = FALSE, warning = FALSE}
 m_pre <- pre_data_m %>%
   model(arima = ARIMA(Deaths, stepwise = FALSE))
 
