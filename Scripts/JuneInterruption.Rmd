@@ -67,7 +67,7 @@ monthly_m.ts  |> #male
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 # Create variable representing step and ramp changes
 intervention_month <- monthly_f.ts %>% 
   filter(month_year == "2021-06-01") %>% 
@@ -262,40 +262,58 @@ fc_f_counterfactual <- f_counterfactual %>%
 Subsetting pre-intervention data:  
 
 ```{r}
-pre_data <- monthly.ts %>%
-  filter(month_year < as.Date("2021-09-01"))
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
 ```
 
 Selecting ARIMA from pre-period data only: 
 
 ```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
-m_pre <- pre_data %>%
- model(arima = ARIMA(Deaths ~ step + ramp,
-                      stepwise = FALSE, 
-                      trace = TRUE))
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
 ``` 
 
 ```{r}
 report(m_pre)
+report(f_pre)
 ```
 
 **Step 2: Refit to full data** 
 
 ```{r}
-m_sensitivity <- monthly.ts %>%
+m_sensitivity <- monthly_m.ts %>%
   model(
     arima = ARIMA(
-      Deaths ~ step + ramp + pdq(4,1,0),
+      Deaths ~ step + ramp + pdq(0,1,0) + PDQ(1,0,0),
       stepwise = FALSE
     )
-  )
+  ) 
+
+f_sensitivity <- monthly_f.ts %>% 
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(1,1,3),
+      stepwise = FALSE
+    )
+  ) 
 
 ```
 
 **Step 3: Comparing estimates** 
-```{r}
-report(m_monthly.ts)
-report(m_sensitivity)
+```{r} 
+#male
+report(m_arima)
+report(m_sensitivity) 
+
+#female 
+report(f_arima)
+report(f_sensitivity)
 ``` 
 
 # Assault COD 
@@ -525,6 +543,67 @@ fc_f_counterfactual <- f_counterfactual %>%
 
 ```  
 
+
+## Sensitivity 
+
+**Step 1: Fit ARIMA using pre-intervention data only**  
+
+Subsetting pre-intervention data:  
+
+```{r}
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+```
+
+Selecting ARIMA from pre-period data only: 
+
+```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+``` 
+
+```{r}
+report(m_pre)
+report(f_pre)
+```
+
+**Step 2: Refit to full data** 
+
+```{r}
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,1),
+      stepwise = FALSE
+    )
+  ) 
+
+f_sensitivity <- monthly_f.ts %>% 
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(4,1,0),
+      stepwise = FALSE
+    )
+  ) 
+
+```
+
+**Step 3: Comparing estimates** 
+```{r} 
+#male
+report(m_arima)
+report(m_sensitivity) 
+
+#female 
+report(f_arima)
+report(f_sensitivity)
+``` 
 # All ages 
 
 ```{r import, include = FALSE}
@@ -750,3 +829,64 @@ fc_f_counterfactual <- f_counterfactual %>%
   )
 
 ```  
+
+## Sensitivity 
+
+**Step 1: Fit ARIMA using pre-intervention data only**  
+
+Subsetting pre-intervention data:  
+
+```{r}
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+```
+
+Selecting ARIMA from pre-period data only: 
+
+```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+``` 
+
+```{r}
+report(m_pre)
+report(f_pre)
+```
+
+**Step 2: Refit to full data** 
+
+```{r}
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,1),
+      stepwise = FALSE
+    )
+  ) 
+
+f_sensitivity <- monthly_f.ts %>% 
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,1),
+      stepwise = FALSE
+    )
+  ) 
+
+```
+
+**Step 3: Comparing estimates** 
+```{r} 
+#male
+report(m_arima)
+report(m_sensitivity) 
+
+#female 
+report(f_arima)
+report(f_sensitivity)
+``` 
