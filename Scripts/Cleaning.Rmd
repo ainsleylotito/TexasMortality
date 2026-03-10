@@ -176,18 +176,14 @@ write_csv(all_repro_f, "../CleanData/all_cause_repro_f.csv")
 Males this time:
 ```{r all_cause_female_reproductive_import} 
 
-all_repro_m <- read.csv("../RawData/texas_allcause_male1544.csv")
-
-all_repro_m <- clean.csv(all_repro_m)  
-
-range(all_repro_m$month_year)
+all_repro_m <- read.csv("../RawData/texas_allcause_male1544.csv") 
+glimpse(all_repro_m)
 
 all_repro_m <- all_repro_m %>% 
-  select(-Crude.Rate.Lower.95..Confidence.Interval
-, -Crude.Rate.Upper.95..Confidence.Interval
-)
+  mutate(month_year = my(Month)) %>% 
+  select(-Month, -Month.Code, -Notes,-Population:-Crude.Rate.Upper.95..Confidence.Interval) %>% 
+  filter(month_year < "2024-01-01")
 
-head(all_repro_m) 
 
 ggplot(all_repro_m, aes(month_year, Deaths))+ 
   geom_line() 
