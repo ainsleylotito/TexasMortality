@@ -526,3 +526,227 @@ fc_f_counterfactual <- f_counterfactual %>%
 ```  
 
 # All ages 
+
+```{r import, include = FALSE}
+monthly_f <- read.csv("../CleanData/all_age_f_assault.csv") 
+monthly_m <- read.csv("../CleanData/all_age_m_assault.csv")
+
+monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_f.ts <- monthly_f %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_f.ts) 
+
+monthly_m.ts <- monthly_m %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_m.ts)
+
+``` 
+
+```{r ACF_PACF, include = FALSE}
+monthly_f.ts  |> #female
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+
+monthly_m.ts  |> #male
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+``` 
+
+```{r}
+# Create variable representing step and ramp changes
+intervention_month <- monthly_f.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_f.ts<- monthly_f.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  ) 
+
+intervention_month <- monthly_m.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_m.ts <- monthly_m.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly_f.ts %>%  #female
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Female",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+
+monthly_m.ts %>% #male
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Male",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+```
+
+
+## ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r, results='hide', message = FALSE, warning = FALSE}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+f_arima <- monthly_f.ts %>%  #female
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+m_arima <- monthly_m.ts %>%  #male
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+``` 
+
+
+```{r}
+#Plotting model residuals
+f_arima  %>% 
+  gg_tsresiduals() 
+
+m_arima  %>% 
+  gg_tsresiduals()
+```  
+
+Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
+Null: residuals are independent (white noise)
+Alternative: residuals show remaining autocorrelation 
+```{r ljung-box2}
+#Ljung-Box test
+augment(f_arima ) %>%  
+  features(.resid, ljung_box) 
+
+augment(m_arima ) %>%  
+  features(.resid, ljung_box)
+
+```
+
+With the model assumptions satisfied, we can take a look at the model estimates: 
+```{r fable_arima2}
+report(m_arima)
+report(f_arima)
+
+```   
+
+```{r}
+#Modeling counterfactual male
+m_counterfactual <- monthly_m.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual) 
+
+#Modeling counterfactual female
+f_counterfactual <- monthly_f.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(f_counterfactual)
+
+#forecast into post-intervention period  male
+fc_m_counterfactual <- m_counterfactual %>%
+  forecast(h = 28) 
+
+ autoplot(fc_m_counterfactual, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Male Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  ) 
+ 
+ #forecast into post-intervention period male
+fc_f_counterfactual <- f_counterfactual %>%
+  forecast(h = 28) 
+
+ autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+```  
