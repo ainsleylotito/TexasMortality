@@ -71,3 +71,53 @@ Lastly, we will investigate assault mortality among all ages, not just reproduct
 
 # All-Cause Mortality
 
+## Results 
+
+### Male 
+
+```{r}
+
+monthly_m.ts <- prepare_ts("../CleanData/all_cause_repro_m.csv")
+monthly_m.ts <- create_intervention(monthly_m.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly_m.ts)
+
+fc_m <- counterfactual_forecast(monthly_m.ts, "2021-06-01", 28)
+
+plot_counterfactual(
+  fc_m,
+  monthly_m.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Male All-Cause Deaths"
+)
+```
+
+### Female 
+
+```{r}
+
+monthly_f.ts <- prepare_ts("../CleanData/all_cause_repro_f.csv")
+monthly_f.ts <- create_intervention(monthly_f.ts, "2021-06-01")
+
+f_arima <- fit_arima(monthly_f.ts)
+
+fc_f <- counterfactual_forecast(monthly_f.ts, "2021-06-01", 34)
+
+plot_counterfactual(
+  fc_f,
+  monthly_f.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Female All-Cause Deaths"
+)
+
+
+``` 
+
+### Model Estimates 
+
+The **step coefficient** represents the immediate change in deaths following the intervention, while the **ramp coefficient** estimates the monthly change in slope after the intervention.
+
+```{r}
+report(m_arima)
+report(f_arima)
+``` 
