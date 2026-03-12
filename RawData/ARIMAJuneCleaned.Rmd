@@ -1,0 +1,73 @@
+---
+title: "Interrupted Time Series ARIMA Analysis"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(lubridate)
+library(tsibble)
+library(fable)
+library(feasts)
+library(forecast)
+library(scales)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+) 
+
+#importing functions
+source("functions.r")
+``` 
+
+
+# Introduction
+
+This document uses an interrupted time series ARIMA analysis to evaluate changes in mortality (assault and all-cause) following the June 2021 Bill 8 policy intervention restricting access to abortion in Texas. 
+
+Data are from the CDC Multiple Cause of Death Database, including monthly Texas resident death counts from 2018-Dec 2023 (female unless otherwise indicated).
+
+The ARIMA model incorporates:
+
+- **Autoregressive terms (AR)** to capture dependence on previous observations
+
+- **Integrated differencing (I)** to remove non-stationary trends
+
+- **Moving average terms (MA)** to account for serial correlation in residual errors
+
+The intervention is modeled using:
+
+- **Step variable**: immediate level change after the intervention
+
+- **Ramp variable**: gradual slope change after the intervention
+
+Counterfactual forecasts are generated using the **pre-intervention ARIMA structure**, representing expected mortality trajectories if the policy had not occurred.  
+
+## Analysis Structure 
+
+1. All-Cause 
+
+We will start by reviewing the ARIMA for **All-Cause Mortality**, so we may capture any changes in death trends overall, accounting for the fact that deaths by assault are often misrecorded by government agencies. 
+
+2. Reproductive-aged Assault Mortality  
+
+We will then explore deaths by assault among women aged 15-44.
+
+3. All-age Assault Mortality
+
+Lastly, we will investigate assault mortality among all ages, not just reproductive. 
+
+
+
+
+# All-Cause Mortality
+

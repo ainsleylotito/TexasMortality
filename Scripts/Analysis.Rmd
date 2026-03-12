@@ -34,7 +34,7 @@ This contains all code used to analyze the datasets found in the `/CleanData` di
 
 # Introduction
 
-There are several studies that use the interupted time series ARIMA, but we are primarily going to replicate the methods described in [Singh et al., 2025](https://link.springer.com/article/10.1007/s00127-025-02902-7), a study which analyzes suicide deaths among reproductive-aged women post-*Dobbs*. 
+There are several studies that use the interupted time series ARIMA, but we are primarily going to replicate the some of the methods described in [Singh et al., 2025](https://link.springer.com/article/10.1007/s00127-025-02902-7), a study which analyzes suicide deaths among reproductive-aged women post-*Dobbs*. 
 
 This study also uses data from the Multiple Cause of Death database, and stratifies data by men and women by two age groups: 15-25 and 25-49. The outcomes are the monthly count of suicides nationally for reproductive-aged women overall and for the two age subgroups. The series of monthly suicides among men (per age group) were used as a control variable. The exposure was the timing of the *Dobbs* decision in June 2022. 
 

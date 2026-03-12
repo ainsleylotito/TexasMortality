@@ -1,12 +1,14 @@
 ---
-title: "JuneInterruption"
+title: "Interrupted Time Series ARIMA Analysis Bill 8"
 output:
   html_document:
     toc: true
     toc_depth: 3
     number_sections: true
     toc_float: true
----
+    code_folding: hide
+--- 
+
 
 ```{r setup, include = FALSE}
 # Load packages
@@ -30,6 +32,23 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 source("functions.R")
 
 ``` 
+
+# Introduction 
+
+Rationale for June interruption: May 29th the bill got signed in, was in the media, want to capture effects immediately after and also preserve the spike we notice (which would be factored into the forecast if we made the interruption point September)
+
+
+# Results 
+
+# Methods (Expandable)
+  - Data preparation
+  - Intervention variables
+  - ARIMA specification
+
+# Model diagnostics (Expandable)
+
+# Sensitivity analysis (Expandable)
+
 
 # All-Cause
 ```{r, include = FALSE}
