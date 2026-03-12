@@ -64,7 +64,9 @@ We will then explore deaths by assault among women aged 15-44.
 
 3. All-age Assault Mortality
 
-Lastly, we will investigate assault mortality among all ages, not just reproductive. 
+Lastly, we will investigate assault mortality among all ages, not just reproductive.  
+
+*Note*: We also conducted a sensitivity analysis where instead of using Forecast() with a set interruption point, we subset the data to Pre-Interruption period, fit an arima, then specify those arima specs with the full dataset. 
 
 
 
@@ -82,7 +84,7 @@ monthly_m.ts <- create_intervention(monthly_m.ts, "2021-06-01")
 
 m_arima <- fit_arima(monthly_m.ts)
 
-fc_m <- counterfactual_forecast(monthly_m.ts, "2021-06-01", 28)
+fc_m <- counterfactual_forecast(monthly_m.ts, "2021-06-01", 34)
 
 plot_counterfactual(
   fc_m,
@@ -113,7 +115,7 @@ plot_counterfactual(
 
 ``` 
 
-### Model Estimates 
+## Model Estimates 
 
 The **step coefficient** represents the immediate change in deaths following the intervention, while the **ramp coefficient** estimates the monthly change in slope after the intervention.
 
@@ -121,3 +123,224 @@ The **step coefficient** represents the immediate change in deaths following the
 report(m_arima)
 report(f_arima)
 ``` 
+
+## Model Diagnostics 
+
+<details> <summary><b>Residual Diagnostics</b></summary> 
+```{r}
+
+m_arima %>% gg_tsresiduals()
+f_arima %>% gg_tsresiduals()
+
+``` 
+
+</details> <details> <summary><b>Ljung-Box Test</b></summary> 
+```{r}
+
+augment(m_arima) %>% features(.resid, ljung_box)
+augment(f_arima) %>% features(.resid, ljung_box)
+
+```
+</details> 
+
+## Sensitivity Analysis 
+
+<details> <summary><b>Pre-Intervention Model Selection</b></summary> 
+```{r}
+
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < "2021-06-01")
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < "2021-06-01")
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths))
+
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths))
+
+report(f_pre)
+report(m_pre)
+
+```
+</details>
+
+# Assault Mortality 
+
+## Results 
+
+### Male 
+```{r}
+
+monthly_m.ts <- prepare_ts("../CleanData/monthly_m.csv")
+monthly_m.ts <- create_intervention(monthly_m.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly_m.ts)
+
+fc_m <- counterfactual_forecast(monthly_m.ts, "2021-06-01", 34)
+
+plot_counterfactual(
+  fc_m,
+  monthly_m.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Male Assault Deaths"
+)
+
+```
+
+### Female 
+```{r}
+
+monthly_f.ts <- prepare_ts("../CleanData/monthly_f.csv")
+monthly_f.ts <- create_intervention(monthly_f.ts, "2021-06-01")
+
+f_arima <- fit_arima(monthly_f.ts)
+
+fc_f <- counterfactual_forecast(monthly_f.ts, "2021-06-01", 34)
+
+plot_counterfactual(
+  fc_f,
+  monthly_f.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Female Assault Deaths"
+)
+
+```
+
+## Model Estimates 
+
+```{r}
+
+report(m_arima)
+report(f_arima)
+
+```
+
+## Model Diagnostics 
+
+<details> <summary><b>Residual Diagnostics</b></summary> 
+```{r}
+
+m_arima %>% gg_tsresiduals()
+f_arima %>% gg_tsresiduals()
+
+``` 
+
+</details> <details> <summary><b>Ljung-Box Test</b></summary> 
+```{r}
+
+augment(m_arima) %>% features(.resid, ljung_box)
+augment(f_arima) %>% features(.resid, ljung_box)
+
+```
+</details>  
+
+## Sensitivity Analysis 
+
+<details> <summary><b>Pre-Intervention Model Selection</b></summary> 
+```{r}
+
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < "2021-06-01")
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < "2021-06-01")
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths))
+
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths))
+
+report(f_pre)
+report(m_pre)
+
+```
+</details>
+
+## All-Age Assault Mortality 
+
+## Results 
+
+### Male 
+```{r}
+
+monthly_m.ts <- prepare_ts("../CleanData/all_age_m_assault.csv")
+monthly_m.ts <- create_intervention(monthly_m.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly_m.ts)
+
+fc_m <- counterfactual_forecast(monthly_m.ts, "2021-06-01", 34)
+
+plot_counterfactual(
+  fc_m,
+  monthly_m.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual All-Age Male Assault Deaths"
+)
+
+``` 
+
+### Female 
+
+```{r}
+
+monthly_f.ts <- prepare_ts("../CleanData/all_age_f_assault.csv")
+monthly_f.ts <- create_intervention(monthly_f.ts, "2021-06-01")
+
+f_arima <- fit_arima(monthly_f.ts)
+
+fc_f <- counterfactual_forecast(monthly_f.ts, "2021-06-01", 34)
+
+plot_counterfactual(
+  fc_f,
+  monthly_f.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual All-Age Female Assault Deaths"
+)
+
+```
+
+## Model Diagnostics 
+
+<details> <summary><b>Residual Diagnostics</b></summary> 
+```{r}
+
+m_arima %>% gg_tsresiduals()
+f_arima %>% gg_tsresiduals()
+
+``` 
+
+</details> <details> <summary><b>Ljung-Box Test</b></summary> 
+```{r}
+
+augment(m_arima) %>% features(.resid, ljung_box)
+augment(f_arima) %>% features(.resid, ljung_box)
+
+```
+</details> 
+
+## Sensitivity Analysis 
+
+<details> <summary><b>Pre-Intervention Model Selection</b></summary> 
+```{r}
+
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < "2021-06-01")
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < "2021-06-01")
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths))
+
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths))
+
+report(f_pre)
+report(m_pre)
+
+```
+</details>
+
