@@ -1,0 +1,530 @@
+"Notes","MCD - ICD Chapter","MCD - ICD Chapter Code","Sex","Sex Code","Month","Month Code",Deaths,Population,Crude Rate,Crude Rate Lower 95% Confidence Interval,Crude Rate Upper 95% Confidence Interval
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Jan., 2021","2021/01",69,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Feb., 2021","2021/02",54,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Mar., 2021","2021/03",44,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Apr., 2021","2021/04",43,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","May, 2021","2021/05",51,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Jun., 2021","2021/06",45,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Jul., 2021","2021/07",44,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Aug., 2021","2021/08",100,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Sep., 2021","2021/09",102,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Oct., 2021","2021/10",85,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Nov., 2021","2021/11",66,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Female","F","Dec., 2021","2021/12",49,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Jan., 2021","2021/01",98,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Feb., 2021","2021/02",86,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Mar., 2021","2021/03",80,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Apr., 2021","2021/04",59,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","May, 2021","2021/05",65,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Jun., 2021","2021/06",76,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Jul., 2021","2021/07",89,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Aug., 2021","2021/08",148,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Sep., 2021","2021/09",223,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Oct., 2021","2021/10",155,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Nov., 2021","2021/11",85,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain infectious and parasitic diseases","A00-B99","Male","M","Dec., 2021","2021/12",99,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Jan., 2021","2021/01",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Feb., 2021","2021/02",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Mar., 2021","2021/03",87,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Apr., 2021","2021/04",75,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","May, 2021","2021/05",81,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Jun., 2021","2021/06",76,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Jul., 2021","2021/07",75,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Aug., 2021","2021/08",86,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Sep., 2021","2021/09",78,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Oct., 2021","2021/10",85,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Nov., 2021","2021/11",76,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Female","F","Dec., 2021","2021/12",75,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Jan., 2021","2021/01",74,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Feb., 2021","2021/02",80,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Mar., 2021","2021/03",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Apr., 2021","2021/04",72,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","May, 2021","2021/05",69,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Jun., 2021","2021/06",86,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Jul., 2021","2021/07",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Aug., 2021","2021/08",84,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Sep., 2021","2021/09",72,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Oct., 2021","2021/10",62,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Nov., 2021","2021/11",53,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Neoplasms","C00-D48","Male","M","Dec., 2021","2021/12",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Jan., 2021","2021/01",23,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Feb., 2021","2021/02",14,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Mar., 2021","2021/03",22,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Apr., 2021","2021/04",13,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","May, 2021","2021/05",24,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Jun., 2021","2021/06",17,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Jul., 2021","2021/07",17,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Aug., 2021","2021/08",34,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Sep., 2021","2021/09",43,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Oct., 2021","2021/10",37,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Nov., 2021","2021/11",19,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Female","F","Dec., 2021","2021/12",19,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Jan., 2021","2021/01",32,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Feb., 2021","2021/02",19,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Mar., 2021","2021/03",28,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Apr., 2021","2021/04",20,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","May, 2021","2021/05",21,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Jun., 2021","2021/06",20,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Jul., 2021","2021/07",31,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Aug., 2021","2021/08",29,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Sep., 2021","2021/09",42,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Oct., 2021","2021/10",36,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Nov., 2021","2021/11",20,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism","D50-D89","Male","M","Dec., 2021","2021/12",24,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Jan., 2021","2021/01",119,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Feb., 2021","2021/02",100,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Mar., 2021","2021/03",91,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Apr., 2021","2021/04",82,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","May, 2021","2021/05",90,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Jun., 2021","2021/06",76,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Jul., 2021","2021/07",82,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Aug., 2021","2021/08",216,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Sep., 2021","2021/09",205,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Oct., 2021","2021/10",142,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Nov., 2021","2021/11",101,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Female","F","Dec., 2021","2021/12",89,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Jan., 2021","2021/01",224,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Feb., 2021","2021/02",165,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Mar., 2021","2021/03",123,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Apr., 2021","2021/04",136,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","May, 2021","2021/05",129,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Jun., 2021","2021/06",113,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Jul., 2021","2021/07",157,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Aug., 2021","2021/08",297,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Sep., 2021","2021/09",373,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Oct., 2021","2021/10",216,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Nov., 2021","2021/11",140,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Endocrine, nutritional and metabolic diseases","E00-E89","Male","M","Dec., 2021","2021/12",172,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Jan., 2021","2021/01",82,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Feb., 2021","2021/02",65,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Mar., 2021","2021/03",79,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Apr., 2021","2021/04",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","May, 2021","2021/05",68,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Jun., 2021","2021/06",65,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Jul., 2021","2021/07",64,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Aug., 2021","2021/08",65,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Sep., 2021","2021/09",69,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Oct., 2021","2021/10",71,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Nov., 2021","2021/11",68,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Female","F","Dec., 2021","2021/12",68,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Jan., 2021","2021/01",159,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Feb., 2021","2021/02",150,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Mar., 2021","2021/03",167,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Apr., 2021","2021/04",175,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","May, 2021","2021/05",158,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Jun., 2021","2021/06",164,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Jul., 2021","2021/07",160,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Aug., 2021","2021/08",207,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Sep., 2021","2021/09",192,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Oct., 2021","2021/10",183,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Nov., 2021","2021/11",191,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Mental and behavioural disorders","F01-F99","Male","M","Dec., 2021","2021/12",147,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Jan., 2021","2021/01",50,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Feb., 2021","2021/02",47,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Mar., 2021","2021/03",48,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Apr., 2021","2021/04",32,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","May, 2021","2021/05",41,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Jun., 2021","2021/06",33,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Jul., 2021","2021/07",43,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Aug., 2021","2021/08",54,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Sep., 2021","2021/09",57,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Oct., 2021","2021/10",39,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Nov., 2021","2021/11",40,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Female","F","Dec., 2021","2021/12",52,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Jan., 2021","2021/01",67,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Feb., 2021","2021/02",52,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Mar., 2021","2021/03",57,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Apr., 2021","2021/04",47,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","May, 2021","2021/05",51,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Jun., 2021","2021/06",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Jul., 2021","2021/07",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Aug., 2021","2021/08",76,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Sep., 2021","2021/09",95,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Oct., 2021","2021/10",52,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Nov., 2021","2021/11",59,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the nervous system","G00-G98","Male","M","Dec., 2021","2021/12",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","Apr., 2021","2021/04",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Female","F","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the eye and adnexa","H00-H59","Male","M","Dec., 2021","2021/12",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Female","F","Dec., 2021","2021/12",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Apr., 2021","2021/04",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the ear and mastoid process","H60-H95","Male","M","Dec., 2021","2021/12",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Jan., 2021","2021/01",170,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Feb., 2021","2021/02",135,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Mar., 2021","2021/03",160,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Apr., 2021","2021/04",133,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","May, 2021","2021/05",120,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Jun., 2021","2021/06",129,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Jul., 2021","2021/07",138,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Aug., 2021","2021/08",232,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Sep., 2021","2021/09",245,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Oct., 2021","2021/10",185,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Nov., 2021","2021/11",138,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Female","F","Dec., 2021","2021/12",146,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Jan., 2021","2021/01",331,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Feb., 2021","2021/02",265,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Mar., 2021","2021/03",278,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Apr., 2021","2021/04",260,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","May, 2021","2021/05",254,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Jun., 2021","2021/06",246,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Jul., 2021","2021/07",262,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Aug., 2021","2021/08",390,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Sep., 2021","2021/09",480,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Oct., 2021","2021/10",323,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Nov., 2021","2021/11",277,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the circulatory system","I00-I99","Male","M","Dec., 2021","2021/12",293,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Jan., 2021","2021/01",151,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Feb., 2021","2021/02",121,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Mar., 2021","2021/03",127,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Apr., 2021","2021/04",72,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","May, 2021","2021/05",88,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Jun., 2021","2021/06",88,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Jul., 2021","2021/07",93,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Aug., 2021","2021/08",293,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Sep., 2021","2021/09",349,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Oct., 2021","2021/10",210,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Nov., 2021","2021/11",120,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Female","F","Dec., 2021","2021/12",102,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Jan., 2021","2021/01",250,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Feb., 2021","2021/02",173,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Mar., 2021","2021/03",147,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Apr., 2021","2021/04",133,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","May, 2021","2021/05",137,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Jun., 2021","2021/06",128,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Jul., 2021","2021/07",171,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Aug., 2021","2021/08",483,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Sep., 2021","2021/09",652,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Oct., 2021","2021/10",330,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Nov., 2021","2021/11",175,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the respiratory system","J00-J98","Male","M","Dec., 2021","2021/12",202,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Jan., 2021","2021/01",42,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Feb., 2021","2021/02",37,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Mar., 2021","2021/03",50,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Apr., 2021","2021/04",39,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","May, 2021","2021/05",57,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Jun., 2021","2021/06",45,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Jul., 2021","2021/07",38,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Aug., 2021","2021/08",53,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Sep., 2021","2021/09",57,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Oct., 2021","2021/10",50,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Nov., 2021","2021/11",56,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Female","F","Dec., 2021","2021/12",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Jan., 2021","2021/01",108,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Feb., 2021","2021/02",83,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Mar., 2021","2021/03",78,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Apr., 2021","2021/04",71,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","May, 2021","2021/05",77,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Jun., 2021","2021/06",83,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Jul., 2021","2021/07",83,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Aug., 2021","2021/08",84,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Sep., 2021","2021/09",118,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Oct., 2021","2021/10",111,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Nov., 2021","2021/11",70,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the digestive system","K00-K92","Male","M","Dec., 2021","2021/12",85,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the skin and subcutaneous tissue","L00-L98","Male","M","Nov., 2021","2021/11",12,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Jan., 2021","2021/01",17,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Apr., 2021","2021/04",15,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Jun., 2021","2021/06",13,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Aug., 2021","2021/08",17,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Sep., 2021","2021/09",13,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Oct., 2021","2021/10",15,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Female","F","Dec., 2021","2021/12",15,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Male","M","Mar., 2021","2021/03",11,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Male","M","May, 2021","2021/05",10,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Male","M","Aug., 2021","2021/08",12,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Male","M","Oct., 2021","2021/10",10,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the musculoskeletal system and connective tissue","M00-M99","Male","M","Nov., 2021","2021/11",14,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Jan., 2021","2021/01",50,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Feb., 2021","2021/02",54,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Mar., 2021","2021/03",40,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Apr., 2021","2021/04",28,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","May, 2021","2021/05",45,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Jun., 2021","2021/06",36,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Jul., 2021","2021/07",32,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Aug., 2021","2021/08",81,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Sep., 2021","2021/09",82,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Oct., 2021","2021/10",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Nov., 2021","2021/11",54,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Female","F","Dec., 2021","2021/12",42,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Jan., 2021","2021/01",100,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Feb., 2021","2021/02",66,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Mar., 2021","2021/03",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Apr., 2021","2021/04",44,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","May, 2021","2021/05",38,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Jun., 2021","2021/06",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Jul., 2021","2021/07",68,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Aug., 2021","2021/08",120,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Sep., 2021","2021/09",176,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Oct., 2021","2021/10",142,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Nov., 2021","2021/11",65,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Diseases of the genitourinary system","N00-N99","Male","M","Dec., 2021","2021/12",72,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Jan., 2021","2021/01",16,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Feb., 2021","2021/02",11,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Mar., 2021","2021/03",12,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Jul., 2021","2021/07",16,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Aug., 2021","2021/08",37,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Sep., 2021","2021/09",44,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Oct., 2021","2021/10",21,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Nov., 2021","2021/11",12,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Female","F","Dec., 2021","2021/12",15,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Apr., 2021","2021/04",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Pregnancy, childbirth and the puerperium","O00-O99","Male","M","Dec., 2021","2021/12",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Female","F","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Apr., 2021","2021/04",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Certain conditions originating in the perinatal period","P00-P96","Male","M","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Female","F","Mar., 2021","2021/03",14,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Female","F","Aug., 2021","2021/08",19,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Female","F","Dec., 2021","2021/12",13,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Jan., 2021","2021/01",11,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Mar., 2021","2021/03",14,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Jun., 2021","2021/06",10,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Jul., 2021","2021/07",12,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Oct., 2021","2021/10",17,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Nov., 2021","2021/11",11,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Congenital malformations, deformations and chromosomal abnormalities","Q00-Q99","Male","M","Dec., 2021","2021/12",13,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Jan., 2021","2021/01",83,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Feb., 2021","2021/02",76,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Mar., 2021","2021/03",68,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Apr., 2021","2021/04",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","May, 2021","2021/05",65,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Jun., 2021","2021/06",63,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Jul., 2021","2021/07",57,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Aug., 2021","2021/08",128,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Sep., 2021","2021/09",125,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Oct., 2021","2021/10",91,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Nov., 2021","2021/11",75,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Female","F","Dec., 2021","2021/12",90,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Jan., 2021","2021/01",126,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Feb., 2021","2021/02",90,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Mar., 2021","2021/03",108,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Apr., 2021","2021/04",90,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","May, 2021","2021/05",92,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Jun., 2021","2021/06",120,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Jul., 2021","2021/07",127,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Aug., 2021","2021/08",164,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Sep., 2021","2021/09",216,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Oct., 2021","2021/10",167,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Nov., 2021","2021/11",130,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified","R00-R99","Male","M","Dec., 2021","2021/12",132,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Jan., 2021","2021/01",220,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Feb., 2021","2021/02",170,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Mar., 2021","2021/03",238,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Apr., 2021","2021/04",184,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","May, 2021","2021/05",225,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Jun., 2021","2021/06",207,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Jul., 2021","2021/07",202,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Aug., 2021","2021/08",207,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Sep., 2021","2021/09",201,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Oct., 2021","2021/10",195,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Nov., 2021","2021/11",163,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Female","F","Dec., 2021","2021/12",199,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Jan., 2021","2021/01",606,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Feb., 2021","2021/02",539,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Mar., 2021","2021/03",605,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Apr., 2021","2021/04",681,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","May, 2021","2021/05",697,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Jun., 2021","2021/06",772,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Jul., 2021","2021/07",657,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Aug., 2021","2021/08",702,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Sep., 2021","2021/09",710,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Oct., 2021","2021/10",689,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Nov., 2021","2021/11",634,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Injury, poisoning and certain other consequences of external causes","S00-T98","Male","M","Dec., 2021","2021/12",636,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Jan., 2021","2021/01",116,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Feb., 2021","2021/02",84,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Mar., 2021","2021/03",58,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Apr., 2021","2021/04",38,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","May, 2021","2021/05",40,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Jun., 2021","2021/06",27,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Jul., 2021","2021/07",48,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Aug., 2021","2021/08",342,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Sep., 2021","2021/09",405,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Oct., 2021","2021/10",213,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Nov., 2021","2021/11",66,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Female","F","Dec., 2021","2021/12",64,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Jan., 2021","2021/01",225,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Feb., 2021","2021/02",131,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Mar., 2021","2021/03",85,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Apr., 2021","2021/04",64,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","May, 2021","2021/05",80,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Jun., 2021","2021/06",43,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Jul., 2021","2021/07",110,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Aug., 2021","2021/08",568,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Sep., 2021","2021/09",758,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Oct., 2021","2021/10",310,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Nov., 2021","2021/11",122,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Codes for special purposes","U00-U99","Male","M","Dec., 2021","2021/12",150,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Jan., 2021","2021/01",222,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Feb., 2021","2021/02",175,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Mar., 2021","2021/03",243,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Apr., 2021","2021/04",193,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","May, 2021","2021/05",231,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Jun., 2021","2021/06",211,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Jul., 2021","2021/07",206,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Aug., 2021","2021/08",214,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Sep., 2021","2021/09",208,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Oct., 2021","2021/10",200,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Nov., 2021","2021/11",166,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Female","F","Dec., 2021","2021/12",204,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Jan., 2021","2021/01",613,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Feb., 2021","2021/02",545,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Mar., 2021","2021/03",615,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Apr., 2021","2021/04",686,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","May, 2021","2021/05",703,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Jun., 2021","2021/06",778,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Jul., 2021","2021/07",664,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Aug., 2021","2021/08",709,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Sep., 2021","2021/09",724,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Oct., 2021","2021/10",694,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Nov., 2021","2021/11",641,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"External causes of morbidity and mortality","V01-Y89","Male","M","Dec., 2021","2021/12",647,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Apr., 2021","2021/04",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Female","F","Dec., 2021","2021/12",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Jan., 2021","2021/01",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Feb., 2021","2021/02",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Mar., 2021","2021/03",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Apr., 2021","2021/04",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","May, 2021","2021/05",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Jun., 2021","2021/06",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Jul., 2021","2021/07",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Aug., 2021","2021/08",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Sep., 2021","2021/09",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Oct., 2021","2021/10",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Nov., 2021","2021/11",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+,"Data not shown due to 6 month lag to account for delays in death certificate completion for certain causes of death.","999--999","Male","M","Dec., 2021","2021/12",0,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+"---"
+"Dataset: Provisional Mortality Statistics, 2018 through Last Week"
+"Query Parameters:"
+"Title: leading cause of death"
+"Residence States: Texas (48)"
+"Ten-Year Age Groups: 15-24 years; 25-34 years; 35-44 years"
+"Year/Month: 2021"
+"Group By: MCD - ICD Chapter; Sex; Month"
+"Show Totals: Disabled"
+"Show Zero Values: True"
+"Show Suppressed: False"
+"Calculate Rates Per: 100,000"
+"Rate Options: Default intercensal populations for years 2001-2009 (except Infant Age Groups)"
+"---"
+"Help: See http://wonder.cdc.gov/wonder/help/mcd-provisional.html for more information."
+"---"
+"Query Date: Mar 10, 2026 8:31:17 PM"
+"---"
+"Suggested Citation: Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics"
+"System, Provisional Mortality on CDC WONDER Online Database. Data are from the final Multiple Cause of Death Files, 2018-2024,"
+"and from provisional data for years 2025 and later, as compiled from data provided by the 57 vital statistics jurisdictions"
+"through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/mcd-icd10-provisional.html on Mar 10, 2026"
+"8:31:17 PM"
+"---"
+Messages:
+"1. Totals are not available for these results due to suppression constraints. More Information:"
+"http://wonder.cdc.gov/wonder/help/faq.html#Privacy."
+"2. Rows with suppressed Deaths are hidden. Use Quick Options above to show suppressed rows."
+"---"
+Footnotes:
+"1. Totals and sub-totals show the frequency of the selected causes of death, which may be greater than the number of deaths."
+"Note that any single death record may have up to 20 causes. More information."
+"---"
+Caveats:
+"1. Population and rates are labeled 'Not Applicable' when location of Death's Occurrence, Autopsy, Place of Death, Weekday or"
+"Month are grouped by or limited, due to lack of a valid population. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#NotApplicableRates."
+"2. Data are Suppressed when the data meet the criteria for confidentiality constraints. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Assurance of Confidentiality."
+"3. Deaths of persons with Age ""Not Stated"" are included in ""All"" counts and rates, but are not distributed among age groups,"
+"so are not included in age-specific counts, age-specific rates or in any age-adjusted rates. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Not Stated."
+"4. The method used to calculate 95% confidence intervals is documented here: More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Confidence-Intervals."
+"5. Beginning with the 2018 data, changes have been implemented that affect the counts for ICD-10 cause of death codes O00-O99"
+"compared to previous practice. In addition, data for the cause of death codes O00-O99 for 2003 through 2017 reflect differences"
+"in information available to individual states and probable errors. Deaths with the underlying cause classified with O00-O99 are"
+"subject to further processing before these deaths records are considered final. Provisional deaths have not undergone full"
+"processing and review and therefore should not be considered final for statistical purposes. Caution should be used in"
+"interpreting these data. More information can be found at: https://www.cdc.gov/nchs/maternal-mortality/."
+"6. On March 11, 2021, the 2019 mortality data on CDC WONDER was updated with the 2019 mortality data updated by NCHS on March 4,"
+"2021 to include corrected information for residents of Texas affecting 5 records previously coded to cause code *U01.4,"
+"Terrorism involving firearms (homicide). The underlying and multiple cause of death codes for 5 records were corrected in the"
+"2019 data. Underlying and multiple cause of death codes for those 5 records were recoded to Assault (homicide) by other and"
+"unspecified firearm discharge, ICD-10 code X95. The corrected final death records replaces the data released on December 22,"
+"2020."
+"7. After the creation of the final 2023 dataset, North Carolina updated the cause of death information for over 900 death"
+"certificates to include a cause of death code indicating drug overdose (ICD-10 underlying cause-of-death codes: X40-X44,"
+"X60-X64, X85, and Y10-Y14). Jurisdictions can continue to update death certificates after the closing of the mortality file. As"
+"a result, users should consider that the actual death count for drug overdose deaths for North Carolina in 2023 is over 4,400"
+"deaths, with a crude rate of approximately 41.0 per 100,000 population, and an age-adjusted rate of approximately 42.1 per"
+"100,000 population. These deaths will not be updated on the final mortality datasets."
+"8. Deaths related to external causes of injury or sudden death: In the provisional mortality data, causes of death classified as"
+"external causes of injury (ICD-10 codes V01-Y89), sudden deaths (ICD-10 codes R95 and R96), or drug poisoning (ICD-10 codes"
+"T36-T50), have the cause of death labeled as 'Data not shown due to 6 month lag to account for delays in death certificate"
+"completion for certain causes of death.' For these deaths occurring 24 weeks prior to the final date in the provisional data,"
+"the number of deaths and related statistics are not available by specific cause of death for ICD-10 codes V01-Y89, R95, R96, or"
+"T36-T50. More information: http://wonder.cdc.gov/wonder/help/mcd-provisional.html#999."
+"9. Deaths occurring through February 21, 2026 as of March 01, 2026."
