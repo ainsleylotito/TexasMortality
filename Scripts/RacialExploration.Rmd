@@ -1,0 +1,93 @@
+---
+title: "Racial Exploration"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(lubridate)
+library(tsibble)
+library(fable)
+library(feasts)
+library(forecast)
+library(scales)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+) 
+
+#importing functions
+source("functions.r")
+``` 
+
+# Introduction
+
+This document uses an interrupted time series ARIMA analysis to evaluate changes in mortality among Texas female residents aged 15-44 to see whether racial differences exist. Data were previously cleaned in the document `/Scripts/Cleaning.Rmd`
+
+Data are from the CDC Multiple Cause of Death Database, including monthly Texas resident death counts from 2018-Dec 2023. Racial/ethnic groups are grouped as follows: 
+
+1. Hispanic (any race)
+2. Non-Hispanic White 
+3. Non-Hispanic Black 
+4. Non-Hispanic Asian 
+5. Non-Hispanic Native Hawaiian or other Pacific Islander 
+6. Non-Hispanic American Indian or Alaska Native
+
+# Methods 
+
+R code is adapted from this [RPubs article on tidy structure for ITS ARIMAs](https://rpubs.com/jcorbin/tidy_itt_arima)  
+
+The ARIMA model incorporates:
+
+- **Autoregressive terms (AR)** to capture dependence on previous observations
+
+- **Integrated differencing (I)** to remove non-stationary trends
+
+- **Moving average terms (MA)** to account for serial correlation in residual errors
+
+The intervention is modeled using:
+
+- **Step variable**: immediate level change after the intervention
+
+- **Ramp variable**: gradual slope change after the intervention
+
+Counterfactual forecasts are generated using the **pre-intervention ARIMA structure**, representing expected mortality trajectories if the policy had not occurred.   
+
+*Note*: We also conducted a sensitivity analysis where instead of using a step and ramp variable to indicate whether the interruption has passed, we subset the data to Pre-Interruption period, fit an arima, then fit those arima specifications to the full dataset. 
+
+## Analysis Structure 
+
+1. Exploration 
+
+We will start by exploring the distribution of deaths among each of these racial groups, identifying how much data are missing. 
+2. ARIMA fits 
+
+We will then explore what the ARIMAs indicate about death trends using June 2021 as an interruption point.  
+
+
+# Exploration 
+
+```{r data_import, include = FALSE}
+racial <- read.csv("../CleanData/racial_all_cause.csv")
+head(racial)
+dim(racial)
+``` 
+
+To start, let's see what the top 4 highest death counts are for each group.  
+
+```{r, echo = FALSE}
+racial %>%
+  group_by(race_eth) %>%
+  slice_max(Deaths, n = 4, na_rm = TRUE) %>%
+  arrange(race_eth, desc(Deaths))
+```
+Next, let's assess how many months of death data are missing for each group. 

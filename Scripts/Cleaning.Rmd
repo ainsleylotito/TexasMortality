@@ -261,7 +261,8 @@ We pulled the deaths for assault and all-cause, but we are just going to focus o
 
 ```{r}
 h <- read.csv("../RawData/RacialDisaggregation/All_cause/H.csv")
-nh <- read.csv("../RawData/RacialDisaggregation/All_cause/NH.csv")
+nh <- read.csv("../RawData/RacialDisaggregation/All_cause/NH.csv") 
+
 
 racial <- clean_racial(nh,h) 
 write_csv(racial, "../CleanData/racial_all_cause.csv")
