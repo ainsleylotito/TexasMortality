@@ -90,4 +90,134 @@ racial %>%
   slice_max(Deaths, n = 4, na_rm = TRUE) %>%
   arrange(race_eth, desc(Deaths))
 ```
+It looks like Hispanics take the lead (340 in August of 2021), Non-Hispanic Blacks behind them with 201 in september of 2021. 
+These are both months that are post-intervention, interestingly. 
+
+Let's see it graphically: 
+```{r}
+racial$month_year <- as.Date(racial$month_year)
+ggplot(racial, aes(x = month_year, y = Deaths, color = race_eth)) +
+  geom_line()+
+  geom_vline(xintercept = as.Date("2021-06-01"), linetype = "dashed", color = "black") +
+ annotate("text", x = as.Date("2021-06-01"), y = max(racial$Deaths, na.rm = TRUE),
+           label = "Bill-8 interruption", angle = 90, vjust = -0.5, hjust = 1, size = 3)
+``` 
+We don't seem to have many dataponits for Hawaiian, which makes sense. But overall it does appear ike we have good data coverage!
+
 Next, let's assess how many months of death data are missing for each group. 
+```{r}
+racial %>%
+  group_by(race_eth) %>%
+  summarize(
+    missing_count = sum(is.na(Deaths)),
+    .groups = "drop"
+  )
+``` 
+
+As expected, missing a lot for Native Hawaiian.  Also missing quite a lot for American Indian/Alaska Native. We generally need at least 12 observations before and after the interruption point, so we will have to exclude American Indian and Native Hawaiian from this study. 
+
+```{r}
+racial <- racial %>% 
+  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native")) 
+``` 
+
+Now that we've explored a little, it's time to fit some ARIMAS. 
+
+# ARIMA Analysis 
+
+## Hispanic 
+
+```{r}
+hispanic <- racial %>% 
+  filter(race_eth == "Hispanic") %>% 
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df(hispanic)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Hispanic All-Cause Deaths"
+)
+```
+
+## Non-Hispanic White 
+
+```{r}
+white  <- racial %>% 
+  filter(race_eth == "White") %>% 
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df(white)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual White All-Cause Deaths"
+)
+```
+
+## Non-Hispanic Black 
+
+```{r}
+black <- racial %>% 
+  filter(race_eth == "Black or African American") %>%  
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df(black)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Black All-Cause Deaths"
+)
+```
+
+## Non-Hispanic Asian  
+
+I have the code for NH Asian, but we don't actually have data on the date itself of June 2021, so I can't run the model. 
+
+In the future we may want to revisit, possibly interpolating (though I believe this is against CDC Wonder rules, so perhaps we just won't be able to examine Asian Deaths in particular.)
+
+```{r, eval = FALSE}
+asian <- racial %>% 
+  filter(race_eth == "Asian") %>% 
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df(asian)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Asian All-Cause Deaths"
+)
+```
+

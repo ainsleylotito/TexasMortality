@@ -20,9 +20,22 @@ clean.xcel <- function(df){
            time = row_number ())
 }
 
+#preparing as time series from a FILE
 prepare_ts <- function(file){
   
   read.csv(file) %>%
+    mutate(
+      month_year = ymd(month_year),
+      month = yearmonth(month_year)
+    ) %>%
+    as_tsibble(index = month)
+  
+} 
+
+#preparing as time series from a DF
+prepare_ts_df <- function(df){
+  
+  df %>%
     mutate(
       month_year = ymd(month_year),
       month = yearmonth(month_year)
@@ -67,17 +80,25 @@ clean_racial <- function(nh, h){
 
 create_intervention <- function(ts_data, intervention_date){
   
+  # Ensure intervention_date is Date
+  intervention_date <- as.Date(intervention_date)
+  ts_data <- ts_data %>%
+    mutate(month_year = as.Date(month_year))  # make sure month_year is Date
+  
+  # Find corresponding row number safely
   intervention_time <- ts_data %>%
     filter(month_year == intervention_date) %>%
     pull(time)
+  
+  if(length(intervention_time) == 0){
+    stop("intervention_date not found in ts_data$month_year")
+  }
   
   ts_data %>%
     mutate(
       t = row_number(),
       step = if_else(t >= intervention_time, 1, 0),
-      ramp = if_else(t >= intervention_time,
-                     t - intervention_time + 1,
-                     0)
+      ramp = if_else(t >= intervention_time, t - intervention_time + 1, 0)
     )
 }
 
