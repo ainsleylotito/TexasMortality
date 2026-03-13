@@ -22,16 +22,6 @@ American Indian or Alaska Native,NA,2022-09-01
 American Indian or Alaska Native,NA,2022-11-01
 American Indian or Alaska Native,NA,2023-06-01
 American Indian or Alaska Native,NA,2023-09-01
-American Indian or Alaska Native,NA,2024-05-01
-American Indian or Alaska Native,NA,2024-06-01
-American Indian or Alaska Native,NA,2024-07-01
-American Indian or Alaska Native,NA,2024-08-01
-American Indian or Alaska Native,NA,2024-11-01
-American Indian or Alaska Native,NA,2025-05-01
-American Indian or Alaska Native,NA,2025-07-01
-American Indian or Alaska Native,NA,2025-10-01
-American Indian or Alaska Native,NA,2025-12-01
-American Indian or Alaska Native,NA,2026-03-01
 Asian,14,2018-02-01
 Asian,10,2018-07-01
 Asian,12,2018-09-01
@@ -67,23 +57,6 @@ Asian,18,2023-05-01
 Asian,12,2023-08-01
 Asian,14,2023-09-01
 Asian,11,2023-12-01
-Asian,13,2024-02-01
-Asian,10,2024-04-01
-Asian,11,2024-05-01
-Asian,21,2024-08-01
-Asian,13,2024-09-01
-Asian,14,2024-10-01
-Asian,12,2025-01-01
-Asian,13,2025-02-01
-Asian,10,2025-03-01
-Asian,11,2025-04-01
-Asian,18,2025-05-01
-Asian,12,2025-06-01
-Asian,12,2025-07-01
-Asian,11,2025-09-01
-Asian,15,2025-11-01
-Asian,13,2025-12-01
-Asian,NA,2026-03-01
 Black or African American,102,2018-01-01
 Black or African American,78,2018-02-01
 Black or African American,68,2018-03-01
@@ -156,33 +129,6 @@ Black or African American,107,2023-09-01
 Black or African American,111,2023-10-01
 Black or African American,114,2023-11-01
 Black or African American,112,2023-12-01
-Black or African American,92,2024-01-01
-Black or African American,98,2024-02-01
-Black or African American,116,2024-03-01
-Black or African American,84,2024-04-01
-Black or African American,122,2024-05-01
-Black or African American,97,2024-06-01
-Black or African American,95,2024-07-01
-Black or African American,96,2024-08-01
-Black or African American,97,2024-09-01
-Black or African American,89,2024-10-01
-Black or African American,81,2024-11-01
-Black or African American,92,2024-12-01
-Black or African American,97,2025-01-01
-Black or African American,91,2025-02-01
-Black or African American,97,2025-03-01
-Black or African American,94,2025-04-01
-Black or African American,98,2025-05-01
-Black or African American,90,2025-06-01
-Black or African American,94,2025-07-01
-Black or African American,80,2025-08-01
-Black or African American,80,2025-09-01
-Black or African American,99,2025-10-01
-Black or African American,106,2025-11-01
-Black or African American,83,2025-12-01
-Black or African American,72,2026-01-01
-Black or African American,41,2026-02-01
-Black or African American,NA,2026-03-01
 Hispanic,134,2018-01-01
 Hispanic,112,2018-02-01
 Hispanic,117,2018-03-01
@@ -255,33 +201,6 @@ Hispanic,136,2023-09-01
 Hispanic,165,2023-10-01
 Hispanic,151,2023-11-01
 Hispanic,160,2023-12-01
-Hispanic,165,2024-01-01
-Hispanic,171,2024-02-01
-Hispanic,156,2024-03-01
-Hispanic,157,2024-04-01
-Hispanic,159,2024-05-01
-Hispanic,162,2024-06-01
-Hispanic,153,2024-07-01
-Hispanic,148,2024-08-01
-Hispanic,147,2024-09-01
-Hispanic,155,2024-10-01
-Hispanic,141,2024-11-01
-Hispanic,140,2024-12-01
-Hispanic,157,2025-01-01
-Hispanic,161,2025-02-01
-Hispanic,152,2025-03-01
-Hispanic,115,2025-04-01
-Hispanic,162,2025-05-01
-Hispanic,148,2025-06-01
-Hispanic,138,2025-07-01
-Hispanic,143,2025-08-01
-Hispanic,150,2025-09-01
-Hispanic,154,2025-10-01
-Hispanic,151,2025-11-01
-Hispanic,142,2025-12-01
-Hispanic,144,2026-01-01
-Hispanic,77,2026-02-01
-Hispanic,NA,2026-03-01
 Native Hawaiian or Other Pacific Islander,NA,2018-01-01
 Native Hawaiian or Other Pacific Islander,NA,2018-02-01
 Native Hawaiian or Other Pacific Islander,NA,2018-03-01
@@ -311,23 +230,6 @@ Native Hawaiian or Other Pacific Islander,NA,2022-12-01
 Native Hawaiian or Other Pacific Islander,NA,2023-04-01
 Native Hawaiian or Other Pacific Islander,NA,2023-06-01
 Native Hawaiian or Other Pacific Islander,NA,2023-08-01
-Native Hawaiian or Other Pacific Islander,NA,2024-01-01
-Native Hawaiian or Other Pacific Islander,NA,2024-02-01
-Native Hawaiian or Other Pacific Islander,NA,2024-03-01
-Native Hawaiian or Other Pacific Islander,NA,2024-04-01
-Native Hawaiian or Other Pacific Islander,NA,2024-05-01
-Native Hawaiian or Other Pacific Islander,NA,2024-06-01
-Native Hawaiian or Other Pacific Islander,NA,2024-09-01
-Native Hawaiian or Other Pacific Islander,NA,2024-11-01
-Native Hawaiian or Other Pacific Islander,NA,2024-12-01
-Native Hawaiian or Other Pacific Islander,NA,2025-03-01
-Native Hawaiian or Other Pacific Islander,NA,2025-06-01
-Native Hawaiian or Other Pacific Islander,NA,2025-07-01
-Native Hawaiian or Other Pacific Islander,NA,2025-08-01
-Native Hawaiian or Other Pacific Islander,NA,2025-12-01
-Native Hawaiian or Other Pacific Islander,NA,2026-01-01
-Native Hawaiian or Other Pacific Islander,NA,2026-02-01
-Native Hawaiian or Other Pacific Islander,NA,2026-03-01
 White,190,2018-01-01
 White,172,2018-02-01
 White,156,2018-03-01
@@ -400,30 +302,3 @@ White,190,2023-09-01
 White,235,2023-10-01
 White,205,2023-11-01
 White,200,2023-12-01
-White,190,2024-01-01
-White,152,2024-02-01
-White,155,2024-03-01
-White,186,2024-04-01
-White,186,2024-05-01
-White,158,2024-06-01
-White,169,2024-07-01
-White,184,2024-08-01
-White,180,2024-09-01
-White,172,2024-10-01
-White,161,2024-11-01
-White,155,2024-12-01
-White,194,2025-01-01
-White,138,2025-02-01
-White,157,2025-03-01
-White,162,2025-04-01
-White,153,2025-05-01
-White,143,2025-06-01
-White,176,2025-07-01
-White,141,2025-08-01
-White,157,2025-09-01
-White,162,2025-10-01
-White,154,2025-11-01
-White,158,2025-12-01
-White,170,2026-01-01
-White,66,2026-02-01
-White,NA,2026-03-01

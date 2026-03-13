@@ -44,7 +44,8 @@ clean_racial <- function(nh, h){
     ) %>%
     select(-Notes,-Month, -Month.Code, -Single.Race.6.Code,
            -Population:-Crude.Rate.Upper.95..Confidence.Interval) %>%
-    rename(race_eth = Single.Race.6)
+    rename(race_eth = Single.Race.6) %>% 
+    filter(month_year < "2024-01-01")
   
   h <- h %>% 
     filter(!is.na(Month), Month != "") %>% 
@@ -54,7 +55,8 @@ clean_racial <- function(nh, h){
       Deaths = na_if(Deaths, 0)
     ) %>%
     select(-Notes:-Month.Code, 
-           -Population:-Crude.Rate.Upper.95..Confidence.Interval)
+           -Population:-Crude.Rate.Upper.95..Confidence.Interval)%>% 
+    filter(month_year < "2024-01-01")
   
   racial <- bind_rows(nh, h) %>%
     arrange(race_eth, month_year)
