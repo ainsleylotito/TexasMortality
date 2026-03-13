@@ -253,4 +253,17 @@ ggplot(nat_f_assault, aes(month_year, Deaths))+
   geom_line() 
 
 write_csv(nat_f_assault, "../CleanData/nat_f_assault.csv")
+``` 
+
+# Disaggregated Race 
+
+We pulled the deaths for assault and all-cause, but we are just going to focus on all-cause to increase power. 
+
+```{r}
+h <- read.csv("../RawData/RacialDisaggregation/All_cause/H.csv")
+nh <- read.csv("../RawData/RacialDisaggregation/All_cause/NH.csv")
+
+racial <- clean_racial(nh,h) 
+write_csv(racial, "../CleanData/racial_all_cause.csv")
+  
 ```

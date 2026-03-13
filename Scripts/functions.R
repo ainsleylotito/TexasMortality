@@ -29,7 +29,36 @@ prepare_ts <- function(file){
     ) %>%
     as_tsibble(index = month)
   
+} 
+
+#cleaning racial/ethnic 
+
+clean_racial <- function(nh, h){
+  
+  nh <- nh %>% 
+    mutate(
+      month_year = my(Month),
+      Deaths = na_if(Deaths, 0)
+    ) %>%
+    select(-Notes,-Month, -Month.Code, -Single.Race.6.Code,
+           -Population:-Crude.Rate.Upper.95..Confidence.Interval) %>%
+    rename(race_eth = Single.Race.6)
+  
+  h <- h %>% 
+    mutate(
+      month_year = my(Month),
+      race_eth = "Hispanic",
+      Deaths = na_if(Deaths, 0)
+    ) %>%
+    select(-Notes:-Month.Code, 
+           -Population:-Crude.Rate.Upper.95..Confidence.Interval)
+  
+  racial <- bind_rows(nh, h) %>%
+    arrange(race_eth, month_year)
+  
+  return(racial)
 }
+
 
 create_intervention <- function(ts_data, intervention_date){
   

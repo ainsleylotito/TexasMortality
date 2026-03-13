@@ -34,7 +34,11 @@ source("functions.r")
 
 This document uses an interrupted time series ARIMA analysis to evaluate changes in mortality (assault and all-cause) following the June 2021 Bill 8 policy intervention restricting access to abortion in Texas. 
 
-Data are from the CDC Multiple Cause of Death Database, including monthly Texas resident death counts from 2018-Dec 2023 (female unless otherwise indicated).
+Data are from the CDC Multiple Cause of Death Database, including monthly Texas resident death counts from 2018-Dec 2023. We fit both female and male, though note that we plan to just report female, including one male model as a counterfactual comparison. 
+
+# Methods 
+
+R code is adapted from this [RPubs article on tidy structure for ITS ARIMAs](https://rpubs.com/jcorbin/tidy_itt_arima)  
 
 The ARIMA model incorporates:
 
@@ -50,7 +54,9 @@ The intervention is modeled using:
 
 - **Ramp variable**: gradual slope change after the intervention
 
-Counterfactual forecasts are generated using the **pre-intervention ARIMA structure**, representing expected mortality trajectories if the policy had not occurred.  
+Counterfactual forecasts are generated using the **pre-intervention ARIMA structure**, representing expected mortality trajectories if the policy had not occurred.   
+
+*Note*: We also conducted a sensitivity analysis where instead of using a step and ramp variable to indicate whether the interruption has passed, we subset the data to Pre-Interruption period, fit an arima, then fit those arima specifications to the full dataset. 
 
 ## Analysis Structure 
 
@@ -66,7 +72,7 @@ We will then explore deaths by assault among women aged 15-44.
 
 Lastly, we will investigate assault mortality among all ages, not just reproductive.  
 
-*Note*: We also conducted a sensitivity analysis where instead of using Forecast() with a set interruption point, we subset the data to Pre-Interruption period, fit an arima, then specify those arima specs with the full dataset. 
+
 
 
 
@@ -145,7 +151,7 @@ augment(f_arima) %>% features(.resid, ljung_box)
 
 ## Sensitivity Analysis 
 
-<details> <summary><b>Pre-Intervention Model Selection</b></summary> 
+<details> <summary><b>Pre-Intervention Model Selection - Female and Male</b></summary> 
 ```{r}
 
 pre_data_f <- monthly_f.ts %>%
@@ -164,7 +170,69 @@ report(f_pre)
 report(m_pre)
 
 ```
-</details>
+</details> 
+
+<details> <summary><b>Fitting with Full Data</b></summary> 
+```{r}
+
+f_sensitivity <- monthly_f.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,0,1),
+      stepwise = FALSE
+    )
+  ) 
+
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,0) + PDQ(1,0,0),
+      stepwise = FALSE
+    )
+  )
+
+report(f_sensitivity)
+report(m_sensitivity)
+```
+</details> 
+
+<details> <summary><b>Forecasted Graphs</b></summary> 
+```{r}
+fc_counterfactual_f <- f_pre %>%
+  forecast(h = 28+4)
+
+fc_counterfactual_m <- m_pre %>%
+  forecast(h = 28+4)
+
+autoplot(fc_counterfactual_f, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date("2021-06-01")),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal() 
+
+autoplot(fc_counterfactual_m, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date("2021-06-01")),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Male Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+```
+</details> 
 
 # Assault Mortality 
 
@@ -238,7 +306,7 @@ augment(f_arima) %>% features(.resid, ljung_box)
 
 ## Sensitivity Analysis 
 
-<details> <summary><b>Pre-Intervention Model Selection</b></summary> 
+<details> <summary><b>Pre-Intervention Model Selection - Female and Male</b></summary> 
 ```{r}
 
 pre_data_f <- monthly_f.ts %>%
@@ -257,7 +325,69 @@ report(f_pre)
 report(m_pre)
 
 ```
-</details>
+</details> 
+
+<details> <summary><b>Fitting with Full Data</b></summary> 
+```{r}
+
+f_sensitivity <- monthly_f.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,0,1),
+      stepwise = FALSE
+    )
+  ) 
+
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,0) + PDQ(1,0,0),
+      stepwise = FALSE
+    )
+  )
+
+report(f_sensitivity)
+report(m_sensitivity)
+```
+</details> 
+
+<details> <summary><b>Forecasted Graphs</b></summary> 
+```{r}
+fc_counterfactual_f <- f_pre %>%
+  forecast(h = 28+4)
+
+fc_counterfactual_m <- m_pre %>%
+  forecast(h = 28+4)
+
+autoplot(fc_counterfactual_f, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date("2021-06-01")),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal() 
+
+autoplot(fc_counterfactual_m, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date("2021-06-01")),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Male Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+```
+</details> 
 
 ## All-Age Assault Mortality 
 
@@ -323,7 +453,7 @@ augment(f_arima) %>% features(.resid, ljung_box)
 
 ## Sensitivity Analysis 
 
-<details> <summary><b>Pre-Intervention Model Selection</b></summary> 
+<details> <summary><b>Pre-Intervention Model Selection - Female and Male</b></summary> 
 ```{r}
 
 pre_data_f <- monthly_f.ts %>%
@@ -342,5 +472,69 @@ report(f_pre)
 report(m_pre)
 
 ```
-</details>
+</details> 
+
+<details> <summary><b>Fitting with Full Data</b></summary> 
+```{r}
+
+f_sensitivity <- monthly_f.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,0,1),
+      stepwise = FALSE
+    )
+  ) 
+
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,0) + PDQ(1,0,0),
+      stepwise = FALSE
+    )
+  )
+
+report(f_sensitivity)
+report(m_sensitivity)
+```
+</details> 
+
+<details> <summary><b>Forecasted Graphs</b></summary> 
+```{r}
+fc_counterfactual_f <- f_pre %>%
+  forecast(h = 28+4)
+
+fc_counterfactual_m <- m_pre %>%
+  forecast(h = 28+4)
+
+autoplot(fc_counterfactual_f, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date("2021-06-01")),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal() 
+
+autoplot(fc_counterfactual_m, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date("2021-06-01")),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Male Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+```
+</details>  
+
+
 

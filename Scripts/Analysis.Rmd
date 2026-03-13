@@ -309,7 +309,7 @@ Selecting ARIMA from pre-period data only:
 
 ```{r arima_specs2, results='hide', message = FALSE, warning = FALSE}
 m_pre <- pre_data %>%
- model(arima = ARIMA(Deaths ~ step + ramp,
+ model(arima = ARIMA(Deaths,
                       stepwise = FALSE, 
                       trace = TRUE))
 ``` 
