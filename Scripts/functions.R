@@ -37,7 +37,7 @@ clean_racial <- function(nh, h){
   
   nh <- nh %>% 
     filter(Single.Race.6 != "",
-           !is.na(Month)) %>% 
+           !is.na(Month), Month != "") %>% 
     mutate(
       month_year = my(Month),
       Deaths = na_if(Deaths, 0)
@@ -47,7 +47,7 @@ clean_racial <- function(nh, h){
     rename(race_eth = Single.Race.6)
   
   h <- h %>% 
-    filter(!is.na(Month)) %>% 
+    filter(!is.na(Month), Month != "") %>% 
     mutate(
       month_year = my(Month),
       race_eth = "Hispanic",
