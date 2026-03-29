@@ -1,0 +1,73 @@
+---
+title: "All_Cause_Minus_COVID"
+
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+    code_folding: hide 
+
+---
+
+```{r setup}
+# Load packages
+library(tidyverse)
+library(ggplot2) 
+library(readxl) 
+library(lubridate)
+library(broom)
+library(viridis)
+library(tsModel)
+library(scales)
+library(grid) 
+library(tseries) 
+library(tsibble) 
+library(fable)
+library(feasts) 
+library(forecast)
+
+# Global options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+rmarkdown::render("All_Cause_Minus_COVID.Rmd", output_file = "Output/All_Cause_Minus_COVID.html")
+
+source("functions.R")
+
+```
+
+This contains all code used to analyze the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file.
+
+# Introduction
+
+This analysis will replicate the May 2021 ARIMA, this time altering the all-cause death data to exclude deaths due to COVID, as they had a colinear increase over the same time period. 
+
+# Descriptive Statistics 
+
+We will start by comparing the all-cause deaths over the time period with the deaths just attributable to COVID. 
+
+```{r all_cause_f}
+all_cause <- read.csv("../CleanData/all_cause_repro_f.csv") 
+all_cause.ts <- all_cause %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(all_cause.ts)
+
+all_cause.ts|>
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+``` 
+
+```{r covid_f}
+covid <- read.csv("../")
+```
+
+
+# All-Cause Minus COVID
+
+We will 
+
+
+
+

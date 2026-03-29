@@ -267,4 +267,90 @@ nh <- read.csv("../RawData/RacialDisaggregation/All_cause/NH.csv")
 racial <- clean_racial(nh,h) 
 write_csv(racial, "../CleanData/racial_all_cause.csv")
   
+``` 
+
+
+# COVID Deaths 
+
+We need to clean the data with deaths attributed to COVID so we may create an all-cause minus COVID mortality dataset. 
+
+Starting with pulling up the COVID mortality data (female reproductive age): 
+
+```{r covid_import}
+covid <- read.csv("../RawData/COVID/COVID.csv")
+#checking import
+glimpse(covid)
+``` 
+
+We have quite a few days where the death value is suppressed. 
+
+```{r}
+covid %>% 
+  filter(Deaths == "Suppressed") %>% 
+  select(Month)
+```
+
+```{r}
+#Need to change suppressed values to be 0s and make deaths numeric. 
+covid <- covid %>% 
+    mutate(Deaths = as.numeric(na_if(Deaths, "Suppressed")),
+          month_year = my(Month)) %>% 
+  select(-Notes,-Month, -"Month.Code", -Population:-"Crude.Rate.Upper.95..Confidence.Interval") %>% 
+  filter(month_year < "2024-01-01") %>% 
+  mutate(time = row_number ())
+
+``` 
+
+Next, we will create new COD variables so when we delete the deaths from all cause we can match up accordingly: 
+
+```{r}
+covid <- covid %>% 
+  mutate(cod = "covid")
+
+all_repro_f <- all_repro_f %>% 
+  mutate(cod = "all_cause") 
+
+#checking if dates are the same: 
+identical(
+  sort(unique(covid$month_year)),
+  sort(unique(all_repro_f$month_year))
+)
+
+#finding dates missing 
+setdiff(covid$month_year, all_repro_f$month_year)
+setdiff(all_repro_f$month_year, covid$month_year)
+
+
+#keeping only shared dates 
+combined <- all_repro_f %>%
+  inner_join(covid, by = "month_year", suffix = c("_all", "_covid"))
+
+#subtracting deaths, making NA deaths 0
+all_cause_minus_covid <- combined %>%
+  mutate(
+    Deaths = Deaths_all - coalesce(Deaths_covid, 0)
+  ) %>%
+  select(month_year, Deaths)
+
+head(all_cause_minus_covid)
+
+#checking that we have every month! 
+full_dates <- seq.Date(
+  from = as.Date("2018-01-01"),
+  to   = as.Date("2023-12-01"),
+  by   = "month"
+)
+
+missing_dates <- setdiff(full_dates, all_cause_minus_covid$month_year)
+
+missing_dates
+
+``` 
+
+After creating our all cause minus covid, it looks as though we have successfully subtracted all and preserved all the dates in our study period. We can now save this cleaned dataset. 
+
+```{r}
+
+write_csv(all_cause_minus_covid, "../CleanData/all_cause_minus_covid.csv")
+
 ```
