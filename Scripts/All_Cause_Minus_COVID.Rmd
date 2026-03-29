@@ -1,5 +1,5 @@
 ---
-title: "All_Cause_Minus_COVID"
+title: "All Cause Minus COVID"
 
 output:
   html_document:
@@ -8,7 +8,7 @@ output:
     number_sections: true
     toc_float: true
     code_folding: hide 
-
+output_dir: Output
 ---
 
 ```{r setup}
@@ -30,7 +30,6 @@ library(forecast)
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
-rmarkdown::render("All_Cause_Minus_COVID.Rmd", output_file = "Output/All_Cause_Minus_COVID.html")
 
 source("functions.R")
 
@@ -60,7 +59,7 @@ all_cause.ts|>
 ``` 
 
 ```{r covid_f}
-covid <- read.csv("../")
+covid <- read.csv("../CleanData/all_cause_minus_covid.csv")
 ```
 
 
