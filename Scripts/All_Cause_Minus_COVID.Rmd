@@ -173,5 +173,127 @@ fc_counterfactual <- counterfactual %>%
 
 ```
 
+# Racial Disag 
+
+```{r, include = FALSE}
+racial_all_cause <- read.csv("../CleanData/racial_all_cause.csv")
+head(racial_all_cause)
+dim(racial_all_cause)
+
+racial_covid <- read.csv("../CleanData/racial_minus_covid.csv") 
+
+```
+
+Comparing all cause and all cause minus covid: 
+
+```{r, echo = FALSE}
+racial_all_cause$month_year <- as.Date(racial_all_cause$month_year)
+ggplot(racial_all_cause, aes(x = month_year, y = Deaths, color = race_eth)) +
+  geom_line()+
+  geom_vline(xintercept = as.Date("2021-06-01"), linetype = "dashed", color = "black") +
+ annotate("text", x = as.Date("2021-06-01"), y = max(racial$Deaths, na.rm = TRUE),
+           label = "Bill-8 interruption", angle = 90, vjust = -0.5, hjust = 1, size = 3)+
+  ggtitle("All Cause Deaths")
+
+racial_covid$month_year <- as.Date(racial_covid$month_year)
+ggplot(racial_covid, aes(x = month_year, y = Deaths, color = race_eth)) +
+  geom_line()+
+  geom_vline(xintercept = as.Date("2021-06-01"), linetype = "dashed", color = "black") +
+ annotate("text", x = as.Date("2021-06-01"), y = max(racial$Deaths, na.rm = TRUE),
+           label = "Bill-8 interruption", angle = 90, vjust = -0.5, hjust = 1, size = 3)+
+   ggtitle("All Cause Minus COVID Deaths")
+``` 
+
+Once again, a lot of the relationship we previously saw is now missing.  
+
+Let's also check and see how much data is missing: 
+```{r} 
+range(racial_covid$Deaths)
+
+racial_covid %>%
+  group_by(race_eth) %>%
+  summarize(
+    missing_count = sum(is.na(Deaths)),
+    .groups = "drop"
+  )
+```
+
+
+# ARIMA Analysis 
+
+We run into a problem here.... there are implicit gaps in time for each of the racial groups. The only way to get around this is to use `tsibble::fill_gaps()`, which goes against CDC rules. For exploration sake, we are going to proceed with that, but this is probably unusable.
+
+## Hispanic 
+
+```{r}
+hispanic <- racial_covid %>% 
+  filter(race_eth == "Hispanic") %>% 
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df_fill_gaps(hispanic)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Hispanic All-Cause Deaths"
+)
+```
+
+## Non-Hispanic White  
+
+Won't run, we're missing the intervention date. 
+
+```{r, eval = FALSE}
+white  <- racial_covid %>% 
+  filter(race_eth == "White") %>% 
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df_fill_gaps(white)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual White All-Cause Deaths"
+)
+```
+
+## Non-Hispanic Black 
+
+This one also doesn't have the intervention date in data! Big bummer. 
+
+```{r, eval = FALSE}
+black <-  racial_covid %>% 
+  filter(race_eth == "Black or African American") %>%  
+  arrange(month_year) %>% 
+  mutate(time = row_number())
+
+monthly.ts <- prepare_ts_df_fill_gaps(black)
+monthly.ts <- create_intervention(monthly.ts, "2021-06-01")
+
+m_arima <- fit_arima(monthly.ts)
+
+fc_m <- counterfactual_forecast(monthly.ts, "2021-06-01", 32)
+
+plot_counterfactual(
+  fc_m,
+  monthly.ts,
+  "2021-06-01",
+  "Observed vs Counterfactual Black All-Cause Deaths"
+)
+```
 
 

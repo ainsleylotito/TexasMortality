@@ -322,15 +322,19 @@ setdiff(all_repro_f$month_year, covid$month_year)
 
 
 #keeping only shared dates 
-combined <- all_repro_f %>%
-  inner_join(covid, by = "month_year", suffix = c("_all", "_covid"))
+combined_racial <- racial %>%
+  inner_join(
+    racial_covid,
+    by = c("month_year", "race_eth"),
+    suffix = c("_all", "_covid")
+  )
 
 #subtracting deaths, making NA deaths 0
 all_cause_minus_covid <- combined %>%
   mutate(
     Deaths = Deaths_all - coalesce(Deaths_covid, 0)
   ) %>%
-  select(month_year, Deaths)
+  select(month_year, race_eth, Deaths)
 
 head(all_cause_minus_covid)
 
@@ -353,4 +357,65 @@ After creating our all cause minus covid, it looks as though we have successfull
 
 write_csv(all_cause_minus_covid, "../CleanData/all_cause_minus_covid.csv")
 
+```
+
+## Racial Disag 
+
+```{r racial_covid_import}
+h_covid <- read.csv("../RawData/RacialDisaggregation/COVID/H.csv")
+nh_covid <- read.csv("../RawData/RacialDisaggregation/COVID/NH.csv") 
+head(h_covid)
+head(nh_covid)
+
+racial_covid <- clean_racial(nh_covid,h_covid) 
+head(racial_covid)
+
+racial_covid <- racial_covid %>% 
+  mutate(cod = "covid") %>% 
+  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native")) 
+
+``` 
+
+```{r}
+#cleaning the two datasets: 
+racial <- racial %>% 
+  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native")) %>% 
+  mutate(cod = "all_cause")  
+
+head(racial_covid)
+head(racial)
+
+#checking if dates are the same: 
+identical(
+  sort(unique(racial_covid$month_year)),
+  sort(unique(racial$month_year))
+)
+
+
+#keeping only shared dates 
+combined_racial <- racial %>%
+  inner_join(racial_covid, by = c("month_year", "race_eth"), suffix = c("_all", "_covid"))
+
+#subtracting deaths, making NA deaths 0
+racial_minus_covid <- combined_racial %>%
+  mutate(
+    Deaths = Deaths_all - coalesce(Deaths_covid, 0)
+  ) %>%
+  select(race_eth, month_year, Deaths)
+
+head(racial_minus_covid)
+
+#checking that we have every month! 
+full_dates <- seq.Date(
+  from = as.Date("2018-01-01"),
+  to   = as.Date("2023-12-01"),
+  by   = "month"
+)
+
+missing_dates <- setdiff(full_dates, all_cause_minus_covid$month_year)
+
+missing_dates
+
+write_csv(racial_minus_covid, "../CleanData/racial_minus_covid.csv")
+  
 ```

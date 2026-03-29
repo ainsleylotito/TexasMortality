@@ -44,6 +44,19 @@ prepare_ts_df <- function(df){
   
 } 
 
+#preparing as time series from a DF, this time allowing ts to fill gaps
+prepare_ts_df_fill_gaps <- function(df){
+  
+  df %>%
+    mutate(
+      month_year = ymd(month_year),
+      month = yearmonth(month_year)
+    ) %>%
+    as_tsibble(index = month) %>%
+    fill_gaps()
+  
+}
+
 #cleaning racial/ethnic 
 
 clean_racial <- function(nh, h){

@@ -1,0 +1,165 @@
+race_eth,month_year,Deaths
+Asian,2018-02-01,14
+Asian,2018-07-01,10
+Asian,2018-09-01,12
+Asian,2018-11-01,10
+Asian,2018-12-01,12
+Asian,2019-01-01,12
+Asian,2019-06-01,13
+Asian,2019-07-01,11
+Asian,2019-09-01,10
+Asian,2019-10-01,10
+Asian,2020-02-01,23
+Asian,2020-04-01,11
+Asian,2020-05-01,11
+Asian,2020-07-01,10
+Asian,2020-08-01,12
+Asian,2021-07-01,14
+Asian,2022-04-01,10
+Asian,2022-05-01,10
+Asian,2022-06-01,12
+Asian,2022-08-01,10
+Asian,2022-09-01,21
+Asian,2023-05-01,18
+Asian,2023-08-01,12
+Asian,2023-09-01,14
+Asian,2023-12-01,11
+Black or African American,2018-01-01,102
+Black or African American,2018-02-01,78
+Black or African American,2018-03-01,68
+Black or African American,2018-04-01,71
+Black or African American,2018-05-01,77
+Black or African American,2018-06-01,67
+Black or African American,2018-07-01,74
+Black or African American,2018-08-01,69
+Black or African American,2018-09-01,73
+Black or African American,2018-10-01,78
+Black or African American,2018-11-01,77
+Black or African American,2018-12-01,93
+Black or African American,2019-01-01,71
+Black or African American,2019-02-01,77
+Black or African American,2019-03-01,91
+Black or African American,2019-04-01,76
+Black or African American,2019-05-01,86
+Black or African American,2019-06-01,72
+Black or African American,2019-07-01,79
+Black or African American,2019-08-01,79
+Black or African American,2019-09-01,67
+Black or African American,2019-10-01,76
+Black or African American,2019-11-01,87
+Black or African American,2019-12-01,90
+Black or African American,2020-01-01,76
+Black or African American,2020-02-01,67
+Black or African American,2020-03-01,75
+Black or African American,2020-07-01,110
+Black or African American,2020-10-01,92
+Black or African American,2020-11-01,96
+Black or African American,2020-12-01,78
+Black or African American,2021-01-01,98
+Black or African American,2021-02-01,86
+Black or African American,2021-03-01,86
+Black or African American,2021-08-01,101
+Black or African American,2021-09-01,115
+Black or African American,2021-10-01,91
+Black or African American,2021-12-01,100
+Black or African American,2022-01-01,116
+Black or African American,2022-02-01,96
+Black or African American,2023-04-01,97
+Black or African American,2023-05-01,126
+Black or African American,2023-06-01,111
+Black or African American,2023-07-01,109
+Hispanic,2018-01-01,134
+Hispanic,2018-02-01,112
+Hispanic,2018-03-01,117
+Hispanic,2018-04-01,120
+Hispanic,2018-05-01,124
+Hispanic,2018-06-01,116
+Hispanic,2018-07-01,118
+Hispanic,2018-08-01,113
+Hispanic,2018-09-01,115
+Hispanic,2018-10-01,100
+Hispanic,2018-11-01,140
+Hispanic,2018-12-01,111
+Hispanic,2019-01-01,114
+Hispanic,2019-02-01,102
+Hispanic,2019-03-01,121
+Hispanic,2019-04-01,132
+Hispanic,2019-05-01,112
+Hispanic,2019-06-01,126
+Hispanic,2019-07-01,142
+Hispanic,2019-08-01,136
+Hispanic,2019-09-01,115
+Hispanic,2019-10-01,107
+Hispanic,2019-11-01,119
+Hispanic,2019-12-01,156
+Hispanic,2020-01-01,134
+Hispanic,2020-02-01,112
+Hispanic,2020-06-01,140
+Hispanic,2020-07-01,152
+Hispanic,2020-08-01,138
+Hispanic,2020-09-01,139
+Hispanic,2020-10-01,121
+Hispanic,2020-11-01,145
+Hispanic,2020-12-01,151
+Hispanic,2021-01-01,159
+Hispanic,2021-02-01,123
+Hispanic,2021-03-01,160
+Hispanic,2021-04-01,148
+Hispanic,2021-05-01,140
+Hispanic,2021-06-01,155
+Hispanic,2021-07-01,141
+Hispanic,2021-08-01,178
+Hispanic,2021-09-01,147
+Hispanic,2021-10-01,139
+Hispanic,2021-11-01,164
+Hispanic,2021-12-01,156
+Hispanic,2022-01-01,154
+Hispanic,2022-02-01,137
+Hispanic,2022-03-01,168
+Hispanic,2023-01-01,160
+Hispanic,2023-07-01,162
+Hispanic,2023-10-01,165
+White,2018-01-01,190
+White,2018-02-01,172
+White,2018-03-01,156
+White,2018-04-01,134
+White,2018-05-01,167
+White,2018-06-01,160
+White,2018-07-01,179
+White,2018-08-01,168
+White,2018-09-01,167
+White,2018-10-01,172
+White,2018-11-01,142
+White,2018-12-01,157
+White,2019-01-01,177
+White,2019-02-01,161
+White,2019-03-01,171
+White,2019-04-01,179
+White,2019-05-01,157
+White,2019-06-01,146
+White,2019-07-01,141
+White,2019-08-01,172
+White,2019-09-01,169
+White,2019-10-01,190
+White,2019-11-01,181
+White,2019-12-01,161
+White,2020-01-01,205
+White,2020-02-01,152
+White,2020-11-01,198
+White,2020-12-01,184
+White,2021-01-01,202
+White,2021-02-01,188
+White,2021-03-01,238
+White,2021-05-01,192
+White,2021-07-01,204
+White,2021-08-01,195
+White,2021-09-01,175
+White,2021-10-01,214
+White,2021-11-01,171
+White,2021-12-01,194
+White,2022-01-01,204
+White,2022-02-01,193
+White,2023-01-01,179
+White,2023-05-01,197
+White,2023-06-01,176
+White,2023-11-01,205
