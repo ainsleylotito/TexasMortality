@@ -8,10 +8,12 @@ output:
     number_sections: true
     toc_float: true
     code_folding: hide 
+    
 output_dir: Output
 ---
 
-```{r setup}
+
+```{r setup, include=FALSE}
 # Load packages
 library(tidyverse)
 library(ggplot2) 
@@ -27,12 +29,12 @@ library(tsibble)
 library(fable)
 library(feasts) 
 library(forecast)
+library(rmarkdown)
 
 # Global options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
 
 source("functions.R")
-
 ```
 
 This contains all code used to analyze the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file.
@@ -43,7 +45,7 @@ This analysis will replicate the May 2021 ARIMA, this time altering the all-caus
 
 # Descriptive Statistics 
 
-We will start by comparing the all-cause deaths over the time period with the deaths just attributable to COVID. 
+We will start by comparing the all-cause deaths over the time period with the all-cause deaths minus the ones attributable to covid. 
 
 ```{r all_cause_f}
 all_cause <- read.csv("../CleanData/all_cause_repro_f.csv") 
@@ -59,14 +61,117 @@ all_cause.ts|>
 ``` 
 
 ```{r covid_f}
-covid <- read.csv("../CleanData/all_cause_minus_covid.csv")
+all_minus_covid <- read.csv("../CleanData/all_cause_minus_covid.csv")
+
+all_minus_covid.ts <- all_minus_covid %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year),
+         time = row_number()) %>% 
+  as_tsibble(index = month)
+  
+glimpse(all_minus_covid.ts)
+
+all_minus_covid.ts |>
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
 ```
 
+Looking at these graphs, it is pretty clear that once we remove COVID-attributable deaths, we see a very different picture: it looks like over the study period, all-cause deaths are generally increasing over time, with no observable outliers. 
 
-# All-Cause Minus COVID
+We will continue with fitting an arima, though it is almost guaranteed that all the values forecasted will be completely expected. 
 
-We will 
+```{r, include = FALSE}
+range(all_minus_covid.ts$time)
+# Create variable representing step and ramp changes
+intervention_month <- all_minus_covid.ts %>% 
+  filter(month_year == "2021-05-01") %>% 
+  pull(time)
+ all_minus_covid.ts <-  all_minus_covid.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
 
+#View the step and ramp variables
+all_minus_covid.ts %>% 
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-05-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Visualizing Step and Ramp Variables",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  ) 
+``` 
+
+```{r, include = FALSE}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+all_minus_covid.arima <- all_minus_covid.ts %>% 
+  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+
+#Plotting model residuals
+all_minus_covid.arima  %>% 
+  gg_tsresiduals()
+
+#Ljung-Box test
+augment(all_minus_covid.arima) %>%  
+  features(.resid, ljung_box)
+``` 
+
+```{r}
+report(all_minus_covid.arima)
+
+#Modeling counterfactual
+counterfactual <- all_minus_covid.ts %>%
+  filter(month_year < "2021-05-01") %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(counterfactual)
+
+#forecast into post-intervention period 
+fc_counterfactual <- counterfactual %>%
+  forecast(h = 28+4) 
+
+ autoplot(fc_counterfactual, all_minus_covid.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 5))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female All-Cause Minus COVID Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+```
 
 
 
