@@ -191,7 +191,7 @@ racial_all_cause$month_year <- as.Date(racial_all_cause$month_year)
 ggplot(racial_all_cause, aes(x = month_year, y = Deaths, color = race_eth)) +
   geom_line()+
   geom_vline(xintercept = as.Date("2021-06-01"), linetype = "dashed", color = "black") +
- annotate("text", x = as.Date("2021-06-01"), y = max(racial$Deaths, na.rm = TRUE),
+ annotate("text", x = as.Date("2021-06-01"), y = max(racial_all_cause$Deaths, na.rm = TRUE),
            label = "Bill-8 interruption", angle = 90, vjust = -0.5, hjust = 1, size = 3)+
   ggtitle("All Cause Deaths")
 
@@ -199,7 +199,7 @@ racial_covid$month_year <- as.Date(racial_covid$month_year)
 ggplot(racial_covid, aes(x = month_year, y = Deaths, color = race_eth)) +
   geom_line()+
   geom_vline(xintercept = as.Date("2021-06-01"), linetype = "dashed", color = "black") +
- annotate("text", x = as.Date("2021-06-01"), y = max(racial$Deaths, na.rm = TRUE),
+ annotate("text", x = as.Date("2021-06-01"), y = max(racial_covid$Deaths, na.rm = TRUE),
            label = "Bill-8 interruption", angle = 90, vjust = -0.5, hjust = 1, size = 3)+
    ggtitle("All Cause Minus COVID Deaths")
 ``` 
