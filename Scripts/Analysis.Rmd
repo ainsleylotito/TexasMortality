@@ -349,7 +349,9 @@ augment(m_monthly.ts) %>%
 ``` 
 Both p-values very high, so both models account for serial correlation. 
 
-Difference in step/ramps estimates due to differencing??
+Difference in step/ramps estimates due to differencing?? 
+
+
 
 # All Cause Mortality, Texan Female Residents
 

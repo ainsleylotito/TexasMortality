@@ -232,7 +232,34 @@ autoplot(fc_counterfactual_m, monthly_m.ts, level = 95) +
   scale_y_continuous(expand = c(0,0)) +
   theme_minimal()
 ```
-</details> 
+</details>  
+
+### Explicit seasonal + trend terms 
+
+As pointed out by Brooke, we may want to explicitly model the seasonal and trend terms in the ARIMA itself. 
+
+We will first make month a factor: 
+```{r}
+monthly.ts <- monthly.ts %>%
+  mutate(
+    month_factor = factor(lubridate::month(month_year))
+  ) 
+
+m_sensitivity <- monthly.ts %>% 
+  model(
+    arima = ARIMA(Deaths ~ step + ramp + t + month_factor,
+                  stepwise = FALSE)
+  )
+
+report(m_sensitivity) 
+
+#it'd be nice here if I made a function to plot the counterfactual predicted trend?
+``` 
+
+t is the global linear trend term (t= time), and month_factor forces recurring seasonal patterns to persist. 
+Other option: use Fourier terms (number of sine/cosine pairs)
+- we don't know the seasonality this explicitly, might not be the way to go??
+
 
 # Assault Mortality 
 
