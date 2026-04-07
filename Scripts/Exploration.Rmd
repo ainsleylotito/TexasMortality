@@ -21,32 +21,297 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 This contains all code used to explore the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file. 
 
-```{r import}
+# Descriptive Analysis  
+
+We are going to get some descriptive stats for our 3 analyses of interest, using June as our interruption point.
+
+## 1. All-Cause 
+```{r, include = FALSE}
+#female all cause, reproductive age
+f_all <- read.csv("../CleanData/all_cause_repro_f.csv")
+
+# male all cause, reproductive age
+m_all <- read.csv("../CleanData/all_cause_repro_m.csv")
+ 
+#all cause MINUS covid (female only, repro age) 
+f_minus_covid <- read.csv("../CleanData/all_cause_minus_covid.csv") 
+
+#just covid, female, repro age
+
+covid <- read.csv("../RawData/COVID/COVID.csv")
+covid <- covid %>% 
+    mutate(Deaths = as.numeric(na_if(Deaths, "Suppressed")),
+          month_year = my(Month)) %>% 
+  select(-Notes,-Month, -"Month.Code", -Population:-"Crude.Rate.Upper.95..Confidence.Interval") %>% 
+  filter(month_year < "2024-01-01") %>% 
+  mutate(time = row_number ())
+```
+
+**How many deaths occurred over the study period that were all cause? By sex?**
+
+```{r}
+f_all %>% 
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+m_all %>% 
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+Females had 33,290 over the study period. Males had 72,089 deaths. 105,379 total deaths occurred among reproductive aged-texas residents from January 2018 to Dec 2023. 
+
+**What months had the most deaths for males and females? What were the top 3 death counts?** 
+
+```{r}
+f_all %>% 
+  arrange(desc(Deaths)) %>% 
+  select(month_year, Deaths) %>% 
+  slice(1:3) 
+
+m_all %>% 
+  arrange(desc(Deaths)) %>% 
+  select(month_year, Deaths) %>% 
+  slice(1:3) 
+
+```
+For both males and females, the months with the highest death counts were August, September, and October of 2021. Deaths were higher among men than females for these months.
+
+**How many female deaths were due to covid? For which months? What do they look like plotted against each other?** 
+
+```{r}
+#deaths due to covid
+covid %>%  
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+#which months 
+covid %>% 
+  filter(!is.na(Deaths)& Deaths != 0)
+
+#deaths without covid 
+f_minus_covid %>%  
+ summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+#plotting them both side by side
+f_all <- f_all %>%
+  mutate(month_year = as.Date(month_year))
+
+covid <- covid %>%
+  mutate(month_year = as.Date(month_year))
+
+ggplot() +
+  geom_line(data = f_all,
+            aes(x = month_year, y = Deaths),
+            color = "black") +
+  geom_line(data = covid,
+            aes(x = month_year, y = Deaths),
+            color = "red") +
+ scale_x_date(date_breaks = "2 months", date_labels = "%b %Y")+
+  labs(x = "Month-Year",
+       y = "Deaths") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+``` 
+
+It's pretty clear here that a big portion of the death spike we see is from a covid outbreak in texas. 
+
+**Let's plot and describe the deaths that are all causes, EXCEPT COVID deaths.** 
+```{r}
+#how many deaths over study period?
+f_minus_covid %>%  
+  summarize(n_deaths = sum(Deaths, na.rm = TRUE))
+
+#largest death counts? 
+f_minus_covid %>% 
+  arrange(desc(Deaths)) %>% 
+  select(month_year, Deaths) %>% 
+  slice(1:3) 
+
+#plotting 
+f_minus_covid <- f_minus_covid %>% 
+  mutate(month_year = as.Date(month_year))
+
+vline_date <- as.Date("2021-05-01") 
+
+ggplot(f_minus_covid)+
+geom_line(data = f_minus_covid,
+            aes(x = month_year, y = Deaths),
+            color = "black") +
+   geom_vline(xintercept = vline_date, linetype = "dashed", color = "red") +
+  annotate("text",
+           x = vline_date,
+           y = 350, # slightly above top
+           label = "June, 2021",
+           angle = 90,
+           vjust = -0.5, 
+           color = "red")
+
+``` 
+
+It does not appear as though these results are unexpected. No outliers are likely. 
+
+## 2. Reproductive-aged Assault Mortality  
+
+Next, we will explore just reproductive-aged deaths by assault. 
+
+```{r, include = FALSE}
 monthly_f <- read.csv("../CleanData/monthly_f.csv") 
+monthly_m <- read.csv("../CleanData/monthly_m.csv")
+monthly_all <- read.csv("../CleanData/monthly_all.csv")
 
 monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year)) %>% 
+  select(-bill8,-sex)
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year)) %>% 
+  select(-bill8)
+
+monthly_all <- monthly_all %>% 
   mutate(month_year = ymd(month_year))
 
-#looking at when the bill was implemented
-monthly_f %>% 
-  group_by(bill8) %>% 
-  slice(1:3) #month 45
+```
 
-#which months are pre-Bill 8 
+**How many deaths occurred among females? Males? Which months had highest counts?**
+
+```{r}
+#female death count
 monthly_f %>% 
-  filter(bill8 == FALSE) %>% 
-  arrange(month_year) %>%
-  slice(c(1, n()))
-#which months are post-Bill 8
+  summarize(n_deaths = sum(Deaths, na.rm = TRUE))  
+#male death count
+monthly_m %>% 
+  summarize(n_deaths = sum(Deaths, na.rm = TRUE))  
+#highest counts female
 monthly_f %>% 
-  filter(bill8 == TRUE) %>% 
-   arrange(month_year) %>%
-  slice(c(1, n())) 
-#how many post-Bill 8 
-monthly_f %>%
-  filter(bill8 == TRUE) %>%
-  nrow()
+  arrange(desc(Deaths)) %>% 
+  select(month_year, Deaths) %>% 
+  slice(1:3) 
+#highest count male
+monthly_m %>% 
+  arrange(desc(Deaths)) %>% 
+  select(month_year, Deaths) %>% 
+  slice(1:3) 
+#descriptive stats
+monthly_all %>%
+  group_by(sex) %>%
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+**Plotting both** 
+```{r}
+monthly_all <- monthly_all %>% 
+   mutate(month_year = as.Date(month_year))
+
+ggplot(monthly_all) +
+  geom_line(aes(x = month_year, y = Deaths, color = sex)) +
+  geom_vline(xintercept = vline_date, linetype = "dashed", color = "red") +
+  annotate("text",
+           x = vline_date,
+           y = 45,
+           label = "June, 2021",
+           angle = 90,
+           vjust = -0.5,
+           color = "red") +
+  theme_minimal()
+```
+
+## 3. All-age Assault Mortality
+
+We will investigate assault mortality among all ages, not just reproductive. 
+
+```{r, include = FALSE}
+m_all_age <- read.csv("../CleanData/all_age_m_assault.csv")
+f_all_age <- read.csv("../CleanData/all_age_f_assault.csv") 
+
+m_all_age <- m_all_age %>% 
+   mutate(month_year = as.Date(month_year))
+
+f_all_age <- f_all_age %>% 
+   mutate(month_year = as.Date(month_year))
+```
+
+```{r}
+m_all_age %>%
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+f_all_age %>%
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
+
 ``` 
+**Plotting both** 
+```{r}
+ggplot() +
+  geom_line(data = f_all_age,
+            aes(x = month_year, y = Deaths),
+            color = "hotpink") +
+  geom_line(data = m_all_age,
+            aes(x = month_year, y = Deaths),
+            color = "lightblue3") +
+  labs(x = "Date",
+       y = "Deaths") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  geom_vline(xintercept = vline_date, linetype = "dashed", color = "red") +
+  annotate("text",
+           x = vline_date,
+           y = 65,
+           label = "June, 2021",
+           angle = 90,
+           vjust = -0.5,
+           color = "red") +
+  theme_minimal()+ 
+  ggtitle("All Age Assault Deaths", 
+          subtitle= "Male vs. Female")
+```
+
+## 4. Racial breakdown 
+
+
+
+
+
+
+# Investigating Models
 
 Next we are going to plot the forcing value (time) and the outcome (death count)
 ```{r}
@@ -199,43 +464,7 @@ ggplot(plot_data, aes(x = time)) +
 
 This provides us some interesting trends, but what we are really interested is utilizing an interrupted-ARIMA model to identify the significance of our outliers. We are going to proceed with this analysis in the rmd document called `/Scripts/Analysis`.  
 
-# Exploring male vs. female deaths 
 
-```{r import}
-monthly_f <- read.csv("../CleanData/monthly_f.csv") 
-monthly_m <- read.csv("../CleanData/monthly_m.csv")
-monthly_all <- read.csv("../CleanData/monthly_all.csv")
-
-monthly_f <- monthly_f %>% 
-  mutate(month_year = ymd(month_year))
-
-monthly_m <- monthly_m %>% 
-  mutate(month_year = ymd(month_year))
-
-monthly_all <- monthly_all %>% 
-  mutate(month_year = ymd(month_year))
-
-```
-
-
-```{r descriptive}
-monthly_all %>%
-  group_by(sex) %>%
-  summarise(
-    n_months      = n(),
-    total_deaths  = sum(Deaths, na.rm = TRUE),
-    monthly_mean  = mean(Deaths, na.rm = TRUE),
-    monthly_sd    = sd(Deaths, na.rm = TRUE),
-    .groups = "drop"
-  )
-monthly_all %>%
-  filter(month_year == "2021-09-01") %>%
-  pull(time)
-monthly_all %>%
-  filter(month_year == as.Date("2021-09-01")) %>%
-  select(sex, month_year, time)
-
-```
 
 I am next going to replicate Figure 1 from the manuscript: 
 ```{r figure_1 ,fig.width = 11, fig.height = 7}
@@ -296,4 +525,3 @@ ggplot() +
 
 ```
 
-We want to explore all ages for females as a sensitivity analysis. 
