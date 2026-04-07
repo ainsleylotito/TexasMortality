@@ -88,6 +88,47 @@ clean_racial <- function(nh, h){
     arrange(race_eth, month_year)
   
   return(racial)
+} 
+
+#Racial annually
+clean_racial_annual <- function(nh, h){
+  
+  nh <- nh %>% 
+    rename_with(tolower) %>% 
+    filter(!is.na(year)) %>% 
+    filter(year %in% c("2018","2019","2020","2021","2022","2023","2024")) %>% 
+    mutate(
+      year = as.numeric(year),
+      deaths = if (is.character(deaths)) {
+        na_if(deaths, "Suppressed")
+      } else {
+        deaths
+      },
+      deaths = as.numeric(deaths)
+    ) %>%
+    select(-notes, -year.code, -single.race.6.code,
+           -population:-crude.rate.upper.95..confidence.interval) %>%
+    rename(race_eth = single.race.6)
+  
+  h <- h %>% 
+    rename_with(tolower) %>% 
+    filter(!is.na(year)) %>% 
+    filter(year %in% c("2018","2019","2020","2021","2022","2023","2024")) %>% 
+    mutate(
+      year = as.numeric(year),
+      deaths = if (is.character(deaths)) {
+        na_if(deaths, "Suppressed")
+      } else {
+        deaths
+      },
+      deaths = as.numeric(deaths),
+      race_eth = "Hispanic"
+    ) %>% 
+    select(-notes,-year.code,
+           -population:-crude.rate.upper.95..confidence.interval)
+  
+  bind_rows(nh, h) %>%
+    arrange(race_eth, year)
 }
 
 

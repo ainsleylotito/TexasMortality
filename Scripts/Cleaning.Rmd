@@ -418,4 +418,34 @@ missing_dates
 
 write_csv(racial_minus_covid, "../CleanData/racial_minus_covid.csv")
   
+``` 
+
+### Annual 
+
+We are going to look at annual trends in terms of assault deaths for repro-age females, just in case there's something to be said there. 
+
+```{r}
+h_assault <- read.csv("../RawData/RacialDisaggregation/Assault/Annual/H.csv")
+nh_assault <- read.csv("../RawData/RacialDisaggregation/Assault/Annual/NH.csv") 
+head(h_assault)
+head(nh_assault)
+
+unique(nh_assault$Year)
+unique(h_assault$Year)
+
+racial_assault <- clean_racial_annual(nh_assault,h_assault)  
+
+
+head(racial_assault) 
+
+racial_assault %>% 
+  group_by(race_eth) %>% 
+  filter(is.na(deaths)) 
+
+#missing too much info for Asian and American Indian/Alaska Native, excluding those from df 
+
+racial_assault <- racial_assault %>% 
+  filter(!race_eth %in% c("American Indian or Alaska Native", "Asian")) 
+
+write.csv(racial_assault, "../CleanData/racial_assault_annual.csv")
 ```

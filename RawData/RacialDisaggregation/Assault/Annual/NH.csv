@@ -1,0 +1,123 @@
+"Notes","Year","Year Code","Single Race 6","Single Race 6 Code",Deaths,Population,Crude Rate,Crude Rate Lower 95% Confidence Interval,Crude Rate Upper 95% Confidence Interval
+,"2018","2018","American Indian or Alaska Native","1002-5",0,18913,0.0,0.0,0.0
+,"2018","2018","Asian","A",Suppressed,349407,Suppressed,Suppressed,Suppressed
+,"2018","2018","Black or African American","2054-5",73,786516,9.3,7.3,11.7
+,"2018","2018","Native Hawaiian or Other Pacific Islander","NHOPI",0,6134,0.0,0.0,0.0
+,"2018","2018","White","2106-3",53,2173079,2.4,1.8,3.2
+,"2019","2019","American Indian or Alaska Native","1002-5",0,19128,0.0,0.0,0.0
+,"2019","2019","Asian","A",Suppressed,351622,Suppressed,Suppressed,Suppressed
+,"2019","2019","Black or African American","2054-5",56,801117,7.0,5.3,9.1
+,"2019","2019","Native Hawaiian or Other Pacific Islander","NHOPI",0,6391,0.0,0.0,0.0
+,"2019","2019","White","2106-3",52,2180756,2.4,1.8,3.1
+,"2020","2020","American Indian or Alaska Native","1002-5",0,19398,0.0,0.0,0.0
+,"2020","2020","Asian","A",Suppressed,357701,Suppressed,Suppressed,Suppressed
+,"2020","2020","Black or African American","2054-5",85,817043,10.4,8.3,12.9
+,"2020","2020","Native Hawaiian or Other Pacific Islander","NHOPI",0,6564,0.0,0.0,0.0
+,"2020","2020","White","2106-3",88,2191463,4.0,3.2,4.9
+,"2021","2021","American Indian or Alaska Native","1002-5",0,19770,0.0,0.0,0.0
+,"2021","2021","Asian","A",Suppressed,359846,Suppressed,Suppressed,Suppressed
+,"2021","2021","Black or African American","2054-5",92,828177,11.1,9.0,13.6
+,"2021","2021","Native Hawaiian or Other Pacific Islander","NHOPI",0,6659,0.0,0.0,0.0
+,"2021","2021","White","2106-3",73,2184587,3.3,2.6,4.2
+,"2022","2022","American Indian or Alaska Native","1002-5",Suppressed,20021,Suppressed,Suppressed,Suppressed
+,"2022","2022","Asian","A",Suppressed,381621,Suppressed,Suppressed,Suppressed
+,"2022","2022","Black or African American","2054-5",98,858512,11.4,9.3,13.9
+,"2022","2022","Native Hawaiian or Other Pacific Islander","NHOPI",0,6977,0.0,0.0,0.0
+,"2022","2022","White","2106-3",79,2199462,3.6,2.8,4.5
+,"2023","2023","American Indian or Alaska Native","1002-5",Suppressed,20309,Suppressed,Suppressed,Suppressed
+,"2023","2023","Asian","A",Suppressed,404138,Suppressed,Suppressed,Suppressed
+,"2023","2023","Black or African American","2054-5",86,889109,9.7,7.7,11.9
+,"2023","2023","Native Hawaiian or Other Pacific Islander","NHOPI",0,7329,0.0,0.0,0.0
+,"2023","2023","White","2106-3",56,2228643,2.5,1.9,3.3
+,"2024","2024","American Indian or Alaska Native","1002-5",0,20521,0.0,0.0,0.0
+,"2024","2024","Asian","A",Suppressed,453048,Suppressed,Suppressed,Suppressed
+,"2024","2024","Black or African American","2054-5",100,915076,10.9,8.8,13.1
+,"2024","2024","Native Hawaiian or Other Pacific Islander","NHOPI",0,7499,0.0,0.0,0.0
+,"2024","2024","White","2106-3",37,2230743,1.7,1.2,2.3
+,"2025 (provisional)","2025","American Indian or Alaska Native","1002-5",Suppressed,20521,Suppressed,Suppressed,Suppressed
+,"2025 (provisional)","2025","Asian","A",Suppressed,453048,Suppressed,Suppressed,Suppressed
+,"2025 (provisional)","2025","Black or African American","2054-5",35,915076,3.8,2.7,5.3
+,"2025 (provisional)","2025","Native Hawaiian or Other Pacific Islander","NHOPI",0,7499,0.0,0.0,0.0
+,"2025 (provisional)","2025","White","2106-3",40,2230743,1.8,1.3,2.4
+,"2026 (provisional and partial)","2026","American Indian or Alaska Native","1002-5",0,20521,0.0,0.0,0.0
+,"2026 (provisional and partial)","2026","Asian","A",0,453048,0.0,0.0,0.0
+,"2026 (provisional and partial)","2026","Black or African American","2054-5",0,915076,0.0,0.0,0.0
+,"2026 (provisional and partial)","2026","Native Hawaiian or Other Pacific Islander","NHOPI",0,7499,0.0,0.0,0.0
+,"2026 (provisional and partial)","2026","White","2106-3",0,2230743,0.0,0.0,0.0
+"---"
+"Dataset: Provisional Mortality Statistics, 2018 through Last Week"
+"Query Parameters:"
+"Hispanic Origin: Not Hispanic or Latino"
+"MCD - ICD-10 Codes: X85-Y09 (Assault)"
+"Residence States: Texas (48)"
+"Sex: Female"
+"Single Race 6: American Indian or Alaska Native; Asian; Black or African American; Native Hawaiian or Other Pacific Islander;"
+"White"
+"Ten-Year Age Groups: 15-24 years; 25-34 years; 35-44 years"
+"Group By: Year; Single Race 6"
+"Show Totals: Disabled"
+"Show Zero Values: True"
+"Show Suppressed: True"
+"Calculate Rates Per: 100,000"
+"Rate Options: Default intercensal populations for years 2001-2009 (except Infant Age Groups)"
+"---"
+"Help: See http://wonder.cdc.gov/wonder/help/mcd-provisional.html for more information."
+"---"
+"Query Date: Apr 7, 2026 6:23:32 PM"
+"---"
+"Suggested Citation: Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics"
+"System, Provisional Mortality on CDC WONDER Online Database. Data are from the final Multiple Cause of Death Files, 2018-2024,"
+"and from provisional data for years 2025 and later, as compiled from data provided by the 57 vital statistics jurisdictions"
+"through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/mcd-icd10-provisional.html on Apr 7, 2026"
+"6:23:32 PM"
+"---"
+Messages:
+"1. Totals are not available for these results due to suppression constraints. More Information:"
+"http://wonder.cdc.gov/wonder/help/faq.html#Privacy."
+"---"
+Caveats:
+"1. Data are Suppressed when the data meet the criteria for confidentiality constraints. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Assurance of Confidentiality."
+"2. Deaths of persons with Age ""Not Stated"" are included in ""All"" counts and rates, but are not distributed among age groups,"
+"so are not included in age-specific counts, age-specific rates or in any age-adjusted rates. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Not Stated."
+"3. Deaths of persons with Hispanic origin ""Not Stated"" are included in ""All"" counts and rates, but are not distributed among"
+"Hispanic Origin groups, so are not included in the Hispanic Origin specific counts and rates. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Not Stated."
+"4. Information included on the death certificate about the race and Hispanic ethnicity of the decedent is reported by the"
+"funeral director as provided by an informant, often the surviving next of kin, or, in the absence of an informant, on the basis"
+"of observation. Race and ethnicity information from the census is by self-report. To the extent that race and Hispanic origin"
+"are inconsistent between these two data sources, death rates will be biased. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Racial Differences."
+"5. The method used to calculate 95% confidence intervals is documented here: More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Confidence-Intervals."
+"6. The population estimates for years 2022 - 2026 are from separate series of estimates based on the Modified Blended Base"
+"produced by the US Census Bureau in lieu of the April 1, 2020 decennial population count. The Modified Blended Base consists of"
+"the blend of Vintage 2020 postcensal population estimates for April 1, 2020, 2020 Demographic Analysis Estimates, and 2020"
+"Census data from the internal Census Edited File (CEF). Each subsequent series of estimates adjusts the methodology. The"
+"population figures for years 2024 and later are single-race estimates of the July 1 resident population, from the Vintage 2024"
+"postcensal series released by the Census Bureau on June 26, 2025. The population figures for year 2023 are single-race estimates"
+"of the July 1 resident population, from the Vintage 2023 postcensal series released by the Census Bureau on June 27, 2024. The"
+"population figures for year 2022 are single-race estimates of the July 1 resident population, from the Vintage 2022 postcensal"
+"series released by the Census Bureau on June 22, 2023. The population figures for year 2021 are single-race estimates of the"
+"July 1 resident population, based on the Blended Base produced by the US Census Bureau in lieu of the April 1, 2020 decennial"
+"population count, from the Vintage 2021 postcensal series released by the Census Bureau on June 30, 2022. The population figures"
+"for year 2020 are single-race estimates of the July 1 resident population, from the Vintage 2020 postcensal series based on"
+"April 2010 Census, released by the Census Bureau on July 27, 2021. The population figures for year 2019 are single-race"
+"estimates of the July 1 resident population, from the Vintage 2019 postcensal series based on April 2010 Census, released by the"
+"Census Bureau on June 25, 2020. The population figures for year 2018 are single-race estimates of the July 1 resident"
+"population, from the Vintage 2018 postcensal series based on April 2010 Census, released by the Census Bureau on June 20, 2019."
+"More information: http://wonder.cdc.gov/wonder/help/mcd-provisional.html#Population Data."
+"7. On March 11, 2021, the 2019 mortality data on CDC WONDER was updated with the 2019 mortality data updated by NCHS on March 4,"
+"2021 to include corrected information for residents of Texas affecting 5 records previously coded to cause code *U01.4,"
+"Terrorism involving firearms (homicide). The underlying and multiple cause of death codes for 5 records were corrected in the"
+"2019 data. Underlying and multiple cause of death codes for those 5 records were recoded to Assault (homicide) by other and"
+"unspecified firearm discharge, ICD-10 code X95. The corrected final death records replaces the data released on December 22,"
+"2020."
+"8. After the creation of the final 2023 dataset, North Carolina updated the cause of death information for over 900 death"
+"certificates to include a cause of death code indicating drug overdose (ICD-10 underlying cause-of-death codes: X40-X44,"
+"X60-X64, X85, and Y10-Y14). Jurisdictions can continue to update death certificates after the closing of the mortality file. As"
+"a result, users should consider that the actual death count for drug overdose deaths for North Carolina in 2023 is over 4,400"
+"deaths, with a crude rate of approximately 41.0 per 100,000 population, and an age-adjusted rate of approximately 42.1 per"
+"100,000 population. These deaths will not be updated on the final mortality datasets."
+"9. Deaths occurring through March 21, 2026 as of March 29, 2026."
