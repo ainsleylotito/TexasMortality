@@ -36,7 +36,7 @@ Functions used to clean the datasets may be accessed from the `/Scripts/function
 
 # Female Monthly Assault Counts 
 
-```{r import_female}
+```{r}
 rawdata_female <- read_excel("../RawData/MonthlyAssaults.xlsx") 
 monthly_f <- rawdata_female %>% 
   mutate(month_year = my(Month)) %>% 
@@ -63,7 +63,7 @@ We need to apply the same cleaning methodology, this time for Texas resident mal
 
 # Male Monthly Assault Counts 
 
-```{r import_male}
+```{r}
 rawdata_male <- read_excel("../RawData/MaleMonthlyAssaults.xlsx") 
 monthly_m <- rawdata_male %>% 
   mutate(month_year = my(Month)) %>% 
@@ -87,7 +87,7 @@ monthly_m %>%
 ``` 
 It should be noted we are missing death data for females for May 2019 (2019-05-01) and September 2019 (2019-09-01). We need to fill in this hole, so we will investigate filling this gap in the data by querying both genders and subtracting the deaths for males to reveal how many were among females.
 
-```{r filling_in_data}
+```{r}
 rawdata_both_genders <- read_excel("../RawData/2019_monthly_both_sexes.xlsx") 
 both_genders_2019 <- rawdata_both_genders %>% 
   mutate(month_year = my(Month)) %>% 
@@ -128,7 +128,7 @@ monthly_f <- monthly_f %>%
 
 Next we are going to merge the datasets to create an all sex version.
 
-```{r merge}
+```{r}
 
 monthly_all <- bind_rows( #combining datasets
   monthly_f %>% mutate(sex = "Female"),
@@ -167,7 +167,7 @@ write_csv(monthly_f, "../CleanData/monthly_f.csv")
 
 Next we are going to clean this dataset so we may examine how all-cause deaths may differ from assault only. This will be important as deaths by assault are underreported and often misclassified. Let's start by importing the data and applying the cleaning function for .csv's.
 
-```{r all_cause_female_reproductive_import} 
+```{r} 
 
 all_repro_f <- read.csv("../RawData/texas_allcause_female1544.csv")
 
@@ -189,7 +189,7 @@ write_csv(all_repro_f, "../CleanData/all_cause_repro_f.csv")
 ``` 
 
 Males this time:
-```{r all_cause_female_reproductive_import} 
+```{r} 
 
 all_repro_m <- read.csv("../RawData/texas_allcause_male1544.csv") 
 glimpse(all_repro_m)
@@ -291,7 +291,7 @@ We need to clean the data with deaths attributed to COVID so we may create an al
 
 Starting with pulling up the COVID mortality data (female reproductive age): 
 
-```{r covid_import}
+```{r}
 covid <- read.csv("../RawData/COVID/COVID.csv")
 #checking import
 glimpse(covid)
@@ -335,21 +335,17 @@ identical(
 setdiff(covid$month_year, all_repro_f$month_year)
 setdiff(all_repro_f$month_year, covid$month_year)
 
-
-#keeping only shared dates 
-combined_racial <- racial %>%
-  inner_join(
-    racial_covid,
-    by = c("month_year", "race_eth"),
-    suffix = c("_all", "_covid")
-  )
+combined <- all_repro_f %>%
+  left_join(covid, 
+            by = c("month_year"),
+            suffix = c("_all", "_covid"))
 
 #subtracting deaths, making NA deaths 0
 all_cause_minus_covid <- combined %>%
   mutate(
     Deaths = Deaths_all - coalesce(Deaths_covid, 0)
   ) %>%
-  select(month_year, race_eth, Deaths)
+  select(month_year, Deaths)
 
 head(all_cause_minus_covid)
 
@@ -376,18 +372,23 @@ write_csv(all_cause_minus_covid, "../CleanData/all_cause_minus_covid.csv")
 
 ## Racial Disag 
 
-```{r racial_covid_import}
+```{r}
 h_covid <- read.csv("../RawData/RacialDisaggregation/COVID/H.csv")
 nh_covid <- read.csv("../RawData/RacialDisaggregation/COVID/NH.csv") 
 head(h_covid)
 head(nh_covid)
 
-racial_covid <- clean_racial(nh_covid,h_covid) 
+racial_covid <- clean_racial(nh_covid,h_covid)
 head(racial_covid)
 
 racial_covid <- racial_covid %>% 
   mutate(cod = "covid") %>% 
-  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native")) 
+  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native"))  
+
+h <- read.csv("../RawData/RacialDisaggregation/All_cause/H.csv")
+nh <- read.csv("../RawData/RacialDisaggregation/All_cause/NH.csv") 
+racial <- clean_racial(nh,h)
+head(racial)
 
 ``` 
 
@@ -407,9 +408,10 @@ identical(
 )
 
 
-#keeping only shared dates 
+#combining
 combined_racial <- racial %>%
-  inner_join(racial_covid, by = c("month_year", "race_eth"), suffix = c("_all", "_covid"))
+  left_join(racial_covid, by = c("month_year", "race_eth"),
+            suffix = c("_all", "_covid"))
 
 #subtracting deaths, making NA deaths 0
 racial_minus_covid <- combined_racial %>%
@@ -427,9 +429,9 @@ full_dates <- seq.Date(
   by   = "month"
 )
 
-missing_dates <- setdiff(full_dates, all_cause_minus_covid$month_year)
+missing_dates <- setdiff(full_dates, racial_minus_covid$month_year)
 
-missing_dates
+missing_dates  
 
 write_csv(racial_minus_covid, "../CleanData/racial_minus_covid.csv")
   

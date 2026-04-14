@@ -12,14 +12,24 @@ Asian,2019-10-01,10
 Asian,2020-02-01,23
 Asian,2020-04-01,11
 Asian,2020-05-01,11
+Asian,2020-06-01,14
 Asian,2020-07-01,10
 Asian,2020-08-01,12
+Asian,2020-11-01,12
+Asian,2021-02-01,11
+Asian,2021-03-01,12
+Asian,2021-04-01,15
+Asian,2021-05-01,10
 Asian,2021-07-01,14
+Asian,2021-09-01,20
+Asian,2021-10-01,12
+Asian,2022-03-01,11
 Asian,2022-04-01,10
 Asian,2022-05-01,10
 Asian,2022-06-01,12
 Asian,2022-08-01,10
 Asian,2022-09-01,21
+Asian,2023-03-01,14
 Asian,2023-05-01,18
 Asian,2023-08-01,12
 Asian,2023-09-01,14
@@ -51,23 +61,51 @@ Black or African American,2019-12-01,90
 Black or African American,2020-01-01,76
 Black or African American,2020-02-01,67
 Black or African American,2020-03-01,75
+Black or African American,2020-04-01,104
+Black or African American,2020-05-01,96
+Black or African American,2020-06-01,111
 Black or African American,2020-07-01,110
+Black or African American,2020-08-01,113
+Black or African American,2020-09-01,104
 Black or African American,2020-10-01,92
 Black or African American,2020-11-01,96
 Black or African American,2020-12-01,78
 Black or African American,2021-01-01,98
 Black or African American,2021-02-01,86
 Black or African American,2021-03-01,86
+Black or African American,2021-04-01,90
+Black or African American,2021-05-01,115
+Black or African American,2021-06-01,95
+Black or African American,2021-07-01,99
 Black or African American,2021-08-01,101
 Black or African American,2021-09-01,115
 Black or African American,2021-10-01,91
+Black or African American,2021-11-01,87
 Black or African American,2021-12-01,100
 Black or African American,2022-01-01,116
 Black or African American,2022-02-01,96
+Black or African American,2022-03-01,112
+Black or African American,2022-04-01,104
+Black or African American,2022-05-01,108
+Black or African American,2022-06-01,106
+Black or African American,2022-07-01,97
+Black or African American,2022-08-01,90
+Black or African American,2022-09-01,110
+Black or African American,2022-10-01,99
+Black or African American,2022-11-01,113
+Black or African American,2022-12-01,109
+Black or African American,2023-01-01,114
+Black or African American,2023-02-01,83
+Black or African American,2023-03-01,98
 Black or African American,2023-04-01,97
 Black or African American,2023-05-01,126
 Black or African American,2023-06-01,111
 Black or African American,2023-07-01,109
+Black or African American,2023-08-01,86
+Black or African American,2023-09-01,107
+Black or African American,2023-10-01,111
+Black or African American,2023-11-01,114
+Black or African American,2023-12-01,112
 Hispanic,2018-01-01,134
 Hispanic,2018-02-01,112
 Hispanic,2018-03-01,117
@@ -94,6 +132,9 @@ Hispanic,2019-11-01,119
 Hispanic,2019-12-01,156
 Hispanic,2020-01-01,134
 Hispanic,2020-02-01,112
+Hispanic,2020-03-01,128
+Hispanic,2020-04-01,127
+Hispanic,2020-05-01,149
 Hispanic,2020-06-01,140
 Hispanic,2020-07-01,152
 Hispanic,2020-08-01,138
@@ -116,9 +157,27 @@ Hispanic,2021-12-01,156
 Hispanic,2022-01-01,154
 Hispanic,2022-02-01,137
 Hispanic,2022-03-01,168
+Hispanic,2022-04-01,145
+Hispanic,2022-05-01,157
+Hispanic,2022-06-01,158
+Hispanic,2022-07-01,156
+Hispanic,2022-08-01,135
+Hispanic,2022-09-01,170
+Hispanic,2022-10-01,137
+Hispanic,2022-11-01,155
+Hispanic,2022-12-01,189
 Hispanic,2023-01-01,160
+Hispanic,2023-02-01,157
+Hispanic,2023-03-01,157
+Hispanic,2023-04-01,164
+Hispanic,2023-05-01,153
+Hispanic,2023-06-01,161
 Hispanic,2023-07-01,162
+Hispanic,2023-08-01,160
+Hispanic,2023-09-01,136
 Hispanic,2023-10-01,165
+Hispanic,2023-11-01,151
+Hispanic,2023-12-01,160
 White,2018-01-01,190
 White,2018-02-01,172
 White,2018-03-01,156
@@ -145,12 +204,22 @@ White,2019-11-01,181
 White,2019-12-01,161
 White,2020-01-01,205
 White,2020-02-01,152
+White,2020-03-01,172
+White,2020-04-01,178
+White,2020-05-01,170
+White,2020-06-01,199
+White,2020-07-01,213
+White,2020-08-01,203
+White,2020-09-01,199
+White,2020-10-01,184
 White,2020-11-01,198
 White,2020-12-01,184
 White,2021-01-01,202
 White,2021-02-01,188
 White,2021-03-01,238
+White,2021-04-01,196
 White,2021-05-01,192
+White,2021-06-01,212
 White,2021-07-01,204
 White,2021-08-01,195
 White,2021-09-01,175
@@ -159,7 +228,25 @@ White,2021-11-01,171
 White,2021-12-01,194
 White,2022-01-01,204
 White,2022-02-01,193
+White,2022-03-01,224
+White,2022-04-01,185
+White,2022-05-01,215
+White,2022-06-01,196
+White,2022-07-01,247
+White,2022-08-01,179
+White,2022-09-01,194
+White,2022-10-01,225
+White,2022-11-01,193
+White,2022-12-01,225
 White,2023-01-01,179
+White,2023-02-01,177
+White,2023-03-01,181
+White,2023-04-01,189
 White,2023-05-01,197
 White,2023-06-01,176
+White,2023-07-01,188
+White,2023-08-01,209
+White,2023-09-01,190
+White,2023-10-01,235
 White,2023-11-01,205
+White,2023-12-01,200
