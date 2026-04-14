@@ -34,7 +34,7 @@ source("functions.r")
 
 ``` 
 
-This contains all code used to analyze the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/Cleaning.rmd` file. 
+This contains all code used to analyze the datasets found in the `/CleanData` directory, which were previously generated in the `/Scripts/01_Cleaning.rmd` file. Descriptive statistics and exploration of data were conducted in the `/Scripts/02_Exploration.rmd` file. 
 
 This document uses an interrupted time series ARIMA analysis to evaluate changes in mortality (assault and all-cause) following the Bill 8 policy intervention restricting access to abortion in Texas. Note that May 21, 2021 was when Bill 8 passed, though it later went into effect in September. Due to widespread media coverage in Texas, it may be reasonably assumed that reactions to the law may have began in June, lending to its designation as the interruption point for this study. May was not selected as only 10 days of the month remained after the bill got passed, biasing the results and potentially not providing enough time for information to disseminate. 
 
