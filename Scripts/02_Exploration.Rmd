@@ -98,7 +98,9 @@ monthly_all %>%
 **Plotting both** 
 ```{r}
 monthly_all <- monthly_all %>% 
-   mutate(month_year = as.Date(month_year))
+   mutate(month_year = as.Date(month_year)) 
+
+vline_date <- as.Date("2021-06-01")
 
 ggplot(monthly_all) +
   geom_line(aes(x = month_year, y = Deaths, color = sex)) +
