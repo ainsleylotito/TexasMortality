@@ -31,7 +31,7 @@ source("functions.r")
 
 This script contains the code used to clean the raw datasets accessed from CDC Wonder contained within the `/RawData` directory. All datasets generated from this script will be saved in the `/CleanData` directory.  
 
-Functions used to clean the datasets may be accessed from the `/Scripts/functions.R` file. 
+Functions used to clean the datasets may be accessed from the `/Scripts/functions.R` file.  
 
 
 # Female Monthly Assault Counts 
