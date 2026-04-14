@@ -1,0 +1,360 @@
+---
+title: "national_only"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+---
+```{r setup, include= FALSE}
+# Load packages
+library(tidyverse)
+library(ggplot2) 
+library(readxl) 
+library(lubridate)
+library(broom)
+library(viridis)
+library(tsModel)
+library(scales)
+library(grid) 
+library(tseries) 
+library(tsibble) 
+library(fable)
+library(feasts) 
+library(forecast)
+
+# Global options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+```  
+
+
+# Sept 2021 interruption 
+# National Data 
+
+This time we are going to run an arima using national data for females aged 15-44 who died of assault. 
+Uploading data and converting to a tsibble object: 
+```{r}
+monthly <- read.csv("../CleanData/nat_f_assault.csv") 
+monthly.ts <- monthly %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly.ts)
+```
+ 
+
+Looking at data, along with ACF and PACF plots: 
+
+```{r}
+monthly.ts |>
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+```
+ 
+ 
+ Looking at the PACF and ACF after differencing: 
+```{r}
+monthly.ts |>
+  gg_tsdisplay(y = difference(difference(Deaths,12)), plot_type = "partial")
+```
+ 
+
+Letting Fable's ARIMA algorithm choose the best fit... 
+
+## Intervention effects
+
+We are capturing the intervention effects next - step and ramp variable.
+The first effect is captured by a step (or level shift) variable, which is a dummy variable that is 0 for all months prior to the intervention and 1 for intervention months. The second is a ramp variable, which is 0 for all months prior to the intervention and starts with 1 on the first month of the intervention and increases by 1 from there (e.g., Sep, 2021 = 1; Oct. = 2; etc…)
+
+
+```{r}
+range(monthly.ts$time)
+# Create variable representing step and ramp changes
+intervention_month <- monthly.ts %>% 
+  filter(month_year == "2021-09-01") %>% 
+  pull(time)
+monthly.ts <- monthly.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly.ts %>% 
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-09-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Visualizing Step and Ramp Variables",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+```
+## ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r arima_specs4}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+m_monthly.ts <- monthly.ts %>% 
+  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+
+#Plotting model residuals
+m_monthly.ts  %>% 
+  gg_tsresiduals()
+``` 
+
+Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
+Null: residuals are independent (white noise)
+Alternative: residuals show remaining autocorrelation 
+```{r ljung-box4}
+#Ljung-Box test
+augment(m_monthly.ts) %>%  
+  features(.resid, ljung_box)
+
+```
+
+
+With the model assumptions satisfied, we can take a look at the model estimates: 
+```{r fable_arima4}
+report(m_monthly.ts)
+
+``` 
+This one gave us two different components! 
+(0,1,1)(1,0,0) 
+
+It picked up 
+**p=0**, meaning there are no autoregressive terms (the current value is not directly predicted by past raw data values).
+
+**d=1**, meaning there is differencing; the original, raw data possesses a trend. 
+
+**q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value
+ 
+ For seasonality, we got 
+ 1 autoregressive term.
+
+
+The ARIMA estimated an immediate increase in **6.95 deaths** and  an estimated reduction of **-2.30 deaths** each month after Bill 8 was enacted. 
+
+Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. 
+
+
+```{r}
+#Modeling counterfactual
+m_counterfactual <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 9)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual)
+
+#forecast into post-intervention period 
+fc_counterfactual <- m_counterfactual %>%
+  forecast(h = 28) 
+
+ autoplot(fc_counterfactual, monthly.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 9))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+``` 
+No points popping out of forecast.  
+
+# May 21 
+This time we are going to run an arima using **national** data for females aged 15-44 who died of assault. 
+Uploading data and converting to a tsibble object: 
+```{r}
+monthly <- read.csv("../CleanData/nat_f_assault.csv") 
+monthly.ts <- monthly %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly.ts)
+```
+ 
+
+Looking at data, along with ACF and PACF plots: 
+
+```{r}
+monthly.ts |>
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+``` 
+
+Looking at the PACF and ACF after differencing: 
+```{r}
+monthly.ts |>
+  gg_tsdisplay(y = difference(difference(Deaths,12)), plot_type = "partial")
+```
+ 
+
+Letting Fable's ARIMA algorithm choose the best fit... 
+
+## Intervention effects
+
+We are capturing the intervention effects next - step and ramp variable.
+
+
+```{r}
+range(monthly.ts$time)
+# Create variable representing step and ramp changes
+intervention_month <- monthly.ts %>% 
+  filter(month_year == "2021-05-01") %>% 
+  pull(time)
+monthly.ts <- monthly.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly.ts %>% 
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-05-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Visualizing Step and Ramp Variables",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+``` 
+
+## ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+m_monthly.ts <- monthly.ts %>% 
+  model(arima = ARIMA(Deaths ~ step + ramp, stepwise = FALSE))
+
+#Plotting model residuals
+m_monthly.ts  %>% 
+  gg_tsresiduals()
+``` 
+
+Here we use the Ljung-Box test, which models if the residuals are still autocorrelated. 
+Null: residuals are independent (white noise)
+Alternative: residuals show remaining autocorrelation 
+```{r}
+#Ljung-Box test
+augment(m_monthly.ts) %>%  
+  features(.resid, ljung_box)
+
+``` 
+
+Fail to reject the null. 
+
+
+With the model assumptions satisfied, we can take a look at the model estimates: 
+```{r}
+report(m_monthly.ts)
+
+```  
+
+
+ It picked up 
+**p=1**, meaning there is one  autoregressive term
+
+**d=0**, meaning there is no differencing; the original, raw data is stationary, possessing no trend. 
+
+**q=1**: there is one moving average term, aka the model uses the error from the previous tie step to predict the current value 
+
+Seasonality: 1 autoregressive term. 
+
+The ARIMA estimated an immediate increase in **45.66 deaths** and  an estimated reduction of **-1.5 deaths** each month after Bill 8 was enacted. 
+
+Finally, we can run a counter-factual model in which we forecast deaths for 2021-2023 given the model parameters from our initial model, minus the step and ramp parameters. This gives us a visual of what we would have expected had the new policy not come into existence! 
+
+
+```{r}
+#Modeling counterfactual
+m_counterfactual <- monthly.ts %>%
+  filter(month < make_yearmonth(2021, 5)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual)
+
+#forecast into post-intervention period 
+fc_counterfactual <- m_counterfactual %>%
+  forecast(h = 28+4) 
+
+ autoplot(fc_counterfactual, monthly.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 5))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+``` 

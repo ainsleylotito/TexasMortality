@@ -1,0 +1,907 @@
+---
+title: "Interrupted Time Series ARIMA Analysis Bill 8"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+    code_folding: hide
+--- 
+
+
+```{r setup, include = FALSE}
+# Load packages
+library(tidyverse)
+library(ggplot2) 
+library(readxl) 
+library(lubridate)
+library(broom)
+library(viridis)
+library(tsModel)
+library(scales)
+library(grid) 
+library(tseries) 
+library(tsibble) 
+library(fable)
+library(feasts) 
+library(forecast)
+
+# Global options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+source("functions.R")
+
+``` 
+
+# Introduction 
+
+Rationale for June interruption: May 29th the bill got signed in, was in the media, want to capture effects immediately after and also preserve the spike we notice (which would be factored into the forecast if we made the interruption point September)
+
+
+# Results 
+
+# Methods (Expandable)
+  - Data preparation
+  - Intervention variables
+  - ARIMA specification
+
+# Model diagnostics (Expandable)
+
+# Sensitivity analysis (Expandable)
+
+
+# All-Cause
+```{r, include = FALSE}
+monthly_f <- read.csv("../CleanData/all_cause_repro_f.csv") 
+monthly_m <- read.csv("../CleanData/all_cause_repro_m.csv")
+
+monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_f.ts <- monthly_f %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_f.ts) 
+
+monthly_m.ts <- monthly_m %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_m.ts)
+
+``` 
+
+```{r, include = FALSE}
+monthly_f.ts  |> #female
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+
+monthly_m.ts  |> #male
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+```
+
+
+```{r, echo = FALSE}
+# Create variable representing step and ramp changes
+intervention_month <- monthly_f.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_f.ts<- monthly_f.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  ) 
+
+intervention_month <- monthly_m.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_m.ts <- monthly_m.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly_f.ts %>%  #female
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Female",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+
+monthly_m.ts %>% #male
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Male",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+```
+
+## ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r, results='hide', message = FALSE, warning = FALSE}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+f_arima <- monthly_f.ts %>%  #female
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+m_arima <- monthly_m.ts %>%  #male
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+``` 
+
+
+```{r}
+#Plotting model residuals
+f_arima  %>% 
+  gg_tsresiduals() 
+
+m_arima  %>% 
+  gg_tsresiduals()
+``` 
+
+
+```{r, include = FALSE}
+#Ljung-Box test
+augment(f_arima ) %>%  
+  features(.resid, ljung_box) 
+
+augment(m_arima ) %>%  
+  features(.resid, ljung_box)
+
+```
+
+Model estimates: 
+```{r}
+report(m_arima)
+report(f_arima)
+```  
+
+## Forecast Graph 
+
+```{r, echo = TRUE}
+#Modeling counterfactual male
+m_counterfactual <- monthly_m.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual) 
+
+#Modeling counterfactual female
+f_counterfactual <- monthly_f.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(f_counterfactual)
+
+#forecast into post-intervention period  male
+fc_m_counterfactual <- m_counterfactual %>%
+  forecast(h = 28) 
+
+ autoplot(fc_m_counterfactual, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Male All-Cause Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  ) 
+ 
+ #forecast into post-intervention period male
+fc_f_counterfactual <- f_counterfactual %>%
+  forecast(h = 28+6) 
+
+ autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female All-Cause Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+``` 
+
+## Sensitivity Analysis
+
+ 
+```{r, include = FALSE} 
+#Step 1: Fit ARIMA using pre-intervention data only  
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+```
+
+
+```{r, include = FALSE, message = FALSE, warning = FALSE}
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+``` 
+
+
+```{r, include = FALSE} 
+#pre-intervention
+report(m_pre)
+report(f_pre)
+```
+
+
+```{r, include = FALSE}
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,0) + PDQ(1,0,0),
+      stepwise = FALSE
+    )
+  ) 
+
+f_sensitivity <- monthly_f.ts %>% 
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(1,1,3),
+      stepwise = FALSE
+    )
+  ) 
+
+```
+
+**Comparing estimates** 
+(Fable vs. Sensitivity)
+```{r} 
+#male
+report(m_arima)
+report(m_sensitivity) 
+
+#female 
+report(f_arima)
+report(f_sensitivity)
+``` 
+
+# Assault COD 
+
+```{r, include = FALSE}
+monthly_f <- read.csv("../CleanData/monthly_f.csv") 
+monthly_m <- read.csv("../CleanData/monthly_m.csv")
+
+monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_f.ts <- monthly_f %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_f.ts) 
+
+monthly_m.ts <- monthly_m %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_m.ts)
+
+``` 
+
+
+```{r, include = FALSE}
+monthly_f.ts  |> #female
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+
+monthly_m.ts  |> #male
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+```
+
+
+```{r, include = FALSE}
+# Create variable representing step and ramp changes
+intervention_month <- monthly_f.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_f.ts<- monthly_f.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  ) 
+
+intervention_month <- monthly_m.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_m.ts <- monthly_m.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly_f.ts %>%  #female
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Female",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+
+monthly_m.ts %>% #male
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Male",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+```
+
+## ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r, include = FALSE, message = FALSE, warning = FALSE}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+f_arima <- monthly_f.ts %>%  #female
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+m_arima <- monthly_m.ts %>%  #male
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+``` 
+
+
+```{r, include = FALSE}
+#Plotting model residuals
+f_arima  %>% 
+  gg_tsresiduals() 
+
+m_arima  %>% 
+  gg_tsresiduals()
+``` 
+
+
+```{r, include = FALSE}
+#Ljung-Box test
+augment(f_arima ) %>%  
+  features(.resid, ljung_box) 
+
+augment(m_arima ) %>%  
+  features(.resid, ljung_box)
+
+```
+
+Model estimates: 
+```{r}
+report(m_arima)
+report(f_arima)
+
+```  
+
+
+```{r, echo = FALSE}
+#Modeling counterfactual male
+m_counterfactual <- monthly_m.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual) 
+
+#Modeling counterfactual female
+f_counterfactual <- monthly_f.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(f_counterfactual)
+
+#forecast into post-intervention period  male
+fc_m_counterfactual <- m_counterfactual %>%
+  forecast(h = 28+6) 
+
+ autoplot(fc_m_counterfactual, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Male Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  ) 
+ 
+ #forecast into post-intervention period male
+fc_f_counterfactual <- f_counterfactual %>%
+  forecast(h = 28+6) 
+
+ autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+```  
+
+
+## Sensitivity 
+
+**Step 1: Fit ARIMA using pre-intervention data only**  
+
+Subsetting pre-intervention data:  
+
+```{r, include = FALSE}
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+```
+
+
+
+```{r,include = FALSE, message = FALSE, warning = FALSE}
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+``` 
+
+```{r,include = FALSE}
+report(m_pre)
+report(f_pre)
+```
+
+
+
+```{r, include = FALSE}
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,1),
+      stepwise = FALSE
+    )
+  ) 
+
+f_sensitivity <- monthly_f.ts %>% 
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(4,1,0),
+      stepwise = FALSE
+    )
+  ) 
+
+```
+
+**Step 3: Comparing estimates** 
+```{r} 
+#male
+report(m_arima)
+report(m_sensitivity) 
+
+#female 
+report(f_arima)
+report(f_sensitivity)
+``` 
+
+# All ages 
+
+```{r, include = FALSE}
+monthly_f <- read.csv("../CleanData/all_age_f_assault.csv") 
+monthly_m <- read.csv("../CleanData/all_age_m_assault.csv")
+
+monthly_f <- monthly_f %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_m <- monthly_m %>% 
+  mutate(month_year = ymd(month_year))
+
+monthly_f.ts <- monthly_f %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_f.ts) 
+
+monthly_m.ts <- monthly_m %>% 
+  mutate(month_year = ymd(month_year),
+         month = yearmonth(month_year)) %>% 
+  as_tsibble(index = month)
+  
+glimpse(monthly_m.ts)
+
+``` 
+
+```{r, include = FALSE}
+monthly_f.ts  |> #female
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+
+monthly_m.ts  |> #male
+  gg_tsdisplay(y = Deaths, plot_type = "partial")
+``` 
+
+```{r,include = FALSE}
+# Create variable representing step and ramp changes
+intervention_month <- monthly_f.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_f.ts<- monthly_f.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  ) 
+
+intervention_month <- monthly_m.ts %>% 
+  filter(month_year == "2021-06-01") %>% 
+  pull(time)
+
+monthly_m.ts <- monthly_m.ts %>%
+  mutate(
+    t = row_number(),
+    step = if_else(t >= intervention_month, 1, 0),
+    ramp = if_else(t >= intervention_month, t - intervention_month + 1, 0)
+  )
+
+#View the step and ramp variables
+monthly_f.ts %>%  #female
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Female",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+
+monthly_m.ts %>% #male
+  pivot_longer(
+    cols = c(step, ramp), 
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = month_year, y = value, color = variables)) +
+  geom_line(linewidth = 1) +
+  geom_vline(
+    xintercept = as.Date("2021-06-01"),
+    linetype = "dashed",
+    color = "black"
+  ) +
+  labs(
+    title = "Step and Ramp Variables - Male",
+    x = "Month",
+    y = "Value",
+    color = ""
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme_minimal() 
+
+```
+
+
+## ARIMA model 
+
+The Fable algorithm will dictate the model parameters. 
+Next, we plot the residuals, the ACF plot, and a histogram to ensure they approximate a white noise series. 
+
+```{r, results='hide', message = FALSE, warning = FALSE}
+# Use automated algorithm to identify p/q parameters
+# Specify first difference = 1 and seasonal difference = 1
+f_arima <- monthly_f.ts %>%  #female
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+m_arima <- monthly_m.ts %>%  #male
+  model(arima = ARIMA(Deaths ~ step + ramp,
+                      stepwise = FALSE, 
+                      trace = TRUE)) 
+``` 
+
+
+```{r,include = FALSE}
+#Plotting model residuals
+f_arima  %>% 
+  gg_tsresiduals() 
+
+m_arima  %>% 
+  gg_tsresiduals()
+```  
+
+ 
+```{r,include = FALSE}
+#Ljung-Box test
+augment(f_arima ) %>%  
+  features(.resid, ljung_box) 
+
+augment(m_arima ) %>%  
+  features(.resid, ljung_box)
+
+```
+
+Model estimates: 
+```{r}
+report(m_arima)
+report(f_arima)
+
+```   
+
+```{r}
+#Modeling counterfactual male
+m_counterfactual <- monthly_m.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(m_counterfactual) 
+
+#Modeling counterfactual female
+f_counterfactual <- monthly_f.ts %>%
+  filter(month < make_yearmonth(2021, 6)) %>%
+  model(
+    arima_null = ARIMA(
+      Deaths,
+      stepwise = FALSE
+    )
+  ) 
+report(f_counterfactual)
+
+#forecast into post-intervention period  male
+fc_m_counterfactual <- m_counterfactual %>%
+  forecast(h = 28+6) 
+
+ autoplot(fc_m_counterfactual, monthly_m.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual All Age Male Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  ) 
+ 
+ #forecast into post-intervention period male
+fc_f_counterfactual <- f_counterfactual %>%
+  forecast(h = 28+6) 
+
+ autoplot(fc_f_counterfactual, monthly_f.ts, level = 95) +
+  geom_vline(
+    xintercept = as.numeric(as_date(make_yearmonth(2021, 6))),
+    linetype = "dashed",
+    color = "grey40"
+  ) +
+  labs(
+    title = "Observed vs Counterfactual All Age Female Assault Deaths",
+    y = "Monthly Deaths",
+    x = "Month"
+  ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+```  
+
+## Sensitivity 
+
+**Step 1: Fit ARIMA using pre-intervention data only**  
+
+Subsetting pre-intervention data:  
+
+```{r,include = FALSE}
+pre_data_f <- monthly_f.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+
+pre_data_m <- monthly_m.ts %>%
+  filter(month_year < as.Date("2021-06-01")) 
+```
+
+
+```{r, results='hide', message = FALSE, warning = FALSE}
+m_pre <- pre_data_m %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+
+f_pre <- pre_data_f %>%
+  model(arima = ARIMA(Deaths, stepwise = FALSE))
+``` 
+
+```{r,include = FALSE}
+report(m_pre)
+report(f_pre)
+```
+
+**Step 2: Refit to full data** 
+
+```{r,include = FALSE}
+m_sensitivity <- monthly_m.ts %>%
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,1),
+      stepwise = FALSE
+    )
+  ) 
+
+f_sensitivity <- monthly_f.ts %>% 
+  model(
+    arima = ARIMA(
+      Deaths ~ step + ramp + pdq(0,1,1),
+      stepwise = FALSE
+    )
+  ) 
+
+```
+
+**Step 3: Comparing estimates** 
+```{r} 
+#male
+report(m_arima)
+report(m_sensitivity) 
+
+#female 
+report(f_arima)
+report(f_sensitivity)
+``` 

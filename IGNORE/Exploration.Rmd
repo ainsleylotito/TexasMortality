@@ -378,24 +378,8 @@ racial_annual %>%
   group_by(race_eth) %>% 
   slice(1:3) 
 
-```  
-It looks as though we do not have enough data populating for Native Hawaiian or Other Pacific islander. We are therefore going to just describe the annual trends for the other racial categories: 
-
-```{r}
-racial_annual %>%
-  filter(race_eth != "Native Hawaiian or Other Pacific Islander") %>% 
-  group_by(race_eth) %>%
-  summarise(
-    n_years      = n(),
-    total_deaths  = sum(deaths, na.rm = TRUE),
-    annual_mean  = mean(deaths, na.rm = TRUE),
-    annual_sd    = sd(deaths, na.rm = TRUE),
-    .groups = "drop"
-  )
 
 ```
-
-
 
 # Investigating Models
 

@@ -1,6 +1,14 @@
 ---
 title: "Cleaning"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+    code_folding: hide  
+    
+output_dir: Output
 ---
 
 ```{r setup}
@@ -18,6 +26,13 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 #importing functions
 source("functions.r")
 ``` 
+
+# Introduction 
+
+This script contains the code used to clean the raw datasets accessed from CDC Wonder contained within the `/RawData` directory. All datasets generated from this script will be saved in the `/CleanData` directory.  
+
+Functions used to clean the datasets may be accessed from the `/Scripts/functions.R` file. 
+
 
 # Female Monthly Assault Counts 
 

@@ -1,0 +1,459 @@
+---
+title: "Cleaning"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float: true
+    code_folding: hide  
+    
+output_dir: Output
+---
+
+```{r setup}
+# Load packages
+library(tidyverse)
+library(ggplot2) 
+library(readxl) 
+library(lubridate)
+library(broom)
+library(viridis)
+
+# Global options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+#importing functions
+source("functions.r")
+``` 
+
+# Female Monthly Assault Counts 
+
+```{r import_female}
+rawdata_female <- read_excel("../RawData/MonthlyAssaults.xlsx") 
+monthly_f <- rawdata_female %>% 
+  mutate(month_year = my(Month)) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+head(monthly_f) 
+
+#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
+
+monthly_f <- monthly_f %>% 
+  filter(month_year < "2024-01-01")
+
+#creating a binary indicator variable to say whether the bill was in effect 
+ 
+monthly_f <- monthly_f %>% 
+  mutate(bill8 = month_year > "2021-08-01") #all months after August
+
+monthly_f %>% 
+  slice(35:55)
+               
+
+``` 
+
+We need to apply the same cleaning methodology, this time for Texas resident males in the same age group (15-44). 
+
+# Male Monthly Assault Counts 
+
+```{r import_male}
+rawdata_male <- read_excel("../RawData/MaleMonthlyAssaults.xlsx") 
+monthly_m <- rawdata_male %>% 
+  mutate(month_year = my(Month)) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+head(monthly_m) 
+
+#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
+
+monthly_m <- monthly_m %>% 
+  filter(month_year < "2024-01-01")
+
+#creating a binary indicator variable to say whether the bill was in effect 
+ 
+monthly_m <- monthly_m %>% 
+  mutate(bill8 = month_year > "2021-08-01") #all months after August
+
+monthly_m %>% 
+  slice(35:55)
+               
+
+``` 
+It should be noted we are missing death data for females for May 2019 (2019-05-01) and September 2019 (2019-09-01). We need to fill in this hole, so we will investigate filling this gap in the data by querying both genders and subtracting the deaths for males to reveal how many were among females.
+
+```{r filling_in_data}
+rawdata_both_genders <- read_excel("../RawData/2019_monthly_both_sexes.xlsx") 
+both_genders_2019 <- rawdata_both_genders %>% 
+  mutate(month_year = my(Month)) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+head(both_genders_2019)  
+
+#selecting the dates we need 
+
+both_genders_2019 %>% 
+  filter(month_year %in% c("2019-05-01", "2019-09-01")) 
+
+#107 in may, 96 in sept 
+
+monthly_m %>% 
+  filter(month_year %in% c("2019-05-01", "2019-09-01"))  
+#98 in may, 89 in sept 
+
+#may: 107-98 = 9
+#sept: 96-89 = 7
+
+#dropping the problematic rows for females
+monthly_f <- monthly_f %>%
+  filter(
+    !(month_year %in% as.Date(c("2019-05-01", "2019-09-01")))
+  )
+
+monthly_f <- monthly_f %>%
+  bind_rows(
+    tibble(
+      month_year = as.Date(c("2019-05-01", "2019-09-01")),
+      Deaths     = c(11, 7),
+      sex        = "Female",
+      bill8      = FALSE
+    )
+  )
+
+```
+
+Next we are going to merge the datasets to create an all sex version.
+
+```{r merge}
+
+monthly_all <- bind_rows( #combining datasets
+  monthly_f %>% mutate(sex = "Female"),
+  monthly_m %>% mutate(sex = "Male")
+)
+
+monthly_m %>% #checking which months are missing in the female df
+  anti_join(monthly_f, by = "month_year") %>%
+  select(month_year)
+
+monthly_all <- monthly_all %>%
+  group_by(sex) %>% 
+  arrange(month_year) %>%
+  mutate(time = row_number())
+range(monthly_all$time)
+
+monthly_f <- monthly_f %>%
+  arrange(month_year) %>%
+  mutate(time = row_number())
+range(monthly_f$time)
+
+monthly_m <- monthly_m %>%
+  arrange(month_year) %>%
+  mutate(time = row_number())
+
+range(monthly_m$time)
+
+#looks correct! Saving the datasets
+
+write_csv(monthly_all, "../CleanData/monthly_all.csv")
+write_csv(monthly_m, "../CleanData/monthly_m.csv")
+write_csv(monthly_f, "../CleanData/monthly_f.csv")
+``` 
+
+# All Cause Female Reproductive age 
+
+Next we are going to clean this dataset so we may examine how all-cause deaths may differ from assault only. This will be important as deaths by assault are underreported and often misclassified. Let's start by importing the data and applying the cleaning function for .csv's.
+
+```{r all_cause_female_reproductive_import} 
+
+all_repro_f <- read.csv("../RawData/texas_allcause_female1544.csv")
+
+all_repro_f <- clean.csv(all_repro_f)
+
+head(all_repro_f) 
+
+``` 
+Let's check out the data: 
+```{r}
+ggplot(all_repro_f, aes(month_year, Deaths))+ 
+  geom_line()
+
+``` 
+
+Looks good! Let's save the all cause female data to our cleaned folder. 
+```{r}
+write_csv(all_repro_f, "../CleanData/all_cause_repro_f.csv")
+``` 
+
+Males this time:
+```{r all_cause_female_reproductive_import} 
+
+all_repro_m <- read.csv("../RawData/texas_allcause_male1544.csv") 
+glimpse(all_repro_m)
+
+all_repro_m <- all_repro_m %>% 
+  mutate(month_year = my(Month)) %>% 
+  select(-Month, -Month.Code, -Notes,-Population:-Crude.Rate.Upper.95..Confidence.Interval) %>% 
+  filter(month_year < "2024-01-01") %>% 
+  mutate( time = row_number ())
+
+
+ggplot(all_repro_m, aes(month_year, Deaths))+ 
+  geom_line() 
+
+write_csv(all_repro_m, "../CleanData/all_cause_repro_m.csv")
+
+```
+
+# Assault all age female 
+
+Next we are going to clean the data for all ages female, cod by assault. 
+
+```{r}
+all_age_f_assault <- read_excel("../RawData/All_Ages_Female.xlsx")
+all_age_f_assault <- clean.xcel(all_age_f_assault) 
+head(all_age_f_assault) 
+
+all_age_m_assault <- read.csv("../RawData/all_age_assault_male.csv")
+all_age_m_assault <- all_age_m_assault %>% 
+   mutate(month_year = my(Month)) %>% 
+  select(-Month, -Month.Code, -Notes,-Population:-Crude.Rate.Upper.95..Confidence.Interval) %>% 
+  filter(month_year < "2024-01-01") %>% 
+  mutate( time = row_number ()) 
+
+write_csv(all_age_m_assault, "../CleanData/all_age_m_assault.csv")
+
+  
+``` 
+Same as before, let's briefly check out what the data looks like: 
+```{r}
+ggplot(all_age_f_assault, aes(month_year, Deaths))+ 
+  geom_line()
+```  
+
+Let's write our csv: 
+```{r}
+write_csv(all_age_f_assault, "../CleanData/all_age_f_assault.csv")
+```
+
+# Age 15+ 
+
+Let's also check out the data for texas deaths by assault, this time just with ages 15+. 
+
+```{r}
+assault_15_plus <- read_excel("../RawData/assault_15_plus.xlsx") 
+assault_15_plus <- clean.xcel(assault_15_plus) 
+head(assault_15_plus) 
+
+ggplot(assault_15_plus, aes(month_year, Deaths))+ 
+  geom_line() 
+
+write_csv(assault_15_plus, "../CleanData/assault_15_plus")
+```
+
+
+# National control set 
+
+This time we are going to pull ages 15-44 deaths by assault nationally. 
+
+```{r}
+nat_f_assault <- read_excel("../RawData/national_f_assault.xlsx") 
+nat_f_assault <- clean.xcel(nat_f_assault) 
+head(nat_f_assault) 
+
+ggplot(nat_f_assault, aes(month_year, Deaths))+ 
+  geom_line() 
+
+write_csv(nat_f_assault, "../CleanData/nat_f_assault.csv")
+``` 
+
+# Disaggregated Race 
+
+We pulled the deaths for assault and all-cause, but we are just going to focus on all-cause to increase power. 
+
+```{r}
+h <- read.csv("../RawData/RacialDisaggregation/All_cause/H.csv")
+nh <- read.csv("../RawData/RacialDisaggregation/All_cause/NH.csv") 
+
+
+racial <- clean_racial(nh,h) 
+write_csv(racial, "../CleanData/racial_all_cause.csv")
+  
+``` 
+
+
+# COVID Deaths 
+
+We need to clean the data with deaths attributed to COVID so we may create an all-cause minus COVID mortality dataset. 
+
+Starting with pulling up the COVID mortality data (female reproductive age): 
+
+```{r covid_import}
+covid <- read.csv("../RawData/COVID/COVID.csv")
+#checking import
+glimpse(covid)
+``` 
+
+We have quite a few days where the death value is suppressed. 
+
+```{r}
+covid %>% 
+  filter(Deaths == "Suppressed") %>% 
+  select(Month)
+```
+
+```{r}
+#Need to change suppressed values to be 0s and make deaths numeric. 
+covid <- covid %>% 
+    mutate(Deaths = as.numeric(na_if(Deaths, "Suppressed")),
+          month_year = my(Month)) %>% 
+  select(-Notes,-Month, -"Month.Code", -Population:-"Crude.Rate.Upper.95..Confidence.Interval") %>% 
+  filter(month_year < "2024-01-01") %>% 
+  mutate(time = row_number ())
+
+``` 
+
+Next, we will create new COD variables so when we delete the deaths from all cause we can match up accordingly: 
+
+```{r}
+covid <- covid %>% 
+  mutate(cod = "covid")
+
+all_repro_f <- all_repro_f %>% 
+  mutate(cod = "all_cause") 
+
+#checking if dates are the same: 
+identical(
+  sort(unique(covid$month_year)),
+  sort(unique(all_repro_f$month_year))
+)
+
+#finding dates missing 
+setdiff(covid$month_year, all_repro_f$month_year)
+setdiff(all_repro_f$month_year, covid$month_year)
+
+
+#keeping only shared dates 
+combined_racial <- racial %>%
+  inner_join(
+    racial_covid,
+    by = c("month_year", "race_eth"),
+    suffix = c("_all", "_covid")
+  )
+
+#subtracting deaths, making NA deaths 0
+all_cause_minus_covid <- combined %>%
+  mutate(
+    Deaths = Deaths_all - coalesce(Deaths_covid, 0)
+  ) %>%
+  select(month_year, race_eth, Deaths)
+
+head(all_cause_minus_covid)
+
+#checking that we have every month! 
+full_dates <- seq.Date(
+  from = as.Date("2018-01-01"),
+  to   = as.Date("2023-12-01"),
+  by   = "month"
+)
+
+missing_dates <- setdiff(full_dates, all_cause_minus_covid$month_year)
+
+missing_dates
+
+``` 
+
+After creating our all cause minus covid, it looks as though we have successfully subtracted all and preserved all the dates in our study period. We can now save this cleaned dataset. 
+
+```{r}
+
+write_csv(all_cause_minus_covid, "../CleanData/all_cause_minus_covid.csv")
+
+```
+
+## Racial Disag 
+
+```{r racial_covid_import}
+h_covid <- read.csv("../RawData/RacialDisaggregation/COVID/H.csv")
+nh_covid <- read.csv("../RawData/RacialDisaggregation/COVID/NH.csv") 
+head(h_covid)
+head(nh_covid)
+
+racial_covid <- clean_racial(nh_covid,h_covid) 
+head(racial_covid)
+
+racial_covid <- racial_covid %>% 
+  mutate(cod = "covid") %>% 
+  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native")) 
+
+``` 
+
+```{r}
+#cleaning the two datasets: 
+racial <- racial %>% 
+  filter(!race_eth %in% c("Native Hawaiian or Other Pacific Islander", "American Indian or Alaska Native")) %>% 
+  mutate(cod = "all_cause")  
+
+head(racial_covid)
+head(racial)
+
+#checking if dates are the same: 
+identical(
+  sort(unique(racial_covid$month_year)),
+  sort(unique(racial$month_year))
+)
+
+
+#keeping only shared dates 
+combined_racial <- racial %>%
+  inner_join(racial_covid, by = c("month_year", "race_eth"), suffix = c("_all", "_covid"))
+
+#subtracting deaths, making NA deaths 0
+racial_minus_covid <- combined_racial %>%
+  mutate(
+    Deaths = Deaths_all - coalesce(Deaths_covid, 0)
+  ) %>%
+  select(race_eth, month_year, Deaths)
+
+head(racial_minus_covid)
+
+#checking that we have every month! 
+full_dates <- seq.Date(
+  from = as.Date("2018-01-01"),
+  to   = as.Date("2023-12-01"),
+  by   = "month"
+)
+
+missing_dates <- setdiff(full_dates, all_cause_minus_covid$month_year)
+
+missing_dates
+
+write_csv(racial_minus_covid, "../CleanData/racial_minus_covid.csv")
+  
+``` 
+
+### Annual 
+
+We are going to look at annual trends in terms of assault deaths for repro-age females, just in case there's something to be said there. 
+
+```{r}
+h_assault <- read.csv("../RawData/RacialDisaggregation/Assault/Annual/H.csv")
+nh_assault <- read.csv("../RawData/RacialDisaggregation/Assault/Annual/NH.csv") 
+head(h_assault)
+head(nh_assault)
+
+unique(nh_assault$Year)
+unique(h_assault$Year)
+
+racial_assault <- clean_racial_annual(nh_assault,h_assault)  
+
+
+head(racial_assault) 
+
+racial_assault %>% 
+  group_by(race_eth) %>% 
+  filter(is.na(deaths)) 
+
+#missing too much info for Asian and American Indian/Alaska Native, excluding those from df 
+
+racial_assault <- racial_assault %>% 
+  filter(!race_eth %in% c("American Indian or Alaska Native", "Asian")) 
+
+write.csv(racial_assault, "../CleanData/racial_assault_annual.csv")
+```
