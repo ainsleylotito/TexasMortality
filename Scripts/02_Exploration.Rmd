@@ -294,13 +294,19 @@ It's pretty clear here that a big portion of the death spike we see is from a co
 ```{r}
 #how many deaths over study period?
 f_minus_covid %>%  
-  summarize(n_deaths = sum(Deaths, na.rm = TRUE))
+  summarise(
+    n_months      = n(),
+    total_deaths  = sum(Deaths, na.rm = TRUE),
+    monthly_mean  = mean(Deaths, na.rm = TRUE),
+    monthly_sd    = sd(Deaths, na.rm = TRUE),
+    .groups = "drop"
+  )
 
 #largest death counts? 
 f_minus_covid %>% 
   arrange(desc(Deaths)) %>% 
   select(month_year, Deaths) %>% 
-  slice(1:3) 
+  slice(1:3)  
 
 #plotting 
 f_minus_covid <- f_minus_covid %>% 
