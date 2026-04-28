@@ -117,7 +117,8 @@ We are going to start by exploring how many assault mortalities among Texas resi
 
 monthly_f.ts <- prepare_ts("../CleanData/monthly_f.csv")
 monthly_f.ts <- create_intervention(monthly_f.ts, "2021-06-01")
-
+monthly_f.ts %>% 
+  filter(month_year %in% c("2019-05-01","2019-09-01"))
 f_arima <- fit_arima(monthly_f.ts)
 
 fc_f <- counterfactual_forecast(monthly_f.ts, "2021-06-01", 34)
