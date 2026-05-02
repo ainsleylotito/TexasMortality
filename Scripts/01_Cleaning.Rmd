@@ -37,25 +37,13 @@ Functions used to clean the datasets may be accessed from the `/Scripts/function
 # Female Monthly Assault Counts 
 
 ```{r}
-rawdata_female <- read_excel("../RawData/MonthlyAssaults.xlsx") 
+rawdata_female <- read_excel("../RawData/MonthlyAssaultsFemaleRepro.xlsx") 
 monthly_f <- rawdata_female %>% 
-  mutate(month_year = my(Month)) %>% 
-   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+  mutate(month_year = my(Month),
+         Deaths = na_if(as.character(Deaths), "Suppressed"),
+         Deaths = as.numeric(Deaths)) %>% 
+   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code", -"Crude Rate Lower 95% Confidence Interval", -"Crude Rate Upper 95% Confidence Interval") 
 head(monthly_f) 
-
-#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
-
-monthly_f <- monthly_f %>% 
-  filter(month_year < "2024-01-01")
-
-#creating a binary indicator variable to say whether the bill was in effect 
- 
-monthly_f <- monthly_f %>% 
-  mutate(bill8 = month_year > "2021-08-01") #all months after August
-
-monthly_f %>% 
-  slice(35:55)
-               
 
 ``` 
 
@@ -70,10 +58,6 @@ monthly_m <- rawdata_male %>%
    select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
 head(monthly_m) 
 
-#excluding NA/provisional data: No data starting on Aug 2025. Total provisional data starts at Jan 2024. 
-
-monthly_m <- monthly_m %>% 
-  filter(month_year < "2024-01-01")
 
 #creating a binary indicator variable to say whether the bill was in effect 
  
