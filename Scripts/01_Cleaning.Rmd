@@ -59,11 +59,6 @@ monthly_m <- rawdata_male %>%
 head(monthly_m) 
 
 
-#creating a binary indicator variable to say whether the bill was in effect 
- 
-monthly_m <- monthly_m %>% 
-  mutate(bill8 = month_year > "2021-08-01") #all months after August
-
 monthly_m %>% 
   slice(35:55)
                
@@ -103,8 +98,7 @@ monthly_f <- monthly_f %>%
     tibble(
       month_year = as.Date(c("2019-05-01", "2019-09-01")),
       Deaths     = c(11, 7),
-      sex        = "Female",
-      bill8      = FALSE
+      sex        = "Female"
     )
   )
 

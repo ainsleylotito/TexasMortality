@@ -15,22 +15,6 @@ library(feasts)
 library(forecast)  
 getwd()
 source("./Scripts/functions.r")
-# Just 2018 onward:   
-monthly_f.ts <- prepare_ts("./CleanData/monthly_f.csv") 
-glimpse(monthly_f.ts)
-monthly_f.ts <- create_intervention(monthly_f.ts, "2021-06-01")
-
-f_arima <- fit_arima(monthly_f.ts)
-
-fc_f <- counterfactual_forecast(monthly_f.ts, "2021-06-01", 34)
-
-plot_counterfactual(
-  fc_f,
-  monthly_f.ts,
-  "2021-06-01",
-  "Observed vs Counterfactual Female Assault Deaths"
-)
-monthly_f.ts <- prepare_ts("./CleanData/monthly_f.csv") 
 
 
 
@@ -50,10 +34,11 @@ glimpse(f_post_18)
 f_post_18 <- f_post_18 %>% 
   mutate(month_year = ymd(month_year),
          month = yearmonth(month_year)) %>% 
-  select(-bill8:-time)
+  select(-sex,-time)
 head(f_post_18)  
 f_post_18 %>% 
-  slice(15:20)
+  slice(15:20) 
+
 
 range(pre_18$month_year)
 range(f_post_18$month_year)
