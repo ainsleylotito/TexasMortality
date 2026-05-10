@@ -59,9 +59,15 @@ We need to apply the same cleaning methodology, this time for Texas resident mal
 ```{r}
 rawdata_male <- read_excel("../RawData/MaleMonthlyAssaults.xlsx") 
 monthly_m <- rawdata_male %>% 
-  mutate(month_year = my(Month)) %>% 
-   select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code") 
+  mutate(month_year = my(Month),
+         Deaths = na_if(as.character(Deaths), "Suppressed"),
+         Deaths = as.numeric(Deaths)) %>% 
+  filter(!is.na(month_year)) %>%   # removing the blank rows
+  select(-Notes,-Population,-"Crude Rate", -Month, -"Month Code", 
+         -"Crude Rate Lower 95% Confidence Interval", 
+         -"Crude Rate Upper 95% Confidence Interval")
 head(monthly_m) 
+tail(monthly_m) 
 
 
 monthly_m %>% 
