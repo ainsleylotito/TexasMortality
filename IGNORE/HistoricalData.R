@@ -19,15 +19,15 @@ source("./Scripts/functions.r")
 
 
 #cleaning data: 
-pre_18 <- read.csv("./RawData/Repro_Assault_Pre_2018/Female.csv")
-pre_18 <- pre_18 %>%  
+pre_18_f <- read.csv("./RawData/Repro_Assault_Pre_2018/Female.csv")
+pre_18_f <- pre_18_f %>%  
   filter(Month != "") %>% 
   mutate(month_year = my(Month),
          month = yearmonth(month_year),
          Deaths = na_if(as.character(Deaths), "Suppressed"),
          Deaths = as.numeric(Deaths),) %>% 
   select(-Notes,-Population,-"Crude.Rate", -Month, -"Month.Code")  
-head(pre_18)
+head(pre_18_f)
 
 #we need to wait to make it a time series object until we've merged the data from before!! 
 f_post_18 <- read.csv("./CleanData/monthly_f.csv") 
@@ -40,7 +40,7 @@ head(f_post_18)
 tail(f_post_18)
 
 
-range(pre_18$month_year)
+range(pre_18_f$month_year)
 range(f_post_18$month_year)
 
 female_full <- bind_rows(pre_18,f_post_18) 
@@ -112,4 +112,6 @@ autoplot(fc_f, f_ts, level = 95) +
            angle = 90,
            size = 3) 
 
+
+# MALE VERSION: 
 
